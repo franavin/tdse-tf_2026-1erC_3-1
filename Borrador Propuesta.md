@@ -3,7 +3,6 @@
 
 # **Estación Hidropónica**
 
- 
 
 **Autores: Avincetto, Franco Joaquín; Nishihara, Leonardo**
 
