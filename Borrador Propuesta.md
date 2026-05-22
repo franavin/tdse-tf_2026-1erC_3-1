@@ -22,7 +22,7 @@
 ###### **1.3.1 Diagrama en bloques**
 
 
-
+---
 ### **2\. Elicitación de requisitos y casos de uso**
 
 
