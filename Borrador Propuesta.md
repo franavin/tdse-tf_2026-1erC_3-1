@@ -19,8 +19,18 @@ El objetivo principal es diseñar e implementar un Producto Mínimo Viable (prot
 Esperamos lograr un sistema del tipo "Event-Triggered" en el cual utilizaremos un patrón Super-Loop (con tick de Systick de ~1ms) para garantizar tareas no bloqueantes. El modelo lógico se basará en diagramas de estado para alternar entre distintos modos de operación (NORMAL, SET_UP, FALLA), implementando comunicación serie (I2C/SPI), adquisición de datos (ADC con DMA) y telemetría remota (Bluetooth).
 
 #### **1.2 Proyectos similares**
+En base al objetivo principal, se proponen posibles alternativas de implementación que requieren el uso de hardware específico y se ponderan los aspectos a tener en cuenta para seleccionar el enfoque más adecuado para el Trabajo Final. 
+
+La siguiente tabla (Tabla 1.2.1) muestra los valores ponderados asignados a cada proyecto considerado:
 
 #### **1.3 Selección de proyecto**
+
+En este caso representaremos el equilibrio perfecto para el proyecto, ya que al elegir utilizar componentes simbólicos para los fluidos (como potenciómetros para simular el nivel de los tanques y relés que representan bombas), se elimina el riesgo físico permitiendo una depuración de código (debugging) cómoda y segura. Al mismo tiempo, conservamos intacta la estructura del software, donde el sistema exigirirá el diseño de un ejecutor cíclico y la comunicación I2C/SPI real con las memorias EEPROM, displays, etc. 
+
+Los principales desafíos técnicos que se abordarán en este proyecto incluyen:
+* **Acondicionamiento de señales analógicas:** Diseño de un filtro activo Sallen-Key por hardware para limpiar la señal del potenciómetro antes de su conversión mediante el ADC y DMA del microcontrolador.
+* **Modelado robusto:** La creación de la lógica de riego mediante statecharts generados en herramientas como Itemis CREATE, prestando especial atención a la declaración de variables de temporización de largo plazo (usando el tipo de dato `uint32_t` estándar de C) para evitar desbordamientos en ciclos de varias horas.
+* **Sistema de interfaz sin bloqueos:** Desarrollo de un menú interactivo fluido con rutinas de antirrebote eficientes para leer las teclas y gestionar los estados (`NORMAL`, `SET_UP`, `FALLA`) sin detener el muestreo de sensores.
 
 ###### **1.3.1 Diagrama en bloques**
 
