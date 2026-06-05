@@ -1,4 +1,5 @@
 ```mermaid
+%%{init: { 'theme': 'default' } }%%
 sequenceDiagram
     box lightgreen Escrutar
     participant Potenciometro
