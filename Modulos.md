@@ -1,7 +1,5 @@
-<div style="background-color: white; padding: 20px;" data-theme="light">
-
 ```mermaid
-%%{init: { 'theme': 'default' } }%%
+%%{init: { 'theme': 'base', 'themeVariables': { 'background': '#ffffff', 'primaryColor': '#ffffff', 'mainBkg': '#ffffff', 'actorBkg': '#ffffff', 'boxBkgColor': '#ffffff' }}}%%
 sequenceDiagram
     box lightgreen Escrutar
     participant Potenciometro
