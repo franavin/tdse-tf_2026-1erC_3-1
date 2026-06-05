@@ -1,3 +1,4 @@
+<div style="background-color: white; padding: 20px;" data-theme="light">
 ```mermaid
 %%{init: { 'theme': 'default' } }%%
 sequenceDiagram
