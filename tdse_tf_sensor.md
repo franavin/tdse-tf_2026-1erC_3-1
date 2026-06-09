@@ -32,7 +32,7 @@ emite una "Signal" (un mensaje o evento de sistema) hacia el módulo de procesam
 ## 3. Eventos
 Los eventos representan el comportamiento físico de las entradas para con el microcontrolador:
 
-* **Teclado:** `EV_BTN_XX_UP` (tecla liberada) / `EV_BTN_XX_DOWN` (tecla presionada).
+* **Teclado:** `EV_BTN_XX_UP` (tecla liberada) / `EV_BTN_XX_DOWN` (tecla presionada). *Donde XX puede ser CONF (Confirmar), MODE (Modo), UP (Arriba) o DOWN (Abajo).*
 * **Nivel de Agua:** `EV_ADC_LVL_HIGH` (tensión por encima del umbral) / `EV_ADC_LVL_LOW` (tensión por debajo del umbral).
 * **Temperatura AHT20:** `EV_I2C_TEMP_LOW` (clima normal) / `EV_I2C_TEMP_HIGH` (clima caluroso).
 * **Relés:** `EV_GPIO_RLY_LOW` (ausencia de tensión de feedback) / `EV_GPIO_RLY_HIGH` (tensión detectada).
@@ -57,7 +57,7 @@ Son las acciones encargadas de manejar el temporizador.
 
 ### Acciones Externas
 Estas acciones son los mensajes en los que el módulo de escrutar envía hacia el modulo de procesar, reflejando de esta manera su cambio de posición válido y ya confirmado.
-* **`raise EV_SYS_...` (Ej. `EV_SYS_MODE_DOWN`, `EV_SYS_LVL_CRIT`)**: Emite la señal al sistema indicando que el evento de falla, presión o cierre ocurrió exitosamente (pasó el tiempo de anti-rebote).
+* **`raise EV_SYS_...` (Ej. `EV_SYS_MODE_DOWN`, `EV_SYS_UP_DOWN`, `EV_SYS_LVL_CRIT`)**: Emite la señal al sistema indicando que el evento de falla, presión o cierre ocurrió exitosamente (pasó el tiempo de anti-rebote).
 * **`raise EV_SYS_...` (Ej. `EV_SYS_MODE_UP`, `EV_SYS_LVL_OK`)**: Emite la señal al sistema indicando que el evento se liberó o normalizó exitosamente (pasó el tiempo de anti-rebote sin fluctuar).
 
 ***************************************************************************************************************************************************************************************************************************
