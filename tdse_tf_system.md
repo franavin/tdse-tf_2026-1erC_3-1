@@ -46,6 +46,7 @@ Variables decrementales (`uint32_t`) modificadas por el sistema y usadas como `[
 * **`raise EV_ACT_PUMP_ON` / `raise EV_ACT_PUMP_OFF`**: Orden para encender o apagar la bomba de agua.
 * **`raise EV_ACT_FAN_ON` / `raise EV_ACT_FAN_OFF`**: Orden para encender o apagar el ventilador.
 * **`raise EV_ACT_ALARM_ON` / `raise EV_ACT_ALARM_OFF`**: Orden para accionar el buzzer y enviar alerta por BT.
+* **`raise EV_ACT_BEEP_SUCCESS`**: Orden para que el buzzer emita un pitido corto de confirmación acústica.
 * **`raise EV_ACT_EEPROM_LOAD` / `raise EV_ACT_EEPROM_SAVE`**: Orden de lectura o escritura en I2C.
 * **`raise EV_ACT_MENU_SHOW` / `raise EV_ACT_MENU_UPDATE` / `raise EV_ACT_ERROR_SHOW`**: Orden para actualizar las pantallas en el display.
 * **`raise EV_ACT_MENU_UP`**: Orden al display para desplazar el cursor hacia arriba o incrementar el valor del parámetro en pantalla.
@@ -79,4 +80,4 @@ Variables decrementales (`uint32_t`) modificadas por el sistema y usadas como `[
 | | EV_SYS_TEMP_OK | | **ST_SYS_NORMAL_IDLE** | raise EV_ACT_FAN_OFF |
 | **ST_SYS_SET_UP** | EV_SYS_NEXT_DOWN | | **ST_SYS_SET_UP** | raise EV_ACT_MENU_UP |
 | | EV_SYS_PREV_DOWN | | **ST_SYS_SET_UP** | raise EV_ACT_MENU_DOWN |
-| | EV_SYS_CONF_DOWN | | **ST_SYS_SET_UP** | raise EV_ACT_EEPROM_SAVE <br> raise EV_ACT_MENU_UPDATE |
+| | EV_SYS_CONF_DOWN | | **ST_SYS_SET_UP** | raise EV_ACT_EEPROM_SAVE <br> raise EV_ACT_MENU_UPDATE <br> raise EV_ACT_BEEP_SUCCESS |
