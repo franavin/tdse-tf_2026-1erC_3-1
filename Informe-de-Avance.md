@@ -19,6 +19,14 @@ con el sistema en distintos casos.
 
 <p align="center"><em>Figura 1: Diagrama en bloques del sistema</em></p>
 
+Luego, una vez que teníamos una idea de cómo queríamos que se vaya desarrollando nuestro sistema, fuimos completando los distintos módulos, declarando así los estados, eventos y las demás variables necesarias para lograr la implementación.
+
+[Módulo de Sensores](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md)
+
+[Módulo del Sistema](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md)
+
+[Módulo de Actuadores](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_actuator.md)
+
 A continuación se detalla el informe de avances del TF a partir de los requerimientos
 
 | Estado | Descripción      |
