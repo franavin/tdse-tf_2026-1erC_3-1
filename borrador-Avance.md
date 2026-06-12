@@ -46,7 +46,7 @@ A continuación se detalla el informe de avances del TF a partir de los requerim
 
 | ID | Descripción | Estado |
 | :---- | :-------- | :------ |
-| 3.1 | **Interfaz Visual Local (Display):** Actualización periódica de un menú interactivo en una pantalla OLED (SPI/I2C) para la visualización y configuración de parámetros sin depender de la red. | 🟢 |
+| 3.1 | **Interfaz Visual Local (Display):** Actualización periódica de un menú interactivo en una pantalla OLED (SPI/I2C) para la visualización y configuración de parámetros sin depender de la red. <br> Desarrollamos una interfaz viusal básica para ver cómo queremos que se vea en un primer punto, los datos que muestre y cómo navegar por el mismo.  | 🟢 |
 | 3.2 | **Telemetría remota:** Envío de tramas de estado y alertas por UART utilizando un módulo Bluetooth HM-10 para monitoreo desde una aplicación móvil. | 🟡 |
 
 #### **Almacenamiento**  
