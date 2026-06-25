@@ -1,0 +1,194 @@
+<div align="center">
+
+<img width="535"  alt="image" src="https://github.com/Embebidos-Fran-Marcos-Nacho/tdse-tf_1-2/blob/08290a7a62c8a7d3fcd22fc57871dafbbf35ab15/logo-fiuba.png" />
+
+**UNIVERSIDAD DE BUENOS AIRES**  
+**Facultad de Ingeniería**  
+**TA134 – Sistemas Embebidos**  
+Curso 3 – Grupo 1
+
+# Estación Hidropónica 
+
+
+## Autores
+Avincetto, Franco Joaquín — Legajo 106747  
+Nishihara, Leonardo — Legajo 88627 
+
+**Fecha:** 10/07/2026  
+**Cuatrimestre de cursada:** 1er cuatrimestre 2026  
+
+*Trabajo realizado entre ---------------*
+</div>
+
+---
+
+
+## Resumen
+
+
+---
+
+## Registro de versiones
+
+*Historial de revisiones del documento.*
+
+La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
+
+| Revisión | Cambios realizados | Fecha |
+| :---: | --- | :---: |
+
+
+
+
+<em>Tabla 0.1 — Registro de versiones del documento.</em><br><br>
+
+---
+
+
+
+# Índice General
+
+- [Capítulo 1: Introducción general](#capítulo-1-introducción-general)
+  - [1.1 Análisis de necesidad y objetivo](#11-análisis-de-necesidad-y-objetivo)
+  - [1.2 Productos comparables](#12-productos-comparables)
+  - [1.3 Justificación del enfoque técnico](#13-justificación-del-enfoque-técnico)
+  - [1.4 Alcance y limitaciones](#14-alcance-y-limitaciones)
+- [Capítulo 2: Introducción específica](#capítulo-2-introducción-específica)
+  - [2.1 Requisitos](#21-requisitos)
+  - [2.2 Casos de uso](#22-casos-de-uso)
+  - [2.3 Descripción de módulos principales](#23-descripción-de-módulos-principales)
+- [Capítulo 3: Diseño e implementación](#capítulo-3-diseño-e-implementación)
+  - [3.1 Arquitectura general](#31-arquitectura-general)
+  - [3.2 Diseño de hardware](#32-diseño-de-hardware)
+  - [3.3 Diseño de firmware](#33-diseño-de-firmware)
+- [Capítulo 4: Ensayos y resultados](#capítulo-4-ensayos-y-resultados)
+  - [4.1 Pruebas funcionales de hardware](#41-pruebas-funcionales-de-hardware)
+  - [4.2 Pruebas funcionales de firmware](#42-pruebas-funcionales-de-firmware)
+  - [4.3 Pruebas de integración](#43-pruebas-de-integración)
+  - [4.4 Medición y análisis de consumo](#44-medición-y-análisis-de-consumo)
+- [Capítulo 5: Conclusiones](#capítulo-5-conclusiones)
+  - [5.1 Resultados obtenidos](#51-resultados-obtenidos)
+  - [5.2 Lecciones aprendidas](#52-lecciones-aprendidas)
+  - [5.3 Próximos pasos](#53-próximos-pasos)
+- [Capítulo 6: Uso de herramientas de IA](#capítulo-6-uso-de-herramientas-de-ia)
+  - [6.1 Uso individual y conjunto](#61-uso-individual-y-conjunto)
+- [Capítulo 7: Bibliografía y referencias](#capítulo-7-bibliografía-y-referencias)
+
+---
+
+# Capítulo 1: Introducción general
+
+## 1.1 Análisis de necesidad y objetivo
+
+
+
+## 1.2 Productos comparables
+
+
+## 1.3 Justificación del enfoque técnico
+
+
+
+---
+
+# Capítulo 2: Introducción específica
+
+Esta sección contiene los requisitos originales y los modificados en el informe de avances, además de los casos de uso. 
+
+## 2.1 Requisitos
+| Grupo | ID | Descripción |
+| :---- | :---- | :---- |
+| **Sensores** | 1.1 | **Nivel de agua (Simulado):** Lectura analógica por ADC (polling/DMA) de un potenciómetro, previo paso por un filtro activo Sallen-Key por hardware. |
+| | 1.2 | **Clima (Real):** Lectura de temperatura y humedad ambiente utilizando el sensor digital SHT3x a través del bus I2C. |
+| | 1.3 | **Interfaz de entrada local:** Lectura no bloqueante (con rutinas de anti-rebote por software) de botones para la navegación del menú y Dip Switches para alternar los modos del sistema (`NORMAL` / `SET_UP`). |
+| **Actuadores** | 2.1 | **Actuadores de simulación (Bombas/Ventilación):** Encendido y apagado de LEDs/Relés gestionados por retardos no bloqueantes basados en el tick del Systick (1ms). |
+| | 2.2 | **Alarmas sonoras:** Emisión de alertas mediante un Buzzer (accionado por PWM o GPIO) ante fallas críticas del sistema o confirmaciones de guardado. |
+| **Interfaz y Comunicaciones** | 3.1 | **Interfaz Visual Local (Display):** Actualización periódica de un menú interactivo en una pantalla OLED (SPI/I2C) para la visualización y configuración de parámetros sin depender de la red. |
+| | 3.2 | **Telemetría remota:** Envío de tramas de estado y alertas por UART utilizando un módulo Bluetooth HM-10 para monitoreo desde una aplicación móvil. |
+| **Almacenamiento** | 4.1 | **Gestión de Recetas (EEPROM):** Lectura y escritura de parámetros de configuración (tiempos de riego, umbrales térmicos) en una memoria EEPROM externa vía I2C para garantizar la persistencia ante cortes de energía. |
+
+<p align="center"><em>Tabla 2: Requisitos del proyecto</em></p>
+
+---
+#### **3\. Casos de Uso**
+
+En las tablas 3.1 a 3.3 se presentan 3 casos de uso para el sistema.
+
+| Elemento | Definición |
+| :---- | :---- |
+| **Disparador** | El usuario cambia el estado de un Dip Switch para ingresar al modo de configuración de recetas. |
+| **Precondiciones** | El sistema debe estar en modo `NORMAL`. El Display y los botones de navegación deben estar operativos. La comunicación I2C con la EEPROM debe estar inicializada. |
+| **Flujo principal** | 1. El sistema detecta el cambio en el Dip Switch y transita al estado `SET_UP`. <br> 2. Se detienen los temporizadores de riego activos y los actuadores pasan a estado seguro. <br> 3. El microcontrolador lee de la EEPROM los parámetros de la receta activa y los muestra en el Display. <br> 4. El usuario navega por el menú interactivo con los botones para modificar el "Tiempo de Riego" y el "Umbral de Temperatura". <br> 5. El usuario presiona el botón de confirmación; el microcontrolador escribe los nuevos valores en la EEPROM externa a través del bus I2C. <br> 6. El usuario regresa el Dip Switch a su posición original y el sistema vuelve al modo `NORMAL` aplicando la nueva receta. |
+| **Flujos alternativos** | 5.a. Falla de comunicación I2C con la EEPROM: El sistema muestra un mensaje de "ERROR: EEPROM" en el Display, emite un triple pitido con el Buzzer y mantiene los cambios de forma temporal únicamente en la memoria RAM del microcontrolador. |
+
+<p align="center"><em>Tabla 3.1: Caso de uso 1: Configuración de Recetas de Cultivo (SET_UP)</em></p>
+
+| Elemento | Definición |
+| :---- | :---- |
+| **Disparador** | El temporizador de software no bloqueante (basado en el Systick de 1ms) alcanza el tiempo de intervalo de riego definido en la receta activa. |
+| **Precondiciones** | El sistema se encuentra en modo `NORMAL`. El microcontrolador cargó exitosamente los umbrales de la EEPROM al iniciar. El sensor analógico de nivel de agua registra valores seguros. |
+| **Flujo principal** | 1. La máquina de estados del firmware evalúa que el tiempo transcurrido es igual o mayor al intervalo de la receta de la EEPROM. <br> 2. El sistema transita al sub-estado `RIEGO_ACTIVO`. <br> 3. Se acciona el LED/Relé que simula la bomba de agua mediante una salida digital no bloqueante. <br> 4. El Display OLED se actualiza reflejando el estado "Riego en proceso...". <br> 5. Se envía una trama de telemetría por el módulo HM-10 (Bluetooth) informando el evento. <br> 6. Al completarse el tiempo de riego estipulado, la máquina de estados apaga el actuador y regresa al sub-estado de espera. |
+| **Flujos alternativos** | 1.a. Si la temperatura medida por el sensor SHT3x supera el umbral de la receta mientras se espera el riego, el microcontrolador activa de manera independiente la salida PWM del ventilador (LED/Relé) sin bloquear la ejecución del Super-Loop. |
+
+<p align="center"><em>Tabla 3.2: Caso de uso 2: Ejecución del Ciclo Automático de Riego (NORMAL)</em></p>
+
+| Elemento | Definición |
+| :---- | :---- |
+| **Disparador** | El canal de ADC (con adquisición por DMA) registra que la tensión del potenciómetro de nivel de agua cae por debajo del límite mínimo de seguridad. |
+| **Precondiciones** | El sistema se encuentra operando en modo `NORMAL` y realizando conversiones periódicas de los canales analógicos de forma no bloqueante. |
+| **Flujo principal** | 1. El firmware procesa el bloque de datos del ADC y detecta la condición de tanque vacío. <br> 2. La máquina de estados ejecuta una transición incondicional e inmediata al modo de `FALLA`. <br> 3. Se desactivan de forma instantánea todas las salidas digitales hacia los actuadores (bombas y ventilación apagadas). <br> 4. El Display OLED interrumpe su pantalla actual y muestra de forma intermitente el mensaje "ALERTA: SIN AGUA". <br> 5. Se acciona el Buzzer por hardware para emitir una alarma sonora intermitente y se envía la notificación de emergencia vía Bluetooth (HM-10). |
+| **Flujos alternativos** | 5.a. El sistema permanece bloqueado en modo seguro hasta que el usuario reestablezca el nivel (simulado con el potenciómetro) y presione el botón físico de "Reset/Acknowledge" en la placa base para retornar al modo `NORMAL`. |
+
+<p align="center"><em>Tabla 3.3: Caso de uso 3: Bloqueo del Sistema por Nivel Crítico (FALLA)</em></p>
+
+---
+
+# Capítulo 3: Diseño e implementación
+
+
+---
+
+# Capítulo 4: Ensayos y resultados
+
+
+
+
+---
+
+# Capítulo 5: Conclusiones
+
+## 5.1 Resultados obtenidos
+
+
+
+## 5.2 Lecciones aprendidas
+
+
+
+## 5.3 Próximos pasos
+
+
+
+---
+
+# Capítulo 6: Uso de herramientas de IA
+
+Se documenta el uso de IA según requerimiento docente y archivo `listado de cosas hechas con IA.txt`.
+
+## 6.1 Uso individual y conjunto
+
+
+
+---
+
+# Capítulo 7: Bibliografía y referencias
+
+
+
+Referencias internas del repositorio:
+
+---
+
+**Fin de la Memoria Técnica**  
+Autores: Ignacio Ezequiel Cavicchioli, Francisco Javier Moya  
+Fecha de edición: 19 de febrero de 2026
