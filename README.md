@@ -1,5 +1,5 @@
 # FIUBA - Electrónica - Taller de Sistemas Embebidos
-## Trabajo Final - Año-Cuatrimestre - Curso-Grupo: Título del Trabajo Final 
+## Trabajo Final - 2026-1c - 3-1: Estación Hidropónica
 
 ### Bitácora de Entregas
 | N° | Detalles | Fecha | Deadline |
