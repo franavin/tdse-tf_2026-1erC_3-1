@@ -190,5 +190,5 @@ Referencias internas del repositorio:
 ---
 
 **Fin de la Memoria Técnica**  
-Autores: Ignacio Ezequiel Cavicchioli, Francisco Javier Moya  
-Fecha de edición: 19 de febrero de 2026
+Autores: Ignacio Avincetto, Franco Joaquín, Nishihara, Leonardo
+Fecha de edición: 
