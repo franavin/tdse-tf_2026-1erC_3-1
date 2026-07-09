@@ -24,7 +24,7 @@ Nishihara, Leonardo — Legajo 88627
 
 
 ## Resumen
-
+Se propone el diseño e implementación de un Producto Mínimo Viable (prototipo) bare-metal basado en un microcontrolador STM32 para la automatización y monitoreo de una estación de cultivo hidropónico. El sistema se encarga de supervisar variables ambientales y de nivel de líquidos, controlando de forma temporizada los ciclos de riego y ventilación. La arquitectura de firmware se basa en un patrón Super-Loop de tipo "Event-Triggered" con máquinas de estado no bloqueantes, incorporando adquisición de datos analógicos y telemetría por Bluetooth.
 
 ---
 
@@ -79,20 +79,35 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
 # Capítulo 1: Introducción general
 
 ## 1.1 Análisis de necesidad y objetivo
-
+El objetivo principal es diseñar e implementar un prototipo funcional (Producto Mínimo Viable) que automatice y monitoree una estación de cultivo hidropónico. Mediante una representación física sobre una placa base soldada, el sistema supervisará variables críticas como el nivel de líquidos y el clima, y controlará de forma temporizada los ciclos de actuación (riego y ventilación).
 
 
 ## 1.2 Productos comparables
+Para la selección de la implementación, se evaluaron tres enfoques principales, ponderados según disponibilidad de hardware, impacto, costo, dificultad técnica e interés del equipo:
 
+Proyecto Base: Monitoreo de nivel de agua (simulado con potenciómetro y filtro activo Sallen-Key) y clima (sensor SHT3x/AHT20). Incluye relés, LEDs para bombas/ventilador y telemetría por Bluetooth (HM-10).
+
+Base + Memoria y Display: Suma una pantalla OLED para un menú interactivo y memoria EEPROM para almacenar "recetas" de cultivo.
+
+Base + Control de Nutrientes (pH/EC): Agrega potenciómetros y filtros para simular lectura de pH/EC, con actuadores extra para dosificadores.
 
 ## 1.3 Justificación del enfoque técnico
 
+El sistema se implementará utilizando una arquitectura de software estrictamente no bloqueante. Se utilizará un microcontrolador STM32 programado en bare-metal bajo el patrón de Super-Loop. Las secuencias que requieren control temporal se resolverán mediante máquinas de estado internas que gestionan los "ticks" del sistema (1 ms), evitando por completo el uso de funciones de retraso pasivo (delay).
 
+## 1.4 Alcance y limitaciones
+El alcance del sistema contempla el monitoreo de nivel y temperatura, la actuación de bombas de agua y ventiladores mediante relés de potencia, alarmas acústicas/visuales y la transmisión de información remota. Todo evento externo e interno se somete a validación mediante filtrado de estado temporal para evadir falsos positivos y rebotes.
 
 ---
 
 # Capítulo 2: Introducción específica
+El código de la aplicación se divide conceptualmente en tres módulos temporizados (período de escrutinio de 1 ms):
 
+Módulo de Sensores: Encargado de escrutar el estado físico de los periféricos de entrada. Implementa filtros por máquinas de estado para evitar rebotes o ruidos eléctricos. Una vez que la lectura es estable durante un tiempo determinado (DEL_XX_MAX), emite un evento al sistema.
+
+Módulo de Sistema: Constituye el núcleo lógico de la aplicación. Recibe señales del módulo sensor y despacha órdenes de acción al actuador. Gestiona variables temporizadoras de los ciclos de riego e implementa el funcionamiento de lazo cerrado (esperando el feedback de los relés).
+
+Módulo de Actuador: Ejecuta las acciones físicas (Display, LEDs, Relés, Buzzer, Bluetooth y EEPROM). Delega las tareas de comunicación I2C/SPI/UART a funciones asincrónicas en los drivers de hardware.
 Esta sección contiene los requisitos originales y los modificados en el informe de avances, además de los casos de uso. 
 
 ## 2.1 Requisitos
@@ -144,8 +159,44 @@ En las tablas 3.1 a 3.3 se presentan 3 casos de uso para el sistema.
 ---
 
 # Capítulo 3: Diseño e implementación
+3.1 Arquitectura general
+Se aplica un sistema reactivo ("Event-Triggered"), en el que los módulos se comunican internamente levantando y consumiendo eventos (ej. EV_SYS_TEMP_HIGH, EV_ACT_PUMP_ON). La transición de estados está dictaminada por condiciones de guarda ([guard]) ligadas a contadores temporales internos.
+3.2 Diseño de hardware
+El hardware constará de una placa base para los siguientes periféricos:
 
+Entradas: Sensor de temperatura (AHT20 por I2C), simulación de nivel de agua (potenciómetro con filtro activo Sallen-Key vía ADC con DMA), teclado matricial y feedback de tensión de relés.
 
+Salidas: Relés para bomba de agua y ventilador, Buzzer de alarma, LEDs indicadores, módulo Bluetooth HM-10 (UART), memoria EEPROM (I2C) y Display OLED (SPI/I2C).
+
+3.3 Diseño de firmware (Máquinas de Estado)
+3.3.1 Máquina de estados del Sistema
+Define el modo de operación global:
+
+ST_SYS_NORMAL_IDLE: Monitoreo del clima y espera hasta el próximo riego.
+
+ST_SYS_NORMAL_WATERING: Riego activo transitorio (bomba encendida).
+
+ST_SYS_SET_UP: Navegación por menú interactivo (ciclo automático detenido).
+
+ST_SYS_ERROR: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
+
+3.3.2 Máquinas de estado de los Sensores
+Se utilizan para filtrar entradas físicas inestables:
+
+Teclado y Relé: Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
+
+Nivel de agua y Temperatura: Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
+
+3.3.3 Máquinas de estado de los Actuadores
+Controlan periféricos sin usar retardos:
+
+Buzzer: Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
+
+LEDs: Estados fijos (Verde, Amarillo, Rojo) o parpadeantes para actualizaciones de pantalla.
+
+Display: Basado en pantallas (TELEMETRY, MENU, FAULT).
+
+Buses (BT/EEPROM): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
 ---
 
 # Capítulo 4: Ensayos y resultados
