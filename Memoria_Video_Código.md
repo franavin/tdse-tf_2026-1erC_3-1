@@ -252,7 +252,10 @@ El "cerebro" del sistema se origina a partir de distintos modos de operaciones q
 * **MODO ERROR**: Un "trap state" del cual solo se puede salir mediante la restauración de las variables físicas críticas (por ej. recarga del agua del tanque). 
   * ST_SYS_ERROR: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
 
+Para saltar de un modo de operación a otro, se creo la función task_system_set_mode() la cual tiene como función ser la mensajera entre los modos, copiando las variables temporales (por ej. para las recetas) hacia la estructura del nuevo estado antes de que se realice la transición. Haciendolo de esta manera, se garantiza que el estado entrante siempre disponga de la información más reciente sin utilizar la EEPROM como puente. 
+
 ### **3.3.2 Máquinas de estado de los Sensores**
+El módulo de los sensores evalúa las entradas mediante un bucle de indexación, sin importar que la entrada sea un botón (GPIO digital) o el nivel de agua (ADC), la lectura se traduce a una variable booleana unificada is_active.
 Se utilizan para filtrar entradas físicas inestables:
 
 * Teclado y Relé: Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
@@ -269,6 +272,18 @@ Controlan periféricos sin usar retardos:
 * Display: Basado en pantallas (TELEMETRY, MENU, FAULT).
 
 * Buses (BT/EEPROM): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
+
+### **3.3.4 Driver I2C Asincrónico y Memoria**
+* Sensor AHT20: Se implementó una máquina de estados interna en aht20.c. En el estado inicial envía el comando de medición I2C (0xAC) e inicia un contador local de 80 ticks (80 ms). Un vez cumplido el tiempo, el estado transita para conseguir los 6 bytes del bus I2C, ensamblando los 20 bits de temperatura y humedad mediante desplazamientos lógicos sin que se bloquee el procesador. 
+
+* Memoria EEPROM: Las variables de tipo entero sin signo de 32 bits (uint32_t) se fragmentan en 4 bytes individuales para su almacenamiento. Para evitar el desgaste excesivo sobre las celdas de la memoria, las lecturas ocurrirán únicamente al invocar task_system_init() (durante el arranque), y la escritura (eeprom_write_uint32()) se ejecuta exclusivamente tras presionar el botón CONFIRMAR o recibir un comando Bluetooth válido, descartando de esta manera las escrituras periódicas en tiempo real.
+
+### **3.3.5 Recepción Bluetooth por Interrupción**
+En este caso, utilizando el módulo HM-10 sin ciclos de polling, ya que para esto se habilitó la interrupción global USART y el uso de HAL_UART_RxCpltCallback, así que cada vez que ingresa un byte de forma inalámbrica, se almacena en un buffer circular de 32 posiciones (rx_buffer). 
+
+Al detectarse el carácter del CR (\r o \n), la bandera msg_ready cambia de estado y al siguiente ciclo del milisegundo, la función de actualización bluetooth_update() procesa el mensaje completo (ej. identificando unas tramas del formato "R=5000"). Luego, convertimos el valor a formato numérico con la función atoi(), valida las restricciones de seguridad, actualiza directamente la memoria de la receta y responde automáticamente con un mensaje TX de confirmación hacia la aplicación celular.
+
+
 ---
 
 # Capítulo 4: Ensayos y resultados
