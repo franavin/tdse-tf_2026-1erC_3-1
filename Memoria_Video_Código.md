@@ -274,7 +274,7 @@ El desarrollo técnico se encuentra plenamente documentado en el repositorio, in
   * aht20.c / .h: Driver I2C asincrónico para sensor ambiental.
   * eeprom.c / .h: Driver I2C para escritura/lectura no volátil.
   * bluetooth.c / .h: Interrupciones UART y procesamiento de tramas.
-*Documentación de hardware: Esquemáticos de conexión entre placa STM32 NUCLEO F103RB y los periféricos necesarios de potencia.
+* Documentación de hardware: Esquemáticos de conexión entre placa STM32 NUCLEO F103RB y los periféricos necesarios de potencia.
 
 
 ---
