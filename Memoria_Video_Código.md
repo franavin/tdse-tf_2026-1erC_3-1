@@ -67,6 +67,13 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
   - [4.2 Pruebas funcionales de firmware](#42-pruebas-funcionales-de-firmware)
   - [4.3 Pruebas de integración](#43-pruebas-de-integración)
   - [4.4 Medición y análisis de consumo](#44-medición-y-análisis-de-consumo)
+  - [4.5 Console and Build Analyzer](#45-console-and-build-analyzer)
+  - [4.6 Medición y análisis de WCET por tarea](#46-medición-y-análisis-de-wcet-por-tarea)
+  - [4.7 Cálculo del factor de uso de CPU (U)](#47-cálculo-del-factor-de-uso-de-cpu-u)
+  - [4.8 Gestión de bajo consumo y justificación](#48-gestión-de-bajo-consumo-y-justificación)
+  - [4.9 Cumplimiento de requisitos](#49-cumplimiento-de-requisitos)
+  - [4.10 Comparación con sistemas similares](#410-comparación-con-sistemas-similares)
+  - [4.11 Documentación del desarrollo realizado](#411-documentación-del-desarrollo-realizado)
 - [Capítulo 5: Conclusiones](#capítulo-5-conclusiones)
   - [5.1 Resultados obtenidos](#51-resultados-obtenidos)
   - [5.2 Lecciones aprendidas](#52-lecciones-aprendidas)
@@ -251,7 +258,13 @@ Controlan periféricos sin usar retardos:
 ## **4.2 Pruebas funcionales de firmware**
 ## **4.3 Pruebas de integración**
 ## **4.4 Medición y análisis de consumo**
-
+## 4.5 Console and Build Analyzer
+## 4.6 Medición y análisis de WCET por tarea
+## 4.7 Cálculo del factor de uso de CPU (U)
+## 4.8 Gestión de bajo consumo y justificación
+## 4.9 Cumplimiento de requisitos
+## 4.10 Comparación con sistemas similares
+## 4.11 Documentación del desarrollo realizado
 
 
 ---
