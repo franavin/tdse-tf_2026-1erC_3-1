@@ -307,6 +307,13 @@ Se documenta el uso de IA según requerimiento docente y archivo `listado de cos
 
 # Capítulo 7: Bibliografía y referencias
 
+1. [STMicroelectronics, UM1724 - User manual - STM32 Nucleo-64 boards](https://www.st.com/resource/en/user_manual/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf)
+2. [STMicroelectronics, MB1136 - Electrical Schematic - STM32 Nucleo-64 boards](https://www.st.com/resource/en/schematic_pack/mb1136-default-c04_schematic.pdf)
+3. [STMicroelectronics, NUCLEO-F103RB Datasheet](https://os.mbed.com/platforms/ST-Nucleo-F103RB/#:~:text=Arduino%2Dcompatible%20headers)
+4. [Datasheet AHT20 - Módulo Sensor de Temperatura y Humedad](https://files.seeedstudio.com/wiki/Grove-AHT20_I2C_Industrial_Grade_Temperature_and_Humidity_Sensor/AHT20-datasheet-2020-4-16.pdf)
+5. [Datasheet HM-10 - Módulo Bluetooth](https://people.ece.cornell.edu/land/courses/ece4760/PIC32/uart/HM10/DSD%20TECH%20HM-10%20datasheet.pdf)
+6. []()
+7. []()
 
 
 Referencias internas del repositorio:
