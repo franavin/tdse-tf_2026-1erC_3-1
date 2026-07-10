@@ -227,16 +227,30 @@ El hardware constará de una placa base para los siguientes periféricos:
 * Salidas: Relés para bomba de agua y ventilador, Buzzer de alarma, LEDs indicadores, módulo Bluetooth HM-10 (UART), memoria EEPROM (I2C) y Display OLED (SPI/I2C).
 
 ## **3.3 Diseño de firmware**
+El sistema no utiliza un RTOS, sino una arquitectura bare-metal soportada por un Ejecutor Cíclico (Super-Loop). La interrupción a partir de SysTick levanta un flag cada 1ms exacto, lo que permite que la función principal main() vaya despachando cíclicamente el array de las tareas en task_cfg_list:
+1. task_sensor_update()
+2. task_system_update()
+3. task_actuator_update()
+4. task_display_update()
+5. bluetooth_update()
+
+
+
 ### **3.3.1 Máquina de estados del Sistema**
-Define el modo de operación global:
+El "cerebro" del sistema se origina a partir de distintos modos de operaciones que están acoplados entre sí, los definimos de manera global:
 
-* ST_SYS_NORMAL_IDLE: Monitoreo del clima y espera hasta el próximo riego.
+* **MODO NORMAL**: Gestiona la cuenta regresiva de la receta actual y activa el riego. Paralelamente, implementa un temporizador no bloqueante para el "Carrusel del Display", rotando la información mostrada cada 2 segundos. Este modo, posee los siguientes subestados:
 
-* ST_SYS_NORMAL_WATERING: Riego activo transitorio (bomba encendida).
+  * ST_SYS_NORMAL_IDLE: Monitoreo del clima y espera hasta el próximo riego. 
 
-* ST_SYS_SET_UP: Navegación por menú interactivo (ciclo automático detenido).
+  * ST_SYS_NORMAL_WATERING: Riego activo transitorio (bomba encendida).
 
-* ST_SYS_ERROR: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
+* **MODO SETUP**: Detiene la actualización dinámica del display para permitir la navegación manual por las líneas del menú, utilizando variables como menu_linea_actual.
+
+  * ST_SYS_SET_UP: Navegación por menú interactivo (ciclo automático detenido).
+
+* **MODO ERROR**: Un "trap state" del cual solo se puede salir mediante la restauración de las variables físicas críticas (por ej. recarga del agua del tanque). 
+  * ST_SYS_ERROR: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
 
 ### **3.3.2 Máquinas de estado de los Sensores**
 Se utilizan para filtrar entradas físicas inestables:
