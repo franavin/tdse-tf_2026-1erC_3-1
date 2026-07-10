@@ -14,7 +14,7 @@ Lo primero que se desarrolló fueron los diagramas de secuencia, en este punto l
 con el sistema en distintos casos.
 
 <p align="center">
-  <img src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/Diagrama%20de%20Secuencia%20Final%20-%20Estaci%C3%B3n%20Hidrop%C3%B3nica.png" alt="image1">
+  <img src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/diagrama_en_bloques.png" alt="image1">
 </p>
 
 <p align="center"><em>Figura 1: Diagrama en bloques del sistema</em></p>
