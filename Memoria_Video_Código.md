@@ -238,10 +238,10 @@ Primero realizamos la estructurazión a partir de los componentes que podría ll
 Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los mensajes contenía la impronta de lo que iba a volcarse en el código.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/diagrama_en_bloques.png" />
-<p align="center"><em>Tabla 3.1: Diagrama de bloques</em></p>
+<p align="center"><em>Figura 3.1: Diagrama de bloques</em></p>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/Diagrama%20de%20Secuencia%20Final%20-%20Estaci%C3%B3n%20Hidrop%C3%B3nica.png" />
-<p align="center"><em>Tabla 3.1: Diagrama de bloques</em></p>
+<p align="center"><em>Figura 3.2: Diagrama de Secuencia</em></p>
 
 ## **3.2 Diseño de hardware**
 El hardware constará de una placa base para los siguientes periféricos:
