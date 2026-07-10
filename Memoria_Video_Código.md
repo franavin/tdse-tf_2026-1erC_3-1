@@ -34,8 +34,9 @@ Se propone el diseño e implementación de un Producto Mínimo Viable (prototipo
 
 La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
 
-| Revisión | Cambios realizados | Fecha |
+| Versión | Cambios realizados | Fecha |
 | :---: | --- | :---: |
+| 1.0 | Entrega de la memoria con la estructura básica de la memoria | 10/07/2026 |
 
 
 
@@ -205,48 +206,51 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 ---
 
 # Capítulo 3: Diseño e implementación
-## 3.1 Arquitectura general
+## **3.1 Arquitectura general**
 Se aplica un sistema reactivo ("Event-Triggered"), en el que los módulos se comunican internamente levantando y consumiendo eventos (ej. EV_SYS_TEMP_HIGH, EV_ACT_PUMP_ON). La transición de estados está dictaminada por condiciones de guarda ([guard]) ligadas a contadores temporales internos.
-3.2 Diseño de hardware
+## **3.2 Diseño de hardware**
 El hardware constará de una placa base para los siguientes periféricos:
 
-Entradas: Sensor de temperatura (AHT20 por I2C), simulación de nivel de agua (potenciómetro con filtro activo Sallen-Key vía ADC con DMA), teclado matricial y feedback de tensión de relés.
+* Entradas: Sensor de temperatura (AHT20 por I2C), simulación de nivel de agua (potenciómetro con filtro activo Sallen-Key vía ADC con DMA), teclado matricial y feedback de tensión de relés.
 
-Salidas: Relés para bomba de agua y ventilador, Buzzer de alarma, LEDs indicadores, módulo Bluetooth HM-10 (UART), memoria EEPROM (I2C) y Display OLED (SPI/I2C).
+* Salidas: Relés para bomba de agua y ventilador, Buzzer de alarma, LEDs indicadores, módulo Bluetooth HM-10 (UART), memoria EEPROM (I2C) y Display OLED (SPI/I2C).
 
-## 3.3 Diseño de firmware (Máquinas de Estado)
-### 3.3.1 Máquina de estados del Sistema
+## **3.3 Diseño de firmware**
+### **3.3.1 Máquina de estados del Sistema**
 Define el modo de operación global:
 
-ST_SYS_NORMAL_IDLE: Monitoreo del clima y espera hasta el próximo riego.
+* ST_SYS_NORMAL_IDLE: Monitoreo del clima y espera hasta el próximo riego.
 
-ST_SYS_NORMAL_WATERING: Riego activo transitorio (bomba encendida).
+* ST_SYS_NORMAL_WATERING: Riego activo transitorio (bomba encendida).
 
-ST_SYS_SET_UP: Navegación por menú interactivo (ciclo automático detenido).
+* ST_SYS_SET_UP: Navegación por menú interactivo (ciclo automático detenido).
 
-ST_SYS_ERROR: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
+* ST_SYS_ERROR: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
 
-### 3.3.2 Máquinas de estado de los Sensores
+### **3.3.2 Máquinas de estado de los Sensores**
 Se utilizan para filtrar entradas físicas inestables:
 
-Teclado y Relé: Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
+* Teclado y Relé: Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
 
-Nivel de agua y Temperatura: Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
+* Nivel de agua y Temperatura: Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
 
-### 3.3.3 Máquinas de estado de los Actuadores
+### **3.3.3 Máquinas de estado de los Actuadores**
 Controlan periféricos sin usar retardos:
 
-Buzzer: Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
+* Buzzer: Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
 
-LEDs: Estados fijos (Verde, Amarillo, Rojo) o parpadeantes para actualizaciones de pantalla.
+* LEDs: Estados fijos (Verde, Amarillo, Rojo) o parpadeantes para actualizaciones de pantalla.
 
-Display: Basado en pantallas (TELEMETRY, MENU, FAULT).
+* Display: Basado en pantallas (TELEMETRY, MENU, FAULT).
 
-Buses (BT/EEPROM): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
+* Buses (BT/EEPROM): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
 ---
 
 # Capítulo 4: Ensayos y resultados
-
+## **4.1 Pruebas funcionales de hardware**
+## **4.2 Pruebas funcionales de firmware**
+## **4.3 Pruebas de integración**
+## **4.4 Medición y análisis de consumo**
 
 
 
