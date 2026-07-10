@@ -215,6 +215,10 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 # Capítulo 3: Diseño e implementación
 ## **3.1 Arquitectura general**
 Se aplica un sistema reactivo ("Event-Triggered"), en el que los módulos se comunican internamente levantando y consumiendo eventos (ej. EV_SYS_TEMP_HIGH, EV_ACT_PUMP_ON). La transición de estados está dictaminada por condiciones de guarda ([guard]) ligadas a contadores temporales internos.
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/diagrama_en_bloques.png" />
+<p align="center"><em>Tabla 3.1: Diagrama de bloques</em></p>
+
 ## **3.2 Diseño de hardware**
 El hardware constará de una placa base para los siguientes periféricos:
 
