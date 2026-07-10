@@ -138,12 +138,12 @@ Esta sección contiene los requisitos originales y los modificados en el informe
 | | 3.2 | **Telemetría remota:** Envío de tramas de estado y alertas por UART utilizando un módulo Bluetooth HM-10 para monitoreo desde una aplicación móvil. |
 | **Almacenamiento** | 4.1 | **Gestión de Recetas (EEPROM):** Lectura y escritura de parámetros de configuración (tiempos de riego, umbrales térmicos) en una memoria EEPROM externa vía I2C para garantizar la persistencia ante cortes de energía. |
 
-<p align="center"><em>Tabla 2: Requisitos del proyecto</em></p>
+<p align="center"><em>Tabla 2.1: Requisitos del proyecto</em></p>
 
 ---
-#### **3\. Casos de Uso**
+## **2.2\. Casos de Uso**
 
-En las tablas 3.1 a 3.3 se presentan 3 casos de uso para el sistema.
+En las tablas 2.2 a 2.4 se presentan 3 casos de uso para el sistema.
 
 | Elemento | Definición |
 | :---- | :---- |
@@ -152,7 +152,7 @@ En las tablas 3.1 a 3.3 se presentan 3 casos de uso para el sistema.
 | **Flujo principal** | 1. El sistema detecta el cambio en el Dip Switch y transita al estado `SET_UP`. <br> 2. Se detienen los temporizadores de riego activos y los actuadores pasan a estado seguro. <br> 3. El microcontrolador lee de la EEPROM los parámetros de la receta activa y los muestra en el Display. <br> 4. El usuario navega por el menú interactivo con los botones para modificar el "Tiempo de Riego" y el "Umbral de Temperatura". <br> 5. El usuario presiona el botón de confirmación; el microcontrolador escribe los nuevos valores en la EEPROM externa a través del bus I2C. <br> 6. El usuario regresa el Dip Switch a su posición original y el sistema vuelve al modo `NORMAL` aplicando la nueva receta. |
 | **Flujos alternativos** | 5.a. Falla de comunicación I2C con la EEPROM: El sistema muestra un mensaje de "ERROR: EEPROM" en el Display, emite un triple pitido con el Buzzer y mantiene los cambios de forma temporal únicamente en la memoria RAM del microcontrolador. |
 
-<p align="center"><em>Tabla 3.1: Caso de uso 1: Configuración de Recetas de Cultivo (SET_UP)</em></p>
+<p align="center"><em>Tabla 2.2: Caso de uso 1: Configuración de Recetas de Cultivo (SET_UP)</em></p>
 
 | Elemento | Definición |
 | :---- | :---- |
@@ -161,7 +161,7 @@ En las tablas 3.1 a 3.3 se presentan 3 casos de uso para el sistema.
 | **Flujo principal** | 1. La máquina de estados del firmware evalúa que el tiempo transcurrido es igual o mayor al intervalo de la receta de la EEPROM. <br> 2. El sistema transita al sub-estado `RIEGO_ACTIVO`. <br> 3. Se acciona el LED/Relé que simula la bomba de agua mediante una salida digital no bloqueante. <br> 4. El Display OLED se actualiza reflejando el estado "Riego en proceso...". <br> 5. Se envía una trama de telemetría por el módulo HM-10 (Bluetooth) informando el evento. <br> 6. Al completarse el tiempo de riego estipulado, la máquina de estados apaga el actuador y regresa al sub-estado de espera. |
 | **Flujos alternativos** | 1.a. Si la temperatura medida por el sensor SHT3x supera el umbral de la receta mientras se espera el riego, el microcontrolador activa de manera independiente la salida PWM del ventilador (LED/Relé) sin bloquear la ejecución del Super-Loop. |
 
-<p align="center"><em>Tabla 3.2: Caso de uso 2: Ejecución del Ciclo Automático de Riego (NORMAL)</em></p>
+<p align="center"><em>Tabla 2.2: Caso de uso 2: Ejecución del Ciclo Automático de Riego (NORMAL)</em></p>
 
 | Elemento | Definición |
 | :---- | :---- |
@@ -170,7 +170,37 @@ En las tablas 3.1 a 3.3 se presentan 3 casos de uso para el sistema.
 | **Flujo principal** | 1. El firmware procesa el bloque de datos del ADC y detecta la condición de tanque vacío. <br> 2. La máquina de estados ejecuta una transición incondicional e inmediata al modo de `FALLA`. <br> 3. Se desactivan de forma instantánea todas las salidas digitales hacia los actuadores (bombas y ventilación apagadas). <br> 4. El Display OLED interrumpe su pantalla actual y muestra de forma intermitente el mensaje "ALERTA: SIN AGUA". <br> 5. Se acciona el Buzzer por hardware para emitir una alarma sonora intermitente y se envía la notificación de emergencia vía Bluetooth (HM-10). |
 | **Flujos alternativos** | 5.a. El sistema permanece bloqueado en modo seguro hasta que el usuario reestablezca el nivel (simulado con el potenciómetro) y presione el botón físico de "Reset/Acknowledge" en la placa base para retornar al modo `NORMAL`. |
 
-<p align="center"><em>Tabla 3.3: Caso de uso 3: Bloqueo del Sistema por Nivel Crítico (FALLA)</em></p>
+<p align="center"><em>Tabla 2.4: Caso de uso 3: Bloqueo del Sistema por Nivel Crítico (FALLA)</em></p>
+
+## 2.3 Descripción de módulos principales
+
+En los siguientes puntos desarrollaremos los modulos principales aplicados al proyecto. 
+
+### **2.3.1 Módulo de control y orquestación de la plaqueta NUCLEO**
+* Implementado sobre una placa de desarrollo STM32 NUCLEO F103RB.
+* Ejecuta un scheduler (Ejecutor Cíclico) basado en arreglos de punteros a funciones, disparando cada 1 ms por el SysTick.
+* Centraliza la Máquina de Estados Finita (FSM) gobernando el comportamiento macro de la estación.
+
+### **2.3.2 Módulo de escrutinio de sensores**
+* Se encarga de abstraer la capa de hardware físico hacia eventos lógicos (por ej. EV_RAW_DOWN).
+* Implementa filtros temporales (debounce para falsos positivos/negativos) de longitud variable: retardos cortos para pulsadores mecánicos (40 ms) y retardos prolongados para lecturas analógicas de ADC que son propensas a ruido y "oleajes" (100 ms).
+
+### **2.3.3 Módulo de medición ambiental**
+* Compuesto por el sensor digital AHT20 operando bajo el bus I2C.
+* Utiliza un driver propio basado en estados internos que permite enviar el comando de medición y ceder el uso del procesador durante los 80 ms físicos requeridos para el cálculo termodinámico, evitando el uso de funciones bloqueantes.
+
+### **2.3.4 Módulo de actuación e I/O**
+* Unificamos el disparo de elementos dispares mediante arrays de configuración.
+* Se accionan los relés optoacoplados con lógica de control inversa.
+* Gestionamos la atenuación del display LCD 16x2 mediante el uso de una etapa transistorizada (NPN) en paralelo, lo que permite alternar entre el 100% y el 20% de retroiluminación sin requerir módulos PWM complejos.
+
+### **2.3.5 Módulo de memoria**
+* Utiliza la memoria externa EEPROM AT24C32 en el bus I2C compartiendo líneas con el sensor AHT20.
+* Minimiza la tasa de desgaste de escritura al funcionar como sistema de solo respaldo: se lee una sola vez durante el inicio del sistema (Init) y se escribe de manera exclusiva cuando los valores han sido explícitamente confirmados por el usuario.
+
+### **2.3.6 Módulo de telemetría**
+* Integrado mediante el modulo bluetooth HM-10.
+* Opera de forma totalmente asincrónica a través del periférico USART de la STM32, donde veremos que su impacto en el rendimiento computacional de la placa es nulo en estado de reposo, procesando tramas únicamente mediante interrupciones.
 
 ---
 
