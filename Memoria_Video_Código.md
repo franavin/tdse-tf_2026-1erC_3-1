@@ -216,7 +216,31 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 ## **3.1 Arquitectura general**
 Se aplica un sistema reactivo ("Event-Triggered"), en el que los módulos se comunican internamente levantando y consumiendo eventos (ej. EV_SYS_TEMP_HIGH, EV_ACT_PUMP_ON). La transición de estados está dictaminada por condiciones de guarda ([guard]) ligadas a contadores temporales internos.
 
+### **Dominios de Hardware**
+* Dominio lógico (3,3 V): Microcontrolador STM32 NUCLEO, señales de los pulsadores, potenciómetro (ADC) y líneas de comunicación (I2C y UART).
+* Dominio de actuación y potencia (5 V aislados): Pantalla LCD, alimentación del módulo Bluetooth, y módulo de relés optoacoplados, los cuales actúan como barrera entre la lógica y las cargas de potencia de la bomba de agua.
+
+### **Capas de Software**
+Para poder generar el software necesario para el proyecto nos basamos en la estructrura de aplicación modular, ya que divide de manera independiente cada parte del software haciendolo de esta manera reutilizable ante cualquier cambio que surja. En nuestro proyecto, cada modulo proyecta una funcionalidad diferente pero que se complementan en un punto para generar un sistema de uso continuo. Las capas son las siguientes:
+
+* **Capa de Sensores (Escrutar)**: Realiza una traducción de las magnitudes físicas y eléctricas (pulsaciones, niveles de tensión, tramas UART, lecturas I2C) en "eventos lógicos" limpios.
+* **Capa del Sistema (Procesar)**: Una máquina de estados central que toma los eventos lógicos, evalúa los temporizadores de las recetas, y decide el próximo estado del sistema.
+* **Capa de Actuadores (Actuar)**: Ejecuta los comandos físicos ordenados por el sistema (conmutar relés, sonar alarmas, dibujar caracteres en el LCD).
+
+Primero realizamos la estructurazión a partir de los componentes que podría llegar a tener el sistema, haciendo un Diagrama en Bloques. Seguido a eso, completamos un primer Diagrama de Secuencia que reflejaba prácticamente lo mismo que el de bloques, y pasamos a definir los eventos y estados que deberían tener en un principio.
+
+[Módulo de Sensores](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md)
+
+[Módulo del Sistema](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md)
+
+[Módulo de Actuadores](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_actuator.md)
+
+Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los mensajes contenía la impronta de lo que iba a volcarse en el código.
+
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/diagrama_en_bloques.png" />
+<p align="center"><em>Tabla 3.1: Diagrama de bloques</em></p>
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/Diagrama%20de%20Secuencia%20Final%20-%20Estaci%C3%B3n%20Hidrop%C3%B3nica.png" />
 <p align="center"><em>Tabla 3.1: Diagrama de bloques</em></p>
 
 ## **3.2 Diseño de hardware**
@@ -233,8 +257,6 @@ El sistema no utiliza un RTOS, sino una arquitectura bare-metal soportada por un
 3. task_actuator_update()
 4. task_display_update()
 5. bluetooth_update()
-
-
 
 ### **3.3.1 Máquina de estados del Sistema**
 El "cerebro" del sistema se origina a partir de distintos modos de operaciones que están acoplados entre sí, los definimos de manera global:
