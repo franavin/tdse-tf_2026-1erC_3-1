@@ -214,7 +214,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 
 # Capítulo 3: Diseño e implementación
 ## **3.1 Arquitectura general**
-Se aplica un sistema reactivo ("Event-Triggered"), en el que los módulos se comunican internamente levantando y consumiendo eventos (ej. EV_SYS_TEMP_HIGH, EV_ACT_PUMP_ON). La transición de estados está dictaminada por condiciones de guarda ([guard]) ligadas a contadores temporales internos.
+Se aplica un sistema reactivo ("Event-Triggered"), en el que los módulos se comunican internamente levantando y consumiendo eventos (ej. `EV_SYS_TEMP_HIGH`, `EV_ACT_PUMP_ON`). La transición de estados está dictaminada por condiciones de guarda ([guard]) ligadas a contadores temporales internos.
 
 ### **Dominios de Hardware**
 * Dominio lógico (3,3 V): Microcontrolador STM32 NUCLEO, señales de los pulsadores, potenciómetro (ADC) y líneas de comunicación (I2C y UART).
@@ -252,29 +252,29 @@ El hardware constará de una placa base para los siguientes periféricos:
 
 ## **3.3 Diseño de firmware**
 El sistema no utiliza un RTOS, sino una arquitectura bare-metal soportada por un Ejecutor Cíclico (Super-Loop). La interrupción a partir de SysTick levanta un flag cada 1ms exacto, lo que permite que la función principal main() vaya despachando cíclicamente el array de las tareas en task_cfg_list:
-1. task_sensor_update()
-2. task_system_update()
-3. task_actuator_update()
-4. task_display_update()
-5. bluetooth_update()
+1. `task_sensor_update()`
+2. `task_system_update()`
+3. `task_actuator_update()`
+4. `task_display_update()`
+5. `bluetooth_update()`
 
 ### **3.3.1 Máquina de estados del Sistema**
 El "cerebro" del sistema se origina a partir de distintos modos de operaciones que están acoplados entre sí, los definimos de manera global:
 
 * **MODO NORMAL**: Gestiona la cuenta regresiva de la receta actual y activa el riego. Paralelamente, implementa un temporizador no bloqueante para el "Carrusel del Display", rotando la información mostrada cada 2 segundos. Este modo, posee los siguientes subestados:
 
-  * ST_SYS_NORMAL_IDLE: Monitoreo del clima y espera hasta el próximo riego. 
+  * `ST_SYS_NORMAL_IDLE`: Monitoreo del clima y espera hasta el próximo riego. 
 
-  * ST_SYS_NORMAL_WATERING: Riego activo transitorio (bomba encendida).
+  * `ST_SYS_NORMAL_WATERING`: Riego activo transitorio (bomba encendida).
 
 * **MODO SETUP**: Detiene la actualización dinámica del display para permitir la navegación manual por las líneas del menú, utilizando variables como menu_linea_actual.
 
-  * ST_SYS_SET_UP: Navegación por menú interactivo (ciclo automático detenido).
+  * `ST_SYS_SET_UP`: Navegación por menú interactivo (ciclo automático detenido).
 
 * **MODO ERROR**: Un "trap state" del cual solo se puede salir mediante la restauración de las variables físicas críticas (por ej. recarga del agua del tanque). 
-  * ST_SYS_ERROR: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
+  * `ST_SYS_ERROR`: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
 
-Para saltar de un modo de operación a otro, se creo la función task_system_set_mode() la cual tiene como función ser la mensajera entre los modos, copiando las variables temporales (por ej. para las recetas) hacia la estructura del nuevo estado antes de que se realice la transición. Haciendolo de esta manera, se garantiza que el estado entrante siempre disponga de la información más reciente sin utilizar la EEPROM como puente. 
+Para saltar de un modo de operación a otro, se creo la función `task_system_set_mode()` la cual tiene como función ser la mensajera entre los modos, copiando las variables temporales (por ej. para las recetas) hacia la estructura del nuevo estado antes de que se realice la transición. Haciendolo de esta manera, se garantiza que el estado entrante siempre disponga de la información más reciente sin utilizar la EEPROM como puente. 
 
 ### **3.3.2 Máquinas de estado de los Sensores**
 El módulo de los sensores evalúa las entradas mediante un bucle de indexación, sin importar que la entrada sea un botón (GPIO digital) o el nivel de agua (ADC), la lectura se traduce a una variable booleana unificada is_active.
@@ -298,12 +298,12 @@ Controlan periféricos sin usar retardos:
 ### **3.3.4 Driver I2C Asincrónico y Memoria**
 * Sensor AHT20: Se implementó una máquina de estados interna en aht20.c. En el estado inicial envía el comando de medición I2C (0xAC) e inicia un contador local de 80 ticks (80 ms). Un vez cumplido el tiempo, el estado transita para conseguir los 6 bytes del bus I2C, ensamblando los 20 bits de temperatura y humedad mediante desplazamientos lógicos sin que se bloquee el procesador. 
 
-* Memoria EEPROM: Las variables de tipo entero sin signo de 32 bits (uint32_t) se fragmentan en 4 bytes individuales para su almacenamiento. Para evitar el desgaste excesivo sobre las celdas de la memoria, las lecturas ocurrirán únicamente al invocar task_system_init() (durante el arranque), y la escritura (eeprom_write_uint32()) se ejecuta exclusivamente tras presionar el botón CONFIRMAR o recibir un comando Bluetooth válido, descartando de esta manera las escrituras periódicas en tiempo real.
+* Memoria EEPROM: Las variables de tipo entero sin signo de 32 bits (uint32_t) se fragmentan en 4 bytes individuales para su almacenamiento. Para evitar el desgaste excesivo sobre las celdas de la memoria, las lecturas ocurrirán únicamente al invocar `task_system_init()` (durante el arranque), y la escritura (`eeprom_write_uint32()`) se ejecuta exclusivamente tras presionar el botón CONFIRMAR o recibir un comando Bluetooth válido, descartando de esta manera las escrituras periódicas en tiempo real.
 
 ### **3.3.5 Recepción Bluetooth por Interrupción**
-En este caso, utilizando el módulo HM-10 sin ciclos de polling, ya que para esto se habilitó la interrupción global USART y el uso de HAL_UART_RxCpltCallback, así que cada vez que ingresa un byte de forma inalámbrica, se almacena en un buffer circular de 32 posiciones (rx_buffer). 
+En este caso, utilizando el módulo HM-10 sin ciclos de polling, ya que para esto se habilitó la interrupción global USART y el uso de `HAL_UART_RxCpltCallback`, así que cada vez que ingresa un byte de forma inalámbrica, se almacena en un buffer circular de 32 posiciones (`rx_buffer`). 
 
-Al detectarse el carácter del CR (\r o \n), la bandera msg_ready cambia de estado y al siguiente ciclo del milisegundo, la función de actualización bluetooth_update() procesa el mensaje completo (ej. identificando unas tramas del formato "R=5000"). Luego, convertimos el valor a formato numérico con la función atoi(), valida las restricciones de seguridad, actualiza directamente la memoria de la receta y responde automáticamente con un mensaje TX de confirmación hacia la aplicación celular.
+Al detectarse el carácter del CR (\r o \n), la bandera msg_ready cambia de estado y al siguiente ciclo del milisegundo, la función de actualización `bluetooth_update()` procesa el mensaje completo (ej. identificando unas tramas del formato "R=5000"). Luego, convertimos el valor a formato numérico con la función `atoi()`, valida las restricciones de seguridad, actualiza directamente la memoria de la receta y responde automáticamente con un mensaje TX de confirmación hacia la aplicación celular.
 
 
 ---
@@ -377,5 +377,5 @@ Referencias internas del repositorio:
 ---
 
 **Fin de la Memoria Técnica**  
-Autores: Ignacio Avincetto, Franco Joaquín, Nishihara, Leonardo
+Autores: Avincetto, Franco Joaquín, Nishihara, Leonardo
 Fecha de edición: 
