@@ -264,7 +264,17 @@ Controlan periféricos sin usar retardos:
 ## 4.8 Gestión de bajo consumo y justificación
 ## 4.9 Cumplimiento de requisitos
 ## 4.10 Comparación con sistemas similares
+
 ## 4.11 Documentación del desarrollo realizado
+El desarrollo técnico se encuentra plenamente documentado en el repositorio, incluyendo:
+* Código fuente en C
+  * task_sensor.c / .h: Filtros anti-rebote y lectura mixta (ADC/GPIO).
+  * task_system.c / .h: Máquina de estados principal y orquestación.
+  * task_actuator.c / .h: Manejo de optoacopladores y alarmas.
+  * aht20.c / .h: Driver I2C asincrónico para sensor ambiental.
+  * eeprom.c / .h: Driver I2C para escritura/lectura no volátil.
+  * bluetooth.c / .h: Interrupciones UART y procesamiento de tramas.
+*Documentación de hardware: Esquemáticos de conexión entre placa STM32 NUCLEO F103RB y los periféricos necesarios de potencia.
 
 
 ---
