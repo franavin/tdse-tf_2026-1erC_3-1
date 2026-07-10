@@ -312,8 +312,9 @@ Se documenta el uso de IA según requerimiento docente y archivo `listado de cos
 3. [STMicroelectronics, NUCLEO-F103RB Datasheet](https://os.mbed.com/platforms/ST-Nucleo-F103RB/#:~:text=Arduino%2Dcompatible%20headers)
 4. [Datasheet AHT20 - Módulo Sensor de Temperatura y Humedad](https://files.seeedstudio.com/wiki/Grove-AHT20_I2C_Industrial_Grade_Temperature_and_Humidity_Sensor/AHT20-datasheet-2020-4-16.pdf)
 5. [Datasheet HM-10 - Módulo Bluetooth](https://people.ece.cornell.edu/land/courses/ece4760/PIC32/uart/HM10/DSD%20TECH%20HM-10%20datasheet.pdf)
-6. []()
-7. []()
+6. [Datasheet Display LCD 1602A](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5773/CN0295D%20other%20related%20document.pdf)
+7. [Datasheet Módulo de Relés de 4 Canales](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5773/TS0011%20DATASHEET.pdf)}
+8. [Datasheet Memoria EEPROM](https://ww1.microchip.com/downloads/en/devicedoc/atmel-8787-seeprom-at24c04c-08c-datasheet.pdf)
 
 
 Referencias internas del repositorio:
