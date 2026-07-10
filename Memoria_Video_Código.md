@@ -79,24 +79,40 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
 # Capítulo 1: Introducción general
 
 ## 1.1 Análisis de necesidad y objetivo
-El objetivo principal es diseñar e implementar un prototipo funcional (Producto Mínimo Viable) que automatice y monitoree una estación de cultivo hidropónico. Mediante una representación física sobre una placa base soldada, el sistema supervisará variables críticas como el nivel de líquidos y el clima, y controlará de forma temporizada los ciclos de actuación (riego y ventilación).
+El cultivo hidropónico es una técnica en la cual se prescinde por completo de un suelo en el que poner aquello que se quiere cultivar, utilizando en su lugar minerales disueltos en agua para formar el sustrato. Para que este método sea exitoso se requiere de ciertos cuidados estrictos en el entorno en que se desarrolla, tanto por los ciclos de oxigenación y el riego de las raíces como por la temperatura y humedad del ambiente. 
 
+Un fallo técnico en un cultivo de este tipo puede ser definitivo para la vida del cultivo. Ya sea porque el tanque que contiene los nutrientes se vacía o hasta si hubo algún error en la medición y envía datos falsos sobre la situación del cultivo (falsos positivos). 
+
+Por lo tanto, lo que buscamos como objetivo principal en esta ocasión es diseñar e implementar un prototipo funcional (Producto Mínimo Viable) que automatice y monitoree una estación de cultivo hidropónico. Mediante una representación física sobre una placa base soldada, el sistema supervisará variables críticas como el nivel de líquidos y el clima, y controlará de forma temporizada los ciclos de actuación (riego y ventilación).
 
 ## 1.2 Productos comparables
 Para la selección de la implementación, se evaluaron tres enfoques principales, ponderados según disponibilidad de hardware, impacto, costo, dificultad técnica e interés del equipo:
 
-Proyecto Base: Monitoreo de nivel de agua (simulado con potenciómetro y filtro activo Sallen-Key) y clima (sensor SHT3x/AHT20). Incluye relés, LEDs para bombas/ventilador y telemetría por Bluetooth (HM-10).
+* **Proyecto Base:** Monitoreo de nivel de agua (simulado con potenciómetro y filtro activo Sallen-Key) y clima (sensor SHT3x/AHT20). Incluye relés, LEDs para bombas/ventilador y telemetría por Bluetooth (HM-10).
 
-Base + Memoria y Display: Suma una pantalla OLED para un menú interactivo y memoria EEPROM para almacenar "recetas" de cultivo.
+* **Base + Memoria y Display:** Suma una pantalla OLED para un menú interactivo y memoria EEPROM para almacenar "recetas" de cultivo.
 
-Base + Control de Nutrientes (pH/EC): Agrega potenciómetros y filtros para simular lectura de pH/EC, con actuadores extra para dosificadores.
+* **Base + Control de Nutrientes (pH/EC):** Agrega potenciómetros y filtros para simular lectura de pH/EC, con actuadores extra para dosificadores.
+
+En el mercado actual podremos observar que hay distintos tipos de controladores de cultivos, empezando desde lo más básico como un controlador de riego el cual lo que hace es controlar el cierre de una salida de agua según el intervalo de tiempo que se ajuste, y por otro lado tenemos aquellos los cuáles se le suman características tales como controlador mediante Wi-Fi, detector de lluvia, etc. De estos podemos decir dos cosas comparandolos con nuestro caso.
+
+1. **Temporizadores básicos:** Son soluciones económicas y ampliamente utilizadas. Sin embargo, operan a lazo abierto y carecen de entradas para medir el nivel de agua o el estado del entorno. Al no tener retroalimentación, encenderán la bomba independientemente de si hay agua en el tanque, anulando cualquier tipo de seguridad para el hardware.
+2. **Enchufes y relés inteligentes:** Proveen conectividad Wi-Fi y control de horarios mediante aplicaciones móviles, donde su principal desventaja es la dependencia crítica de la red Wi-Fi doméstica y servidores. En este caso, un microcorte de internet o una falla en el router local puede dejar al dispositivo inoperante o desconectado de sus rutinas. Además, los de este tipo no suelen contar con interfaces físicas locales (pantallas informativas) para un diagnóstico rápido en el lugar de la instalación.
 
 ## 1.3 Justificación del enfoque técnico
 
 El sistema se implementará utilizando una arquitectura de software estrictamente no bloqueante. Se utilizará un microcontrolador STM32 programado en bare-metal bajo el patrón de Super-Loop. Las secuencias que requieren control temporal se resolverán mediante máquinas de estado internas que gestionan los "ticks" del sistema (1 ms), evitando por completo el uso de funciones de retraso pasivo (delay).
 
+Como se mencionó anteriormente, la integración de periféricos con altas latencias se resolvió mediante máquinas de estados no bloqueantes:
+* **Comunicaciones I2C**: Se evitaron rutinas bloqueantes para esperar los tiempos de conversión térmica (~80 ms) o los tiempos de escritura de celdas (~5 ms). Se desarrollaron drivers específicos que ceden el control al procesador inmediatamente, retomando la lectura solo cuando el hardware indica disponibilidad.
+* **Módulo Bluetooth**: Se atiende exclusivamente mediante interrupciones asincrónicas de hardware y buffers, asegurando que la recepción de un comando no viole las restricciones temporales que se imponen.
+
 ## 1.4 Alcance y limitaciones
 El alcance del sistema contempla el monitoreo de nivel y temperatura, la actuación de bombas de agua y ventiladores mediante relés de potencia, alarmas acústicas/visuales y la transmisión de información remota. Todo evento externo e interno se somete a validación mediante filtrado de estado temporal para evadir falsos positivos y rebotes.
+
+Las límitaciones actuales comienzan por un lado con la potencia y el entorno, ya que para comprobar que la etapa de potencia funcionaría utilizamos la observación a partir de la conmutación de los relés a nivel lógico, y no unas bombas de agua conectadas a 220V con válvulas de agua conectada, esto es lo que quedaría para un estudio posterior. 
+
+Esto mismo ocurrió con el nivel del agua del tanque, en vez de utilizar un flotador digital, lo reemplazamos por un potenciometro el cuál representaría el nivel del agua modificando su tensión mediante un conversor ADC. 
 
 ---
 
@@ -159,7 +175,7 @@ En las tablas 3.1 a 3.3 se presentan 3 casos de uso para el sistema.
 ---
 
 # Capítulo 3: Diseño e implementación
-3.1 Arquitectura general
+## 3.1 Arquitectura general
 Se aplica un sistema reactivo ("Event-Triggered"), en el que los módulos se comunican internamente levantando y consumiendo eventos (ej. EV_SYS_TEMP_HIGH, EV_ACT_PUMP_ON). La transición de estados está dictaminada por condiciones de guarda ([guard]) ligadas a contadores temporales internos.
 3.2 Diseño de hardware
 El hardware constará de una placa base para los siguientes periféricos:
@@ -168,8 +184,8 @@ Entradas: Sensor de temperatura (AHT20 por I2C), simulación de nivel de agua (p
 
 Salidas: Relés para bomba de agua y ventilador, Buzzer de alarma, LEDs indicadores, módulo Bluetooth HM-10 (UART), memoria EEPROM (I2C) y Display OLED (SPI/I2C).
 
-3.3 Diseño de firmware (Máquinas de Estado)
-3.3.1 Máquina de estados del Sistema
+## 3.3 Diseño de firmware (Máquinas de Estado)
+### 3.3.1 Máquina de estados del Sistema
 Define el modo de operación global:
 
 ST_SYS_NORMAL_IDLE: Monitoreo del clima y espera hasta el próximo riego.
@@ -180,14 +196,14 @@ ST_SYS_SET_UP: Navegación por menú interactivo (ciclo automático detenido).
 
 ST_SYS_ERROR: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
 
-3.3.2 Máquinas de estado de los Sensores
+### 3.3.2 Máquinas de estado de los Sensores
 Se utilizan para filtrar entradas físicas inestables:
 
 Teclado y Relé: Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
 
 Nivel de agua y Temperatura: Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
 
-3.3.3 Máquinas de estado de los Actuadores
+### 3.3.3 Máquinas de estado de los Actuadores
 Controlan periféricos sin usar retardos:
 
 Buzzer: Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
