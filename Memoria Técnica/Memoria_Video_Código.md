@@ -17,7 +17,7 @@ Nishihara, Leonardo — Legajo 88627
 **Fecha:** 10/07/2026  
 **Cuatrimestre de cursada:** 1er cuatrimestre 2026  
 
-*Trabajo realizado entre *
+*Trabajo realizado entre julio de 2026 y agosto de 2026*
 </div>
 
 ---
