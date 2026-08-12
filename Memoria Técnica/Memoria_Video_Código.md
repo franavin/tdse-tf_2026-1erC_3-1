@@ -115,7 +115,22 @@ Para la selección de la implementación, se evaluaron tres enfoques principales
 En el mercado actual podremos observar que hay distintos tipos de controladores de cultivos, empezando desde lo más básico como un controlador de riego el cual lo que hace es controlar el cierre de una salida de agua según el intervalo de tiempo que se ajuste, y por otro lado tenemos aquellos los cuáles se le suman características tales como controlador mediante Wi-Fi, detector de lluvia, etc. De estos podemos decir dos cosas comparandolos con nuestro caso.
 
 1. **Temporizadores básicos:** Son soluciones económicas y ampliamente utilizadas. Sin embargo, operan a lazo abierto y carecen de entradas para medir el nivel de agua o el estado del entorno. Al no tener retroalimentación, encenderán la bomba independientemente de si hay agua en el tanque, anulando cualquier tipo de seguridad para el hardware.
+
+<div align="center">
+  <img width="337" height="289" alt="Rainbird" src="https://github.com/user-attachments/assets/c30de87e-6b10-4aa4-9348-cfda652558d7" />
+<br>
+<em>Figura 1.2 — Programador Riego Por Goteo Grifo Automatico Rain Bird.</em>
+  </div>
+<br>
+
 2. **Enchufes y relés inteligentes:** Proveen conectividad Wi-Fi y control de horarios mediante aplicaciones móviles, donde su principal desventaja es la dependencia crítica de la red Wi-Fi doméstica y servidores. En este caso, un microcorte de internet o una falla en el router local puede dejar al dispositivo inoperante o desconectado de sus rutinas. Además, los de este tipo no suelen contar con interfaces físicas locales (pantallas informativas) para un diagnóstico rápido en el lugar de la instalación.
+
+<div align="center">
+  <img width="341" height="333" alt="releINT" src="https://github.com/user-attachments/assets/4944cc5c-b6fb-482a-a538-b443d2c3c64f" />
+<br>
+<em>Figura 1.3 — Rele Shelly Plus 1.</em>
+  </div>
+<br>
 
 ## 1.3 Justificación del enfoque técnico
 
@@ -366,7 +381,18 @@ Se documenta el uso de IA según requerimiento docente y archivo `listado de cos
 
 ## 6.1 Uso individual y conjunto
 
+- Francisco:
+  - 
+  - 
 
+- Leonardo:
+  -
+
+
+- Uso común del equipo:
+  - apoyo en redacción y ajuste de memoria técnica.
+  - apoyo extensivo en programación STM32 (estructura, módulos y ajustes).
+  
 
 ---
 
