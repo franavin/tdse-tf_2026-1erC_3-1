@@ -141,7 +141,7 @@ Como se mencionó anteriormente, la integración de periféricos con altas laten
 * **Módulo Bluetooth**: Se atiende exclusivamente mediante interrupciones asincrónicas de hardware y buffers, asegurando que la recepción de un comando no viole las restricciones temporales que se imponen.
 
 ## 1.4 Alcance y limitaciones
-El alcance del sistema contempla el monitoreo de nivel y temperatura, la actuación de bombas de agua y ventiladores mediante relés de potencia, alarmas acústicas/visuales y la transmisión de información remota. Todo evento externo e interno se somete a validación mediante filtrado de estado temporal para evadir falsos positivos y rebotes.
+El alcance del sistema contempla el monitoreo de nivel de agua, temperatura y humedad, la actuación de bombas de agua y ventiladores mediante relés de potencia, alarmas acústicas/visuales y la transmisión de información remota. Todo evento externo e interno se somete a validación mediante filtrado de estado temporal para evadir falsos positivos y rebotes.
 
 Las límitaciones actuales comienzan por un lado con la potencia y el entorno, ya que para comprobar que la etapa de potencia funcionaría utilizamos la observación a partir de la conmutación de los relés a nivel lógico, y no unas bombas de agua conectadas a 220V con válvulas de agua conectada, esto es lo que quedaría para un estudio posterior. 
 
