@@ -63,14 +63,18 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
     - [2.3.1 Módulo de control y orquestación de la plaqueta NUCLEO](#231-módulo-de-control-y-orquestación-de-la-plaqueta-nucleo)
     - [2.3.2 Módulo de escrutinio de sensores](#232-módulo-de-escrutinio-de-sensores)
     - [2.3.3 Módulo de medición ambiental](#233-módulo-de-medición-ambiental)
-    - [2.3.4 Módulo de actuación e I/O](#234-módulo-de-actuación-e-I/O)
+    - [2.3.4 Módulo de actuación e I/O](#234-módulo-de-actuación-e-io)
     - [2.3.5 Módulo de memoria](#235-módulo-de-memoria)
     - [2.3.6 Módulo de telemetría](#236-módulo-de-telemetría)
-
 - [Capítulo 3: Diseño e implementación](#capítulo-3-diseño-e-implementación)
   - [3.1 Arquitectura general](#31-arquitectura-general)
   - [3.2 Diseño de hardware](#32-diseño-de-hardware)
   - [3.3 Diseño de firmware](#33-diseño-de-firmware)
+    - [3.3.1 Máquina de estados del Sistema](#331-máquina-de-estados-del-sistema)
+    - [3.3.2 Máquinas de estado de los Sensores](#332-máquinas-de-estado-de-los-sensores)
+    - [3.3.3 Máquinas de estado de los Actuadores](#333-máquinas-de-estado-de-los-actuadores)
+    - [3.3.4 Driver I2C Asincrónico y Memoria](#334-driver-i2c-asincrónico-y-memoria)
+    - [3.3.5 Recepción Bluetooth por Interrupción](#335-recepción-bluetooth-por-interrupción)
 - [Capítulo 4: Ensayos y resultados](#capítulo-4-ensayos-y-resultados)
   - [4.1 Pruebas funcionales de hardware](#41-pruebas-funcionales-de-hardware)
   - [4.2 Pruebas funcionales de firmware](#42-pruebas-funcionales-de-firmware)
@@ -393,7 +397,7 @@ Se documenta el uso de IA según requerimiento docente y archivo `listado de cos
   - 
 
 - Leonardo:
-  -
+  -Consulta de GFM (GitHub Flavored Markdown).
 
 
 - Uso común del equipo:
