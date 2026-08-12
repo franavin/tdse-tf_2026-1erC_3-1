@@ -1,13 +1,14 @@
 <div align="center">
 
-<img width="535"  alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/logo-fiuba.png" />
+<img width="762" height="292" alt="logo-fiuba" src="https://github.com/user-attachments/assets/9c859836-a677-4f4c-b163-af23d4892aa2" />
+
 
 **UNIVERSIDAD DE BUENOS AIRES**  
 **Facultad de Ingeniería**  
 **TA134 – Sistemas Embebidos**  
 Curso 3 – Grupo 1
 
-# Estación Hidropónica 
+# Estación Hidropónica
 
 
 ## Autores
@@ -36,7 +37,8 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
 
 | Versión | Cambios realizados | Fecha |
 | :---: | --- | :---: |
-| 1.0 | Entrega de la memoria con la estructura básica de la memoria | 10/07/2026 |
+| 1.0 | Entrega de la estructura básica de la memoria | 10/07/2026 |
+| 2.0 | Update código Versión 2.0 con correcciones | 10/08/2026 |
 
 
 
@@ -92,6 +94,14 @@ El cultivo hidropónico es una técnica en la cual se prescinde por completo de 
 Un fallo técnico en un cultivo de este tipo puede ser definitivo para la vida del cultivo. Ya sea porque el tanque que contiene los nutrientes se vacía o hasta si hubo algún error en la medición y envía datos falsos sobre la situación del cultivo (falsos positivos). 
 
 Por lo tanto, lo que buscamos como objetivo principal en esta ocasión es diseñar e implementar un prototipo funcional (Producto Mínimo Viable) que automatice y monitoree una estación de cultivo hidropónico. Mediante una representación física sobre una placa base soldada, el sistema supervisará variables críticas como el nivel de líquidos y el clima, y controlará de forma temporizada los ciclos de actuación (riego y ventilación).
+
+<div align="center">
+  <img width="616" height="269" alt="HidroAut" src="https://github.com/user-attachments/assets/7c17ed1f-85bf-4241-9ebe-7be805feab15" />
+  <br>
+<em>Figura 1.1 — Cultivo hidropónico de lechugas.</em>
+</div>
+<br>
+
 
 ## 1.2 Productos comparables
 Para la selección de la implementación, se evaluaron tres enfoques principales, ponderados según disponibilidad de hardware, impacto, costo, dificultad técnica e interés del equipo:
