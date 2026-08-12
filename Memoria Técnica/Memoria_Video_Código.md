@@ -60,6 +60,13 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
   - [2.1 Requisitos](#21-requisitos)
   - [2.2 Casos de uso](#22-casos-de-uso)
   - [2.3 Descripción de módulos principales](#23-descripción-de-módulos-principales)
+    - [2.3.1 Módulo de control y orquestación de la plaqueta NUCLEO](#231-módulo-de-control-y-orquestación-de-la-plaqueta-nucleo)
+    - [2.3.2 Módulo de escrutinio de sensores](#232-módulo-de-escrutinio-de-sensores)
+    - [2.3.3 Módulo de medición ambiental](#233-módulo-de-medición-ambiental)
+    - [2.3.4 Módulo de actuación e I/O](#234-módulo-de-actuación-e-I/O)
+    - [2.3.5 Módulo de memoria](#235-módulo-de-memoria)
+    - [2.3.6 Módulo de telemetría](#236-módulo-de-telemetría)
+
 - [Capítulo 3: Diseño e implementación](#capítulo-3-diseño-e-implementación)
   - [3.1 Arquitectura general](#31-arquitectura-general)
   - [3.2 Diseño de hardware](#32-diseño-de-hardware)
