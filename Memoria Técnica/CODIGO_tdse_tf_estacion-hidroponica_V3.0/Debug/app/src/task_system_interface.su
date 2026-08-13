@@ -1,0 +1,4 @@
+../app/src/task_system_interface.c:38:6:init_event_task_system	16	static
+../app/src/task_system_interface.c:50:6:put_event_task_system	16	static
+../app/src/task_system_interface.c:59:18:get_event_task_system	16	static
+../app/src/task_system_interface.c:73:6:any_event_task_system	4	static
