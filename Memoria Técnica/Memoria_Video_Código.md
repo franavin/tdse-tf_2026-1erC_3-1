@@ -38,7 +38,8 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
 | Versión | Cambios realizados | Fecha |
 | :---: | --- | :---: |
 | 1.0 | Entrega de la estructura básica de la memoria | 10/07/2026 |
-| 2.0 | Update código Versión 2.0 con correcciones | 10/08/2026 |
+| 2.0 | Update código: Versión 2.0 con correcciones | 10/08/2026 |
+| 3.0 | Update código:Versión 3.0 con correcciones de errores y nuevas optimizaciones para el control de las aplicaciones del proyecto. | 13/08/2026 |
 
 
 
@@ -220,29 +221,29 @@ En las tablas 2.2 a 2.4 se presentan 3 casos de uso para el sistema.
 
 En los siguientes puntos desarrollaremos los modulos principales aplicados al proyecto. 
 
-### **2.3.1 Módulo de control y orquestación de la plaqueta NUCLEO**
+### 2.3.1 Módulo de control y orquestación de la plaqueta NUCLEO
 * Implementado sobre una placa de desarrollo STM32 NUCLEO F103RB.
 * Ejecuta un scheduler (Ejecutor Cíclico) basado en arreglos de punteros a funciones, disparando cada 1 ms por el SysTick.
 * Centraliza la Máquina de Estados Finita (FSM) gobernando el comportamiento macro de la estación.
 
-### **2.3.2 Módulo de escrutinio de sensores**
+### 2.3.2 Módulo de escrutinio de sensores
 * Se encarga de abstraer la capa de hardware físico hacia eventos lógicos (por ej. EV_RAW_DOWN).
 * Implementa filtros temporales (debounce para falsos positivos/negativos) de longitud variable: retardos cortos para pulsadores mecánicos (40 ms) y retardos prolongados para lecturas analógicas de ADC que son propensas a ruido y "oleajes" (100 ms).
 
-### **2.3.3 Módulo de medición ambiental**
+### 2.3.3 Módulo de medición ambiental
 * Compuesto por el sensor digital AHT20 operando bajo el bus I2C.
 * Utiliza un driver propio basado en estados internos que permite enviar el comando de medición y ceder el uso del procesador durante los 80 ms físicos requeridos para el cálculo termodinámico, evitando el uso de funciones bloqueantes.
 
-### **2.3.4 Módulo de actuación e I/O**
+### 2.3.4 Módulo de actuación e I/O
 * Unificamos el disparo de elementos dispares mediante arrays de configuración.
 * Se accionan los relés optoacoplados con lógica de control inversa.
 * Gestionamos la atenuación del display LCD 16x2 mediante el uso de una etapa transistorizada (NPN) en paralelo, lo que permite alternar entre el 100% y el 20% de retroiluminación sin requerir módulos PWM complejos.
 
-### **2.3.5 Módulo de memoria**
+### 2.3.5 Módulo de memoria
 * Utiliza la memoria externa EEPROM AT24C32 en el bus I2C compartiendo líneas con el sensor AHT20.
 * Minimiza la tasa de desgaste de escritura al funcionar como sistema de solo respaldo: se lee una sola vez durante el inicio del sistema (Init) y se escribe de manera exclusiva cuando los valores han sido explícitamente confirmados por el usuario.
 
-### **2.3.6 Módulo de telemetría**
+### 2.3.6 Módulo de telemetría
 * Integrado mediante el modulo bluetooth HM-10.
 * Opera de forma totalmente asincrónica a través del periférico USART de la STM32, donde veremos que su impacto en el rendimiento computacional de la placa es nulo en estado de reposo, procesando tramas únicamente mediante interrupciones.
 
@@ -252,11 +253,11 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 ## **3.1 Arquitectura general**
 Se aplica un sistema reactivo ("Event-Triggered"), en el que los módulos se comunican internamente levantando y consumiendo eventos (ej. `EV_SYS_TEMP_HIGH`, `EV_ACT_PUMP_ON`). La transición de estados está dictaminada por condiciones de guarda ([guard]) ligadas a contadores temporales internos.
 
-### **Dominios de Hardware**
+### Dominios de Hardware
 * Dominio lógico (3,3 V): Microcontrolador STM32 NUCLEO, señales de los pulsadores, potenciómetro (ADC) y líneas de comunicación (I2C y UART).
 * Dominio de actuación y potencia (5 V aislados): Pantalla LCD, alimentación del módulo Bluetooth, y módulo de relés optoacoplados, los cuales actúan como barrera entre la lógica y las cargas de potencia de la bomba de agua.
 
-### **Capas de Software**
+### Capas de Software
 Para poder generar el software necesario para el proyecto nos basamos en la estructrura de aplicación modular, ya que divide de manera independiente cada parte del software haciendolo de esta manera reutilizable ante cualquier cambio que surja. En nuestro proyecto, cada modulo proyecta una funcionalidad diferente pero que se complementan en un punto para generar un sistema de uso continuo. Las capas son las siguientes:
 
 * **Capa de Sensores (Escrutar)**: Realiza una traducción de las magnitudes físicas y eléctricas (pulsaciones, niveles de tensión, tramas UART, lecturas I2C) en "eventos lógicos" limpios.
@@ -279,14 +280,63 @@ Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los m
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/Diagrama%20de%20Secuencia%20Final%20-%20Estaci%C3%B3n%20Hidrop%C3%B3nica.png" />
 <p align="center"><em>Figura 3.2: Diagrama de Secuencia</em></p>
 
-## **3.2 Diseño de hardware**
+## 3.2 Diseño de hardware
 El hardware constará de una placa base para los siguientes periféricos:
+
+<div align="center">
+<img width="1000" height="1171" alt="image PF259875 en feature-description-include-personalized-no-cpn-large" src="https://github.com/user-attachments/assets/22dc6ffa-1342-477c-853c-d37268ec9ac3" />
+<br>
+<em>Figura 3.2.1 — xx.</em>
+  </div>
+<br>
+
+<div align="center">
+<img width="407" height="451" alt="AHT20" src="https://github.com/user-attachments/assets/cc2b5e63-a28b-4fe5-93e3-87fdc730b1f0" />
+<br>
+<em>Figura 3.2. — xx.</em>
+  </div>
+<br>
+
+<div align="center">
+<img width="514" height="253" alt="Buzzer" src="https://github.com/user-attachments/assets/62537ed3-b273-4863-94e1-c2290254ba55" />
+<br>
+<em>Figura 3.2. — xx.</em>
+  </div>
+<br>
+
+<div align="center">
+<img width="517" height="215" alt="EEPROM" src="https://github.com/user-attachments/assets/5d942240-1d98-47d0-aa1e-80d448e1851c" />
+<br>
+<em>Figura 3.2. — xx.</em>
+  </div>
+<br>
+
+<div align="center">
+<img width="562" height="508" alt="HM-10" src="https://github.com/user-attachments/assets/cca3fa04-a837-4e46-8d8e-a35838bd8e81" />
+<br>
+<em>Figura 3.2. — xx.</em>
+  </div>
+<br>
+
+<div align="center">
+<img width="523" height="415" alt="RELE" src="https://github.com/user-attachments/assets/74a17e24-9c2d-43b9-8378-4e133d904c2e" />
+<br>
+<em>Figura 3.2. — xx.</em>
+  </div>
+<br>
+
+<div align="center">
+<img width="1251" height="686" alt="Esquematico" src="https://github.com/user-attachments/assets/b8fbd7d1-8aa0-416c-b50a-23b6db612740" />
+<br>
+<em>Figura 3.2. — xx.</em>
+  </div>
+<br>
 
 * Entradas: Sensor de temperatura (AHT20 por I2C), simulación de nivel de agua (potenciómetro con filtro activo Sallen-Key vía ADC con DMA), teclado matricial y feedback de tensión de relés.
 
 * Salidas: Relés para bomba de agua y ventilador, Buzzer de alarma, LEDs indicadores, módulo Bluetooth HM-10 (UART), memoria EEPROM (I2C) y Display OLED (SPI/I2C).
 
-## **3.3 Diseño de firmware**
+## 3.3 Diseño de firmware
 El sistema no utiliza un RTOS, sino una arquitectura bare-metal soportada por un Ejecutor Cíclico (Super-Loop). La interrupción a partir de SysTick levanta un flag cada 1ms exacto, lo que permite que la función principal main() vaya despachando cíclicamente el array de las tareas en task_cfg_list:
 1. `task_sensor_update()`
 2. `task_system_update()`
@@ -294,7 +344,7 @@ El sistema no utiliza un RTOS, sino una arquitectura bare-metal soportada por un
 4. `task_display_update()`
 5. `bluetooth_update()`
 
-### **3.3.1 Máquina de estados del Sistema**
+### 3.3.1 Máquina de estados del Sistema
 El "cerebro" del sistema se origina a partir de distintos modos de operaciones que están acoplados entre sí, los definimos de manera global:
 
 * **MODO NORMAL**: Gestiona la cuenta regresiva de la receta actual y activa el riego. Paralelamente, implementa un temporizador no bloqueante para el "Carrusel del Display", rotando la información mostrada cada 2 segundos. Este modo, posee los siguientes subestados:
@@ -312,7 +362,7 @@ El "cerebro" del sistema se origina a partir de distintos modos de operaciones q
 
 Para saltar de un modo de operación a otro, se creo la función `task_system_set_mode()` la cual tiene como función ser la mensajera entre los modos, copiando las variables temporales (por ej. para las recetas) hacia la estructura del nuevo estado antes de que se realice la transición. Haciendolo de esta manera, se garantiza que el estado entrante siempre disponga de la información más reciente sin utilizar la EEPROM como puente. 
 
-### **3.3.2 Máquinas de estado de los Sensores**
+### 3.3.2 Máquinas de estado de los Sensores
 El módulo de los sensores evalúa las entradas mediante un bucle de indexación, sin importar que la entrada sea un botón (GPIO digital) o el nivel de agua (ADC), la lectura se traduce a una variable booleana unificada is_active.
 Se utilizan para filtrar entradas físicas inestables:
 
@@ -320,7 +370,7 @@ Se utilizan para filtrar entradas físicas inestables:
 
 * Nivel de agua y Temperatura: Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
 
-### **3.3.3 Máquinas de estado de los Actuadores**
+### 3.3.3 Máquinas de estado de los Actuadores
 Controlan periféricos sin usar retardos:
 
 * Buzzer: Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
@@ -331,12 +381,12 @@ Controlan periféricos sin usar retardos:
 
 * Buses (BT/EEPROM): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
 
-### **3.3.4 Driver I2C Asincrónico y Memoria**
+### 3.3.4 Driver I2C Asincrónico y Memoria
 * Sensor AHT20: Se implementó una máquina de estados interna en aht20.c. En el estado inicial envía el comando de medición I2C (0xAC) e inicia un contador local de 80 ticks (80 ms). Un vez cumplido el tiempo, el estado transita para conseguir los 6 bytes del bus I2C, ensamblando los 20 bits de temperatura y humedad mediante desplazamientos lógicos sin que se bloquee el procesador. 
 
 * Memoria EEPROM: Las variables de tipo entero sin signo de 32 bits (uint32_t) se fragmentan en 4 bytes individuales para su almacenamiento. Para evitar el desgaste excesivo sobre las celdas de la memoria, las lecturas ocurrirán únicamente al invocar `task_system_init()` (durante el arranque), y la escritura (`eeprom_write_uint32()`) se ejecuta exclusivamente tras presionar el botón CONFIRMAR o recibir un comando Bluetooth válido, descartando de esta manera las escrituras periódicas en tiempo real.
 
-### **3.3.5 Recepción Bluetooth por Interrupción**
+### 3.3.5 Recepción Bluetooth por Interrupción
 En este caso, utilizando el módulo HM-10 sin ciclos de polling, ya que para esto se habilitó la interrupción global USART y el uso de `HAL_UART_RxCpltCallback`, así que cada vez que ingresa un byte de forma inalámbrica, se almacena en un buffer circular de 32 posiciones (`rx_buffer`). 
 
 Al detectarse el carácter del CR (\r o \n), la bandera msg_ready cambia de estado y al siguiente ciclo del milisegundo, la función de actualización `bluetooth_update()` procesa el mensaje completo (ej. identificando unas tramas del formato "R=5000"). Luego, convertimos el valor a formato numérico con la función `atoi()`, valida las restricciones de seguridad, actualiza directamente la memoria de la receta y responde automáticamente con un mensaje TX de confirmación hacia la aplicación celular.
@@ -345,10 +395,10 @@ Al detectarse el carácter del CR (\r o \n), la bandera msg_ready cambia de esta
 ---
 
 # Capítulo 4: Ensayos y resultados
-## **4.1 Pruebas funcionales de hardware**
-## **4.2 Pruebas funcionales de firmware**
-## **4.3 Pruebas de integración**
-## **4.4 Medición y análisis de consumo**
+## 4.1 Pruebas funcionales de hardware
+## 4.2 Pruebas funcionales de firmware
+## 4.3 Pruebas de integración
+## 4.4 Medición y análisis de consumo
 ## 4.5 Console and Build Analyzer
 ## 4.6 Medición y análisis de WCET por tarea
 ## 4.7 Cálculo del factor de uso de CPU (U)
