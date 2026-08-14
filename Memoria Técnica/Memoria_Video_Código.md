@@ -295,9 +295,9 @@ Primero realizamos la estructurazión a partir de los componentes que podría ll
 
 [Módulo de Sensores](Memoria%20Técnica/STATE%20CHARTS/tdse_tf_sensor.md)
 
-[Módulo del Sistema]([https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/STATE%20CHARTS/tdse_tf_system.md))
+[Módulo del Sistema](Memoria%20Técnica/STATE%20CHARTS/tdse_tf_system.md)
 
-[Módulo de Actuadores]([https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_actuator.md](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/STATE%20CHARTS/tdse_tf_system.md))
+[Módulo de Actuadores](Memoria%20Técnica/STATE%20CHARTS/tdse_tf_actuator.md)
 
 Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los mensajes contenía la impronta de lo que iba a volcarse en el código.
 
