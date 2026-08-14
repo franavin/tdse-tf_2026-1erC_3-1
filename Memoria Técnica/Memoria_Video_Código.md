@@ -293,11 +293,11 @@ Para poder generar el software necesario para el proyecto nos basamos en la estr
 
 Primero realizamos la estructurazión a partir de los componentes que podría llegar a tener el sistema, haciendo un Diagrama en Bloques. Seguido a eso, completamos un primer Diagrama de Secuencia que reflejaba prácticamente lo mismo que el de bloques, y pasamos a definir los eventos y estados que deberían tener en un principio.
 
-[Módulo de Sensores](Memoria%20Técnica/STATE%20CHARTS/tdse_tf_sensor.md)
+[Módulo del Sistema](STATE%20CHARTS/tdse_tf_system.md)
 
-[Módulo del Sistema](Memoria%20Técnica/STATE%20CHARTS/tdse_tf_system.md)
+[Módulo de Actuadores](STATE%20CHARTS/tdse_tf_actuator.md)
 
-[Módulo de Actuadores](Memoria%20Técnica/STATE%20CHARTS/tdse_tf_actuator.md)
+[Módulo de Sensores](STATE%20CHARTS/tdse_tf_sensor.md)
 
 Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los mensajes contenía la impronta de lo que iba a volcarse en el código.
 
