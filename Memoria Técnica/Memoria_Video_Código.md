@@ -266,11 +266,11 @@ Para poder generar el software necesario para el proyecto nos basamos en la estr
 
 Primero realizamos la estructurazión a partir de los componentes que podría llegar a tener el sistema, haciendo un Diagrama en Bloques. Seguido a eso, completamos un primer Diagrama de Secuencia que reflejaba prácticamente lo mismo que el de bloques, y pasamos a definir los eventos y estados que deberían tener en un principio.
 
-[Módulo de Sensores](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md)
+[Módulo de Sensores]([https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/STATE%20CHARTS/tdse_tf_sensor.md))
 
-[Módulo del Sistema](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md)
+[Módulo del Sistema]([https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_sensor.md](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/STATE%20CHARTS/tdse_tf_system.md))
 
-[Módulo de Actuadores](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_actuator.md)
+[Módulo de Actuadores]([https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/tdse_tf_actuator.md](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/STATE%20CHARTS/tdse_tf_system.md))
 
 Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los mensajes contenía la impronta de lo que iba a volcarse en el código.
 
@@ -286,49 +286,49 @@ El hardware constará de una placa base para los siguientes periféricos:
 <div align="center">
 <img width="500" alt="image PF259875 en feature-description-include-personalized-no-cpn-large" src="https://github.com/user-attachments/assets/22dc6ffa-1342-477c-853c-d37268ec9ac3" />
 <br>
-<em>Figura 3.2.1 — xx.</em>
+<em>Figura 3.2.1 — Placa NUCLEO-F103RB.</em>
   </div>
 <br>
 
 <div align="center">
-<img width="407" height="451" alt="AHT20" src="https://github.com/user-attachments/assets/cc2b5e63-a28b-4fe5-93e3-87fdc730b1f0" />
+<img width="350" alt="AHT20" src="https://github.com/user-attachments/assets/cc2b5e63-a28b-4fe5-93e3-87fdc730b1f0" />
 <br>
-<em>Figura 3.2. — xx.</em>
+<em>Figura 3.2.2 — Módulo sensor de temperatura y humedad AHT20.</em>
   </div>
 <br>
 
 <div align="center">
-<img width="514" height="253" alt="Buzzer" src="https://github.com/user-attachments/assets/62537ed3-b273-4863-94e1-c2290254ba55" />
+<img width="350"  alt="Buzzer" src="https://github.com/user-attachments/assets/62537ed3-b273-4863-94e1-c2290254ba55" />
 <br>
-<em>Figura 3.2. — xx.</em>
+<em>Figura 3.2.3 — Módulo Buzzer pasivo.</em>
   </div>
 <br>
 
 <div align="center">
-<img width="517" height="215" alt="EEPROM" src="https://github.com/user-attachments/assets/5d942240-1d98-47d0-aa1e-80d448e1851c" />
+<img width="517" alt="EEPROM" src="https://github.com/user-attachments/assets/5d942240-1d98-47d0-aa1e-80d448e1851c" />
 <br>
-<em>Figura 3.2. — xx.</em>
+<em>Figura 3.2.4 — Módulo EEPROM AT24C32.</em>
   </div>
 <br>
 
 <div align="center">
-<img width="562" height="508" alt="HM-10" src="https://github.com/user-attachments/assets/cca3fa04-a837-4e46-8d8e-a35838bd8e81" />
+<img width="350" alt="HM-10" src="https://github.com/user-attachments/assets/cca3fa04-a837-4e46-8d8e-a35838bd8e81" />
 <br>
-<em>Figura 3.2. — xx.</em>
+<em>Figura 3.2.5 — Módulo Bluetooth bajo consumo HM-10.</em>
   </div>
 <br>
 
 <div align="center">
-<img width="523" height="415" alt="RELE" src="https://github.com/user-attachments/assets/74a17e24-9c2d-43b9-8378-4e133d904c2e" />
+<img width="350" alt="RELE" src="https://github.com/user-attachments/assets/74a17e24-9c2d-43b9-8378-4e133d904c2e" />
 <br>
-<em>Figura 3.2. — xx.</em>
+<em>Figura 3.2.6 — Módulo Relés de 4 canales.</em>
   </div>
 <br>
 
 <div align="center">
 <img width="1251" height="686" alt="Esquematico" src="https://github.com/user-attachments/assets/b8fbd7d1-8aa0-416c-b50a-23b6db612740" />
 <br>
-<em>Figura 3.2. — xx.</em>
+<em>Figura 3.2.7 — Esquemático del sistema.</em>
   </div>
 <br>
 
