@@ -228,7 +228,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <div align="center">
 <img width="500" alt="image PF259875 en feature-description-include-personalized-no-cpn-large" src="https://github.com/user-attachments/assets/22dc6ffa-1342-477c-853c-d37268ec9ac3" />
 <br>
-<em>Figura 2.3.1 — Placa NUCLEO-F103RB.</em>
+<em>Figura 2.1 — Placa NUCLEO-F103RB.</em>
   </div>
 <br>
 
@@ -243,7 +243,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <div align="center">
 <img width="350" alt="AHT20" src="https://github.com/user-attachments/assets/cc2b5e63-a28b-4fe5-93e3-87fdc730b1f0" />
 <br>
-<em>Figura 2.3.2 — Módulo sensor de temperatura y humedad AHT20.</em>
+<em>Figura 2.2 — Módulo sensor de temperatura y humedad AHT20.</em>
   </div>
 <br>
 
@@ -259,7 +259,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <div align="center">
 <img width="517" alt="EEPROM" src="https://github.com/user-attachments/assets/5d942240-1d98-47d0-aa1e-80d448e1851c" />
 <br>
-<em>Figura 2.3.3 — Módulo EEPROM AT24C32.</em>
+<em>Figura 2.3 — Módulo EEPROM AT24C32.</em>
   </div>
 <br>
 
@@ -270,7 +270,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <div align="center">
 <img width="350" alt="HM-10" src="https://github.com/user-attachments/assets/cca3fa04-a837-4e46-8d8e-a35838bd8e81" />
 <br>
-<em>Figura 3.2.5 — Módulo Bluetooth bajo consumo HM-10.</em>
+<em>Figura 2.4 — Módulo Bluetooth bajo consumo HM-10.</em>
   </div>
 <br>
 
@@ -315,7 +315,7 @@ El hardware constará de una placa base para los siguientes periféricos:
 <div align="center">
 <img width="1004" height="571" alt="Esquematico" src="https://github.com/user-attachments/assets/5f7d139b-3688-4e3a-a2a2-9475ca414d92" />
 <br>
-<em>Figura 3.2.7 — Esquemático del sistema.</em>
+<em>Figura 3.3 — Esquemático del sistema.</em>
   </div>
 <br>
 
