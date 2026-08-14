@@ -405,7 +405,7 @@ El desarrollo técnico se encuentra plenamente documentado en el repositorio, in
   * bluetooth.c / .h: Interrupciones UART y procesamiento de tramas.
 * Documentación de hardware: Esquemáticos de conexión entre placa STM32 NUCLEO F103RB y los periféricos necesarios de potencia.
 
-* [Link a la carpeta de códigos](https://github.com/franavin/tdse-tf_2026-1erC_3-1/tree/main/Memoria%20T%C3%A9cnica/CODIGO_tdse_tf_estacion-hidroponica_V1.0)
+* [Link a la carpeta de códigos](https://github.com/franavin/tdse-tf_2026-1erC_3-1/tree/main/Memoria%20T%C3%A9cnica/CODIGO_tdse_tf_estacion-hidroponica_V3.0)
 ---
 
 # Capítulo 5: Conclusiones
