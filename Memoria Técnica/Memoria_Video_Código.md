@@ -284,7 +284,7 @@ Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los m
 El hardware constará de una placa base para los siguientes periféricos:
 
 <div align="center">
-<img width="1000" height="1171" alt="image PF259875 en feature-description-include-personalized-no-cpn-large" src="https://github.com/user-attachments/assets/22dc6ffa-1342-477c-853c-d37268ec9ac3" />
+<img width="500" alt="image PF259875 en feature-description-include-personalized-no-cpn-large" src="https://github.com/user-attachments/assets/22dc6ffa-1342-477c-853c-d37268ec9ac3" />
 <br>
 <em>Figura 3.2.1 — xx.</em>
   </div>
