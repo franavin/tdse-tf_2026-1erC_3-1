@@ -225,6 +225,12 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 * Implementado sobre una placa de desarrollo STM32 NUCLEO F103RB.
 * Ejecuta un scheduler (Ejecutor Cíclico) basado en arreglos de punteros a funciones, disparando cada 1 ms por el SysTick.
 * Centraliza la Máquina de Estados Finita (FSM) gobernando el comportamiento macro de la estación.
+<div align="center">
+<img width="500" alt="image PF259875 en feature-description-include-personalized-no-cpn-large" src="https://github.com/user-attachments/assets/22dc6ffa-1342-477c-853c-d37268ec9ac3" />
+<br>
+<em>Figura 2.3.1 — Placa NUCLEO-F103RB.</em>
+  </div>
+<br>
 
 ### 2.3.2 Módulo de escrutinio de sensores
 * Se encarga de abstraer la capa de hardware físico hacia eventos lógicos (por ej. EV_RAW_DOWN).
@@ -233,6 +239,13 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 ### 2.3.3 Módulo de medición ambiental
 * Compuesto por el sensor digital AHT20 operando bajo el bus I2C.
 * Utiliza un driver propio basado en estados internos que permite enviar el comando de medición y ceder el uso del procesador durante los 80 ms físicos requeridos para el cálculo termodinámico, evitando el uso de funciones bloqueantes.
+
+<div align="center">
+<img width="350" alt="AHT20" src="https://github.com/user-attachments/assets/cc2b5e63-a28b-4fe5-93e3-87fdc730b1f0" />
+<br>
+<em>Figura 2.3.2 — Módulo sensor de temperatura y humedad AHT20.</em>
+  </div>
+<br>
 
 ### 2.3.4 Módulo de actuación e I/O
 * Unificamos el disparo de elementos dispares mediante arrays de configuración.
@@ -243,9 +256,23 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 * Utiliza la memoria externa EEPROM AT24C32 en el bus I2C compartiendo líneas con el sensor AHT20.
 * Minimiza la tasa de desgaste de escritura al funcionar como sistema de solo respaldo: se lee una sola vez durante el inicio del sistema (Init) y se escribe de manera exclusiva cuando los valores han sido explícitamente confirmados por el usuario.
 
+<div align="center">
+<img width="517" alt="EEPROM" src="https://github.com/user-attachments/assets/5d942240-1d98-47d0-aa1e-80d448e1851c" />
+<br>
+<em>Figura 2.3.3 — Módulo EEPROM AT24C32.</em>
+  </div>
+<br>
+
 ### 2.3.6 Módulo de telemetría
 * Integrado mediante el modulo bluetooth HM-10.
 * Opera de forma totalmente asincrónica a través del periférico USART de la STM32, donde veremos que su impacto en el rendimiento computacional de la placa es nulo en estado de reposo, procesando tramas únicamente mediante interrupciones.
+
+<div align="center">
+<img width="350" alt="HM-10" src="https://github.com/user-attachments/assets/cca3fa04-a837-4e46-8d8e-a35838bd8e81" />
+<br>
+<em>Figura 3.2.5 — Módulo Bluetooth bajo consumo HM-10.</em>
+  </div>
+<br>
 
 ---
 
@@ -283,50 +310,10 @@ Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los m
 ## 3.2 Diseño de hardware
 El hardware constará de una placa base para los siguientes periféricos:
 
-<div align="center">
-<img width="500" alt="image PF259875 en feature-description-include-personalized-no-cpn-large" src="https://github.com/user-attachments/assets/22dc6ffa-1342-477c-853c-d37268ec9ac3" />
-<br>
-<em>Figura 3.2.1 — Placa NUCLEO-F103RB.</em>
-  </div>
-<br>
+
 
 <div align="center">
-<img width="350" alt="AHT20" src="https://github.com/user-attachments/assets/cc2b5e63-a28b-4fe5-93e3-87fdc730b1f0" />
-<br>
-<em>Figura 3.2.2 — Módulo sensor de temperatura y humedad AHT20.</em>
-  </div>
-<br>
-
-<div align="center">
-<img width="350"  alt="Buzzer" src="https://github.com/user-attachments/assets/62537ed3-b273-4863-94e1-c2290254ba55" />
-<br>
-<em>Figura 3.2.3 — Módulo Buzzer pasivo.</em>
-  </div>
-<br>
-
-<div align="center">
-<img width="517" alt="EEPROM" src="https://github.com/user-attachments/assets/5d942240-1d98-47d0-aa1e-80d448e1851c" />
-<br>
-<em>Figura 3.2.4 — Módulo EEPROM AT24C32.</em>
-  </div>
-<br>
-
-<div align="center">
-<img width="350" alt="HM-10" src="https://github.com/user-attachments/assets/cca3fa04-a837-4e46-8d8e-a35838bd8e81" />
-<br>
-<em>Figura 3.2.5 — Módulo Bluetooth bajo consumo HM-10.</em>
-  </div>
-<br>
-
-<div align="center">
-<img width="350" alt="RELE" src="https://github.com/user-attachments/assets/74a17e24-9c2d-43b9-8378-4e133d904c2e" />
-<br>
-<em>Figura 3.2.6 — Módulo Relés de 4 canales.</em>
-  </div>
-<br>
-
-<div align="center">
-<img width="1251" height="686" alt="Esquematico" src="https://github.com/user-attachments/assets/b8fbd7d1-8aa0-416c-b50a-23b6db612740" />
+<img width="1004" height="571" alt="Esquematico" src="https://github.com/user-attachments/assets/5f7d139b-3688-4e3a-a2a2-9475ca414d92" />
 <br>
 <em>Figura 3.2.7 — Esquemático del sistema.</em>
   </div>
