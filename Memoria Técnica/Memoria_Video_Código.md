@@ -292,6 +292,7 @@ Para poder generar el software necesario para el proyecto nos basamos en la estr
 * **Capa de Actuadores (Actuar)**: Ejecuta los comandos físicos ordenados por el sistema (conmutar relés, sonar alarmas, dibujar caracteres en el LCD).
 
 Primero realizamos la estructurazión a partir de los componentes que podría llegar a tener el sistema, haciendo un Diagrama en Bloques. Seguido a eso, completamos un primer Diagrama de Secuencia que reflejaba prácticamente lo mismo que el de bloques, y pasamos a definir los eventos y estados que deberían tener en un principio.
+En los enlaces siguientes se presentan en detalle las tablas de estados definidas para cada módulo.
 
 [Módulo del Sistema](STATE%20CHARTS/tdse_tf_system.md)
 
