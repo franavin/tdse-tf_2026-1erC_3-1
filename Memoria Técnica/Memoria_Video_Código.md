@@ -397,6 +397,15 @@ Para el potenciómetro se decidió utilizar uno de valor 1kΩ, ya que estos con
 
 Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos como principal sujeto de prueba el módulo de las memorias EEPROM y el display, acá verificamos que lo que se guardaba en pantalla, luego quedaba en la memoria y viceversa. Para el módulo de memorias no hizo falta conectarles resistencias de pull-up, ya que estas venían incluidas dentro del modulo en el que se conserva la memoria.
 
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba1.jpg" />
+<p align="center"><em>Figura: Primeras pruebas en protoboard - Funcionamiento del Modo NORMAL</em></p>
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba2.jpg" />
+<p align="center"><em>Figura: Primeras pruebas en protoboard - Funcionamiento del Modo SETUP</em></p>
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba3.jpg" />
+<p align="center"><em>Figura: Primeras pruebas en protoboard - Funcionamiento del Modo ERROR</em></p>
+
 | Ensayo | Resultado | Estado |
 | --- | --- | :---: |
 | Integridad de placas (continuidad) | Validación previa a energización | ✅ |
@@ -421,6 +430,12 @@ En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas mod
 | Telemetría BT | Tramas de envío y recepción correctas | ✅ |
 
 ## 4.3 Pruebas de integración
+La integración del proyecto es algo que desarrollamos en cada paso a medida que íbamos incluyendo más módulos para probar, como primer instancia teníamos la parte física, el medir las señales que les llegaban, si el consumo de las mismas era el correcto por ejemplo, y como segunda instancia teníamos la ejecución del código, y ver como reaccionaba a los distintos módulos. Pero todo eso lo realizábamos prácticamente en el mismo momento, ya que podía pasar que la conexión entre placa y módulo era correcta, pero luego cuando queríamos ejecutar una acción sobre estos, no ocurría nada por algún desliz en el código o configuración de los pines. 
+
+Por esto, es que decidimos ir probando módulo por módulo, incluyéndolos de a poco y una vez que teníamos el sistema completo funcional, pasamos a la parte de desarrollar el sistema en un PCB del tipo perforado.
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba4.jpg" />
+<p align="center"><em>Figura: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
 
 [Log generado durante el vídeo](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/log%20del%20video.txt)
 
