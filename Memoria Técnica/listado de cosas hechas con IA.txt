@@ -8,7 +8,7 @@ Leonardo:
 4.Consuta sobre funciones del LT Spice para dibujar el esqumático.
 5.Consulta de GFM (GitHub Flavored Markdown).
 6.Generación de Statecharts.
-
+7.Consulta del código.
 
 Común:
 1.
