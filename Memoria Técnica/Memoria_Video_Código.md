@@ -437,6 +437,10 @@ Por esto, es que decidimos ir probando módulo por módulo, incluyéndolos de a 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba4.jpg" />
 <p align="center"><em>Figura: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
 
+**Video de integración en funcionamiento**  
+
+[Link al vídeo de integración del proyecto](https://youtu.be/7Y0e8ubY0-0)
+
 [Log generado durante el vídeo](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/log%20del%20video.txt)
 
 ## 4.4 Medición y análisis de consumo
