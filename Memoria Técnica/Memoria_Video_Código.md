@@ -405,15 +405,25 @@ Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos co
 | Verificación de tensión en comunicaciones físicas para las líneas I2C y UART | Valores dentro de lo previsto |✅|
 
 ## 4.2 Pruebas funcionales de firmware
-Para las primeras pruebas del firmware, ya con actuadores y sensores funcionando, incluimos ahora al modulo de sistema, y en conjunto a este conectamos el display, para comenzar a ver una primera impresión de cómo sería el sistema completo. En este punto, dejamos de lado los "códigos de prueba", y ya utilizábamos el código de cómo debería funcionar realmente en el sistema final solo que incluíamos algún `LOGGER_INFO` para hacer troubleshooting con alguno de los módulo. Ejemplo: `[info] >>> SENSOR: ID 3 confirmado como PRESIONADO!`
+Para las primeras pruebas del firmware, ya con actuadores y sensores funcionando, incluimos ahora al modulo de sistema, y en conjunto a este conectamos el display, para comenzar a ver una primera impresión de cómo sería el sistema completo. En este punto, dejamos de lado los "códigos de prueba", y ya utilizábamos el código de cómo debería funcionar realmente en el sistema final solo que incluíamos algún `LOGGER_INFO` para hacer troubleshooting con alguno de los módulo. Ejemplo: `[info] >>> SENSOR: ID 3 confirmado como PRESIONADO!` así verificabamos que el DEBOUNCE fue implementado de manera correcta.
 
 En esta prueba comprobamos, que el display respondía a los botones para la navegación del sistema, y los tres modos de operación que iba a incluir nuestro sistema, NORMAL, SETUP y ERROR. Este paso fue fundamental, ya que se corrigieron bastantes cosas para pasar de una máquina de estados a la otra, y así poder hacer que la transición entre un sistema y el otro sea algo completamente cíclico y sin ninguna traba de por medio. 
 
 Una vez que pudimos comprobar que las comunicaciones físicas entre los módulos estaban funcionando, pasamos a incluir al módulo bluetooth a las pruebas y ver que la conexión inalámbrica del sistema funcione bien. Para establecer la comunicación entre los dispositivos se utilizó una aplicación descargada de Google Play Store llamada Serial Bluetooth Terminal, esta aplicación contiene una terminal donde podremos enviar y recibir los mensajes. 
 
-En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas modificaciones, por ejemplo, cuando encendíamos el sistema, y no nos conectábamos al módulo bluetooth, este comenzaba a enviarse comandos "perdidos" entre la placa NUCLEO y el módulo haciendo que se genere un bucle infinito de preguntas y respuestas sin sentido. La solución para ese caso fue implementar un filtro para aquellos mensajes que se generen entre placa y módulo cuando no hay nadie conectado, y lo mismo para cuando si hay alguien conectado. 
+En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas modificaciones, por ejemplo, cuando encendíamos el sistema, y no nos conectábamos al módulo bluetooth, este comenzaba a enviarse comandos "perdidos" entre la placa NUCLEO y el módulo haciendo que se genere un bucle infinito de preguntas y respuestas sin sentido. La solución para ese caso fue implementar un filtro para aquellos mensajes que se generen entre placa y módulo cuando no hay nadie conectado, y lo mismo para cuando si hay alguien conectado.
+
+| Ensayo | Resultado | Estado |
+| --- | --- | :---: |
+| Debounce botones ON/OFF | Eventos limpios sobre FSM | ✅ |
+| FSM de sistema (`NORMAL/SETUP/ERROR`) | Transiciones válidas en logs | ✅ |
+| Persistencia flash | Lectura/escritura de estado y calibración | ✅ |
+| Telemetría BT | Tramas de envío y recepción correctas | ✅ |
 
 ## 4.3 Pruebas de integración
+
+[Log generado durante el vídeo](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/log%20del%20video.txt)
+
 ## 4.4 Medición y análisis de consumo
 ## 4.5 Console and Build Analyzer
 ## 4.6 Medición y análisis de WCET por tarea
