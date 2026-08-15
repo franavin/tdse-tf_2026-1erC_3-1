@@ -384,7 +384,35 @@ Al detectarse el carácter del CR (\r o \n), la bandera msg_ready cambia de esta
 
 # Capítulo 4: Ensayos y resultados
 ## 4.1 Pruebas funcionales de hardware
+Para comenzar con las pruebas del hardware, se decidió ir incluyendo los distintos procesos/módulos de a poco, empezando con los módulos de actuadores, seguido del módulo de los sensores, y por último el modulo del sistema. 
+
+Lo primero que probamos en el módulo de actuadores, fueron los módulos de relés y el de leds, esta primer prueba era fundamental, ya que la estación hidropónica no sería nada si no se pudieran mover los relés con los que se mueven la bomba del tanque de agua y el ventilador. Algo a destacar para con el módulo de relés es que no lo alimentamos directamente con la plaqueta NUCLEO sino que optamos por utilizar una fuente externa, sabiendo que 
+es capaz de entregar hasta 100mA como máxima, y el módulo de relés puede llegar a consumir entre unos 15mA-20mA, y no queríamos forzar a que se dispare el consumo por algo que pueda llegar a suceder con relé y quemar la plaqueta, por lo que fuimos por lo seguro y la conectamos a una fuente de 5V que podía entregar hasta unos 400mA de corriente.
+
+La prueba que deberían pasar estos módulos es que se prendan los LEDs que se incluyen en la plaqueta del módulo y que además se escuche el click mecánico que contienen los relés, y luego, por otro lado para el módulo de semáforo que se prendan los LEDs de colores en una cierta secuencia. Para todo esto utilizamos códigos de pruebas dentro de los códigos ya generados para lo que se convertiría en el sistema final.
+
+Una vez confirmamos que los actuadores respondían de manera efectiva, pasamos a probar los sensores, en este caso los primeros fueron los botones para navegar el menú del display y otro de los más importantes, el potenciómetro con el que íbamos a simular el nivel de agua utilizando el conversor ADC que nos brinda la placa. 
+
+Para el potenciómetro se decidió utilizar uno de valor 1kΩ, ya que estos conversores trabajan cargando un capacitor de retención, donde para que la lectura sea precisa y rápida, la señal externa debe tener una baja impedancia. Por lo tanto, al estar conectado a la fuente de 3.3V de la placa, este nos entregaba un consumo que se aproximaba los 3.3mA que debería tener.
+
+Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos como principal sujeto de prueba el módulo de las memorias EEPROM y el display, acá verificamos que lo que se guardaba en pantalla, luego quedaba en la memoria y viceversa. Para el módulo de memorias no hizo falta conectarles resistencias de pull-up, ya que estas venían incluidas dentro del modulo en el que se conserva la memoria.
+
+| Ensayo | Resultado | Estado |
+| --- | --- | :---: |
+| Integridad de placas (continuidad) | Validación previa a energización | ✅ |
+| Enviar señales al módulo de relés y esperar la respuesta física | Se escuchó el ruido mecánico característico de relés y encendido de LEDs | ✅ |
+| Variar potenciómetro del nivel de agua para observar el conversor ADC | Verificación mediante multímetro | ✅ |
+| Verificación de tensión en comunicaciones físicas para las líneas I2C y UART | Valores dentro de lo previsto |✅|
+
 ## 4.2 Pruebas funcionales de firmware
+Para las primeras pruebas del firmware, ya con actuadores y sensores funcionando, incluimos ahora al modulo de sistema, y en conjunto a este conectamos el display, para comenzar a ver una primera impresión de cómo sería el sistema completo. En este punto, dejamos de lado los "códigos de prueba", y ya utilizábamos el código de cómo debería funcionar realmente en el sistema final solo que incluíamos algún `LOGGER_INFO` para hacer troubleshooting con alguno de los módulo. Ejemplo: `[info] >>> SENSOR: ID 3 confirmado como PRESIONADO!`
+
+En esta prueba comprobamos, que el display respondía a los botones para la navegación del sistema, y los tres modos de operación que iba a incluir nuestro sistema, NORMAL, SETUP y ERROR. Este paso fue fundamental, ya que se corrigieron bastantes cosas para pasar de una máquina de estados a la otra, y así poder hacer que la transición entre un sistema y el otro sea algo completamente cíclico y sin ninguna traba de por medio. 
+
+Una vez que pudimos comprobar que las comunicaciones físicas entre los módulos estaban funcionando, pasamos a incluir al módulo bluetooth a las pruebas y ver que la conexión inalámbrica del sistema funcione bien. Para establecer la comunicación entre los dispositivos se utilizó una aplicación descargada de Google Play Store llamada Serial Bluetooth Terminal, esta aplicación contiene una terminal donde podremos enviar y recibir los mensajes. 
+
+En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas modificaciones, por ejemplo, cuando encendíamos el sistema, y no nos conectábamos al módulo bluetooth, este comenzaba a enviarse comandos "perdidos" entre la placa NUCLEO y el módulo haciendo que se genere un bucle infinito de preguntas y respuestas sin sentido. La solución para ese caso fue implementar un filtro para aquellos mensajes que se generen entre placa y módulo cuando no hay nadie conectado, y lo mismo para cuando si hay alguien conectado. 
+
 ## 4.3 Pruebas de integración
 ## 4.4 Medición y análisis de consumo
 ## 4.5 Console and Build Analyzer
