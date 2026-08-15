@@ -2,7 +2,10 @@ Francisco:
 1.
 
 Leonardo:
-1.
+1.Le pasamos 2 memorias técnicas de las de ejemplo y le pedimos que extraiga el esqueleto de secciones y subsecciones para poder empezar a completar nuestro documento.
+2.Consulta sobre componentes y conexiones.
+3.Checkeo de redacción de la memoria técnica.
+4.Consuta sobre funciones del LT Spice para dibujar el esqumático.
 
 
 Común:
