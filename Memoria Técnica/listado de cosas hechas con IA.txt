@@ -7,6 +7,7 @@ Leonardo:
 3.Checkeo de redacción de la memoria técnica.
 4.Consuta sobre funciones del LT Spice para dibujar el esqumático.
 5.Consulta de GFM (GitHub Flavored Markdown).
+6.Generación de Statecharts.
 
 
 Común:
