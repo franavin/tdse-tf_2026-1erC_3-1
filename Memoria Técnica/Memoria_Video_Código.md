@@ -386,8 +386,7 @@ Al detectarse el carácter del CR (\r o \n), la bandera msg_ready cambia de esta
 ## 4.1 Pruebas funcionales de hardware
 Para comenzar con las pruebas del hardware, se decidió ir incluyendo los distintos procesos/módulos de a poco, empezando con los módulos de actuadores, seguido del módulo de los sensores, y por último el modulo del sistema. 
 
-Lo primero que probamos en el módulo de actuadores, fueron los módulos de relés y el de leds, esta primer prueba era fundamental, ya que la estación hidropónica no sería nada si no se pudieran mover los relés con los que se mueven la bomba del tanque de agua y el ventilador. Algo a destacar para con el módulo de relés es que no lo alimentamos directamente con la plaqueta NUCLEO sino que optamos por utilizar una fuente externa, sabiendo que 
-es capaz de entregar hasta 100mA como máxima, y el módulo de relés puede llegar a consumir entre unos 15mA-20mA, y no queríamos forzar a que se dispare el consumo por algo que pueda llegar a suceder con relé y quemar la plaqueta, por lo que fuimos por lo seguro y la conectamos a una fuente de 5V que podía entregar hasta unos 400mA de corriente.
+Lo primero que probamos en el módulo de actuadores, fueron los módulos de relés y el de leds, esta primer prueba era fundamental, ya que la estación hidropónica no sería nada si no se pudieran mover los relés con los que se mueven la bomba del tanque de agua y el ventilador. Algo a destacar para con el módulo de relés es que no lo alimentamos directamente con la plaqueta NUCLEO sino que optamos por utilizar una fuente externa (5V 400mA), sabiendo que es capaz de entregar hasta 100mA como máxima, y el módulo de relés puede llegar a consumir entre unos 50mA por canal. Por lo tanto, antes de comenzar a hacer algo con el resto de módulos, decidimos medir la corriente que consumían los relés conectado con la fuente externa, y es acá donde pudimos observar que el consumo de cada módulo rondaba entre 54mA y 57mA, lo que nos daba un consumo total entre ambos de unos 108mA hasta 114mA, superando ampliamente la cantidad que nos podía dar la placa NUCLEO.
 
 La prueba que deberían pasar estos módulos es que se prendan los LEDs que se incluyen en la plaqueta del módulo y que además se escuche el click mecánico que contienen los relés, y luego, por otro lado para el módulo de semáforo que se prendan los LEDs de colores en una cierta secuencia. Para todo esto utilizamos códigos de pruebas dentro de los códigos ya generados para lo que se convertiría en el sistema final.
 
@@ -409,6 +408,7 @@ Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos co
 | Ensayo | Resultado | Estado |
 | --- | --- | :---: |
 | Integridad de placas (continuidad) | Validación previa a energización | ✅ |
+| Conectar amperímetro para observar la carga de los relés | Implementación de fuente externa para poder alimentar los relés | ✅ |
 | Enviar señales al módulo de relés y esperar la respuesta física | Se escuchó el ruido mecánico característico de relés y encendido de LEDs | ✅ |
 | Variar potenciómetro del nivel de agua para observar el conversor ADC | Verificación mediante multímetro | ✅ |
 | Verificación de tensión en comunicaciones físicas para las líneas I2C y UART | Valores dentro de lo previsto |✅|
@@ -455,6 +455,8 @@ Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de
 [Log generado durante el vídeo](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/log%20del%20video.txt)
 
 ## 4.4 Medición y análisis de consumo
+Para la medición y análisis de consumo separamos en dos partes, debido a que se hicieron uso de los dos tipos de voltajes que nos podía entregar la placa NUCLEO, uno es la alimentación de 5V, y otra de 3.3V.
+
 ## 4.5 Console and Build Analyzer
 ## 4.6 Medición y análisis de WCET por tarea
 ## 4.7 Cálculo del factor de uso de CPU (U)
