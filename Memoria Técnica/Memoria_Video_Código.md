@@ -437,6 +437,17 @@ Por esto, es que decidimos ir probando módulo por módulo, incluyéndolos de a 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba4.jpg" />
 <p align="center"><em>Figura: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
 
+Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de módulos y sensores del sistema, ya que es dónde íbamos a colocar la placa NUCLEO, que es la que comanda todas las operaciones para que el sistema funcione. En este fuimos integrando poco a poco las conexiones con cables del tipo multipar, asegurando primero, las conexiones de GND, de 5V y 3.3V y luego pasar a las conexiones de los pines de funcionalidad que necesitaba cada módulo en particular. Por otro lado, se decidió utilizar un segundo PCB perforado para no saturar tanto las conexiones dentro del PCB principal, y además, en este segundo PCB podríamos aislar las conexiones al relé, el cual tiene la conexión a la fuente externa, y otros módulos como el de memoria EEPROM, y el módulo AHT20, sensor de temperatura y humedad.
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_principal.jpg" />
+<p align="center"><em>Figura: Esquemático del PCB principal del sistema completo</em></p>
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_secundario.jpg" />
+<p align="center"><em>Figura: Esquemático del PCB secundario del sistema completo</em></p>
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_completa.jpg" />
+<p align="center"><em>Figura: Vista en general del sistema completo</em></p>
+
 **Video de integración en funcionamiento**  
 
 [Link al vídeo de integración del proyecto](https://youtu.be/7Y0e8ubY0-0)
