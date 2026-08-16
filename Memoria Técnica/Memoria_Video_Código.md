@@ -471,6 +471,37 @@ Metodología aplicada:
 | NORMAL - REGANDO  | 13.90 | 0.069 | El sistema envía las señales para activar los relés. |
 | ERROR | 14.1 | 0.070 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
 
+<em>Tabla — Consumo total medido a 5 V (valores pico).</em><br><br>
+
+| Modo | $I_{pico}$ @ 3.3 V [mA] | $P_{pico}$ @ 3.3 V [W] | Observaciones |
+| --- | ---: | ---: | --- |
+| PAUSADO | 3.88 | 0.0128 | Escenario de menor consumo; es apenas se inicia el sistema. |
+| SETUP | 4.40 | 0.0145 | El sistema está semi-pausado; se guardan las recetas en la memoria EEPROM. |
+| NORMAL - ESPERA | 4.80 |  0.0158 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
+| NORMAL - REGANDO  | 5.20 | 0.0172 | El sistema envía las señales para activar los relés. |
+| ERROR | 4.24 | 0.0140 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
+
+<em>Tabla — Consumo total medido a 3.3 V (valores pico).</em><br><br>
+
+**Consumo de relés durante los distintos modos de operación**
+El sistema siempre se carga con los valores que pueda encontrar en la memoria, en este caso traemos una situación en la cuál es la primera vez que se comienza a utilizar la estación por lo que carga unos valores por default, tanto para el tiempo de espera como para el riego son 10s, y para la temperatura máxima son 28°C y la mínima son 24°C. Esto se aclara ya que el sistema se pondría en funcionamiento con estos valores por si no se quisiera pasar por el menú de SETUP. En el caso siguiente, se propone activar el relé del ventilador para saber cuánto consume este solo mientras que el de la bomba se apagará y prenderá a medida que se pase del modo ESPERA a REGANDO, y de esta manera podremos observar el consumo completo de los relés en funcionamiento.
+
+| Modo | $I_{pico}$ @ 5 V [mA] | $P_{pico}$ @ 5 V [W] | Observaciones |
+| --- | ---: | ---: | --- |
+| PAUSADO | 0 | 0 | Inicio del sistema; relés apagados. |
+| SETUP | 0 | 0 | Pasamos del modo PAUSADO a SETUP, relés apagados. |
+| NORMAL - ESPERA | 57 |  0.285 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
+| NORMAL - REGANDO  | 112 | 0.560 | El sistema envía las señales para activar los relés. |
+| ERROR | 57 | 0.285 | ERROR de TANQUE VACÍO, el relé del ventilador seguirá prendido, por lo tanto sigue consumiendo. |
+
+<em>Tabla — Consumo total medido a 5 V de fuente externa (valores pico).</em><br><br>
+
+Análisis:
+- La potencia se calculó como `P = V * I`, usando `V = 5 V` y corriente pico medida en cada modo.
+- El peor caso medido con la alimentación de la placa fue `14.1 mA` a `5 V`, equivalente a `0.070 W`.
+- El peor caso medido con la alimentación de la fuente externa fue `112 mA` a `5 V`, equivalente a `0.560 W`.
+- El sistema se mantiene por debajo de `1 W`, por lo que puede alimentarse sin inconvenientes con fuentes comerciales 220VAC->5 V de baja potencia.
+- La diferencia entre los distintos modos de operación es baja para cualquier tipo de alimentación, lo que hace que sea un sistema consistente en su consumo.
 
 ## 4.5 Console and Build Analyzer
 ## 4.6 Medición y análisis de WCET por tarea
