@@ -483,7 +483,8 @@ Metodología aplicada:
 
 <em>Tabla — Consumo total medido a 3.3 V (valores pico).</em><br><br>
 
-**Consumo de relés durante los distintos modos de operación**
+**Consumo de relés durante los distintos modos de operación** 
+
 El sistema siempre se carga con los valores que pueda encontrar en la memoria, en este caso traemos una situación en la cuál es la primera vez que se comienza a utilizar la estación por lo que carga unos valores por default, tanto para el tiempo de espera como para el riego son 10s, y para la temperatura máxima son 28°C y la mínima son 24°C. Esto se aclara ya que el sistema se pondría en funcionamiento con estos valores por si no se quisiera pasar por el menú de SETUP. En el caso siguiente, se propone activar el relé del ventilador para saber cuánto consume este solo mientras que el de la bomba se apagará y prenderá a medida que se pase del modo ESPERA a REGANDO, y de esta manera podremos observar el consumo completo de los relés en funcionamiento.
 
 | Modo | $I_{pico}$ @ 5 V [mA] | $P_{pico}$ @ 5 V [W] | Observaciones |
