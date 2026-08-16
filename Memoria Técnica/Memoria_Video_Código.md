@@ -508,10 +508,14 @@ Análisis:
 
 En las siguientes figuras se muestran el reporte de uso de memoria del build; se observa un uso bajo de RAM y FLASH (≈16,88% y ≈40,81%), dejando margen para futuras extensiones para el sistema.
 
-> <img src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/console.jpg" />
-<p align="center"><em>Figura: Console</em></p>
+<div align="center">
+  <img width="1125" height="689" alt="Rainbird" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/console.jpg" />
+<br>
+<em>Figura: Console</em>
+  </div>
+<br>
 
-> <img src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/build%20analizer.jpg" />
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/build%20analizer.jpg" />
 <p align="center"><em>Figura: Build Analizer</em></p>
 
 ## 4.6 Medición y análisis de WCET por tarea
@@ -586,9 +590,7 @@ El desarrollo técnico se encuentra plenamente documentado en el repositorio, in
 ## 5.1 Resultados obtenidos
 
 
-
 ## 5.2 Lecciones aprendidas
-
 
 
 ## 5.3 Próximos pasos
