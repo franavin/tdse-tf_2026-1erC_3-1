@@ -601,8 +601,7 @@ El desarrollo técnico se encuentra plenamente documentado en el repositorio, in
 
 # Capítulo 6: Uso de herramientas de IA
 
-Se documenta el uso de IA según requerimiento docente y archivo `listado de cosas hechas con IA.txt`.
-
+Se documenta el uso de IA según requerimiento docente y archivo [`listado de cosas hechas con IA.txt`](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/listado%20de%20cosas%20hechas%20con%20IA.txt).
 ## 6.1 Uso individual y conjunto
 
 - Franco:
