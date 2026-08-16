@@ -548,7 +548,10 @@ Se documenta el uso de IA según requerimiento docente y archivo `listado de cos
 ## 6.1 Uso individual y conjunto
 
 - Franco:
-  - 
+  - Consultas sobre la estructuración para el código y las funciones específicas necesarias para concretar el código (ej. archivos de memoria eeprom o bluetooth).
+  - Consultas por errores y warnings que aparecieron en el código.
+  - Consultas sobre comportamientos no deseados a la hora de tener el sistema ejecutándose, tanto en hardware como firmware.
+  - Utilización de aplicación Mermaid para realizar los diagramas de secuencia.
 
 - Leonardo:
   - Consulta de GFM (GitHub Flavored Markdown).
