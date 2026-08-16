@@ -455,7 +455,22 @@ Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de
 [Log generado durante el vídeo](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/log%20del%20video.txt)
 
 ## 4.4 Medición y análisis de consumo
-Para la medición y análisis de consumo separamos en dos partes, debido a que se hicieron uso de los dos tipos de voltajes que nos podía entregar la placa NUCLEO, uno es la alimentación de 5V, y otra de 3.3V.
+Para la medición y análisis de consumo separamos en dos partes, debido a que se hicieron uso de los dos tipos de voltajes que nos podía entregar la placa del sistema, una alimentación de 5V y la otra de 3.3V. Por otro lado, teníamos el consumo de la fuente externa para el módulo de relés que se había medido previamente sin tener el sistema completa, la cuál de igual manera una vez insertada al resto de módulos no varió su consumo, ya que esta fuente simplemente actúa para encender los relés, este módulo por otro lado también tiene una alimentación de 3.3V del sistema que es para la activación lógica de los pines IN1 y IN2 que están en la placa del módulo de relés.  
+
+Metodología aplicada:
+- Medición de consumo total en la entrada de `5 V` del sistema.
+- Medición de consumo total en la entrada de `3.3 V` del sistema.
+- Alimentación desde fuente externa conectada a pines `5 V` y `GND` para el módulo de relés.
+- Medición de tensión en bornes de entrada para estimar potencia (`P = V * I`).
+
+| Modo | $I_{pico}$ @ 5 V [mA] | $P_{pico}$ @ 5 V [W] | Observaciones |
+| --- | ---: | ---: | --- |
+| PAUSADO | 12 | 0.060 | Escenario de menor consumo; es apenas se inicia el sistema. |
+| SETUP | 12.5 | 0.062 | El sistema está semi-pausado; se guardan las recetas en la memoria EEPROM. |
+| NORMAL - ESPERA | 13.40 | 0.067 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
+| NORMAL - REGANDO  | 13.90 | 0.069 | El sistema envía las señales para activar los relés. |
+| ERROR | 14.1 | 0.070 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
+
 
 ## 4.5 Console and Build Analyzer
 ## 4.6 Medición y análisis de WCET por tarea
