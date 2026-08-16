@@ -505,10 +505,66 @@ Análisis:
 - La diferencia entre los distintos modos de operación es baja para cualquier tipo de alimentación, lo que hace que sea un sistema consistente en su consumo.
 
 ## 4.5 Console and Build Analyzer
+
+En las siguientes figuras se muestran el reporte de uso de memoria del build; se observa un uso bajo de RAM y FLASH (≈16,88% y ≈40,81%), dejando margen para futuras extensiones para el sistema.
+
+> <img src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/console.jpg" />
+<p align="center"><em>Figura: Console</em></p>
+
+> <img src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/build%20analizer.jpg" />
+<p align="center"><em>Figura: Build Analizer</em></p>
+
 ## 4.6 Medición y análisis de WCET por tarea
+
+
+
 ## 4.7 Cálculo del factor de uso de CPU (U)
+
+
 ## 4.8 Gestión de bajo consumo y justificación
+En la presente iteración del prototipo, la estrategia de ahorro energético se centró en la optimización de los periféricos externos, dado que representan el mayor consumo frente al microcontrolador:
+
+- Se utilizó un módulo Bluetooth HM-10 (BLE - Bluetooth Low Energy), configurado para despertar y procesar datos asincrónicamente.
+- Implementación de una pantalla de PAUSA, para poder pausar el sistema y observar o configurar las condiciones óptimas que tenga que tener el sistema en el preciso momento que se quiera.
+
+No se implementó una entrada explícita a modos Sleep/Stop en el microcontrolador, ya que la arquitectura bare-metal mantiene un polling constante de variables críticas (por ejemplo, la seguridad electromecánica de los relés y el nivel de agua). En una futura revisión alimentada exclusivamente por baterías o algún panel solar, se podría integrar el modo Sleep durante los intervalos del ciclo de 1 ms.
+
 ## 4.9 Cumplimiento de requisitos
+En la siguiente sección demostramos todas las implementaciones que habíamos previsto en un informe anterior, los cuáles en partes generales pudimos concretar todos tal como se describieron o sino con modificaciones mínimas para hacer un sistema más llevadero. 
+
+| Estado | Descripción      |
+|-----|---------------------|
+| 🟢 | Se implementó |
+| 🔴 | No se implementó |
+
+#### **Sensores**  
+
+| ID | Descripción | Estado |
+| :---- | :---- | :---- |
+| 1.1 | **Nivel de agua (Simulado):** Lectura analógica por ADC (polling/DMA) de un potenciómetro de 1k ohm <br> Se logra implementar mediante el uso de las funciones ADC del microcontrolador la lectura de un potenciometro que en nuestro caso imitaría el nivel del agua que contiene la Estación Hidropónica. | 🟢  |
+| 1.2 | **Clima (Real):** Lectura de temperatura y humedad ambiente utilizando el sensor digital AHT20 a través del bus I2C. | 🟢 |
+| 1.3 | **Interfaz de entrada local:** Lectura no bloqueante (con rutinas de anti-rebote por software) de botones para la navegación del menú y botones para alternar los modos del sistema (`NORMAL` / `SET_UP`). <br> Logramos concretar una interfaz en la cual podemos navegar mediante el uso de 4 botones de una matriz de botones, de esta manera tenemos, un boton para cambiar el modo de setup a configuración, luego dos de navegación que serán también los que incrementen y decrementen los valores, y por último uno de enter/guardado. | 🟢 | 
+
+#### **Actuadores**  
+
+| ID | Descripción | Estado |
+| :---- | :-------- | :------ |
+| 2.1 | **Actuadores de simulación (Bombas/Ventilación):** Encendido y apagado de LEDs/Relés gestionados por retardos no bloqueantes basados en el tick del Systick (1ms). | 🟢 |
+| 2.2 | **Alarmas sonoras:** Emisión de alertas mediante un Buzzer (accionado por PWM o GPIO) ante fallas críticas del sistema o confirmaciones de guardado. | 🟢 |
+
+#### **Interfaz y comunicaciones**  
+
+| ID | Descripción | Estado |
+| :---- | :-------- | :------ |
+| 3.1 | **Interfaz Visual Local (Display):** Actualización periódica de un menú interactivo en una pantalla LCD 16x2 para la visualización y configuración de parámetros sin depender de la red. <br> Se desarrolló una interfaz visual que contiene toda la información necesaria para poder utilizar el sistema completo, y además nos comunica las fallas que se produzcan  | 🟢 |
+| 3.2 | **Telemetría remota:** Envío de tramas de estado y alertas por UART utilizando un módulo Bluetooth HM-10 para monitoreo desde una aplicación móvil. | 🟢 |
+
+#### **Almacenamiento**  
+
+| ID | Descripción | Estado |
+| :---- | :-------- | :------ |
+| 4.1 | **Gestión de Recetas (EEPROM):** Lectura y escritura de parámetros de configuración (tiempos de riego, umbrales térmicos) en una memoria EEPROM externa vía I2C para garantizar la persistencia ante cortes de energía. | 🟢  |
+
 ## 4.10 Comparación con sistemas similares
 
 ## 4.11 Documentación del desarrollo realizado
