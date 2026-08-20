@@ -155,7 +155,7 @@ Como se mencionó anteriormente, la integración de periféricos con altas laten
 ## 1.4 Alcance y limitaciones
 El alcance del sistema contempla el monitoreo de nivel de agua, temperatura y humedad, la actuación de bombas de agua y ventiladores mediante relés de potencia, alarmas acústicas/visuales y la transmisión de información remota. Todo evento externo e interno se somete a validación mediante filtrado de estado temporal para evadir falsos positivos y rebotes.
 
-Las límitaciones actuales comienzan por un lado con la potencia y el entorno, ya que para comprobar que la etapa de potencia funcionaría utilizamos la observación a partir de la conmutación de los relés a nivel lógico, y no unas bombas de agua conectadas a 220V con válvulas de agua conectada, esto es lo que quedaría para un estudio posterior. 
+Las limitaciones actuales radican, en primer lugar, en la validación de la etapa de potencia y el entorno, ya que para comprobar que la etapa de potencia funcionaría utilizamos la observación a partir de la conmutación de los relés a nivel lógico, y no unas bombas de agua conectadas a 220V con válvulas de agua conectada, esto es lo que quedaría para un estudio posterior. 
 
 Esto mismo ocurrió con el nivel del agua del tanque, en vez de utilizar un flotador digital, lo reemplazamos por un potenciometro el cuál representaría el nivel del agua modificando su tensión mediante un conversor ADC. 
 
@@ -291,7 +291,7 @@ Para poder generar el software necesario para el proyecto nos basamos en la estr
 * **Capa del Sistema (Procesar)**: Una máquina de estados central que toma los eventos lógicos, evalúa los temporizadores de las recetas, y decide el próximo estado del sistema.
 * **Capa de Actuadores (Actuar)**: Ejecuta los comandos físicos ordenados por el sistema (conmutar relés, sonar alarmas, dibujar caracteres en el LCD).
 
-Primero realizamos la estructurazión a partir de los componentes que podría llegar a tener el sistema, haciendo un Diagrama en Bloques. Seguido a eso, completamos un primer Diagrama de Secuencia que reflejaba prácticamente lo mismo que el de bloques, y pasamos a definir los eventos y estados que deberían tener en un principio.
+Primero realizamos la estructuración a partir de los componentes que podría llegar a tener el sistema, haciendo un Diagrama en Bloques. Seguido a eso, completamos un primer Diagrama de Secuencia que reflejaba prácticamente lo mismo que el de bloques, y pasamos a definir los eventos y estados que deberían tener en un principio.
 En los enlaces siguientes se presentan en detalle las tablas de estados definidas para cada módulo.
 
 [Módulo del Sistema](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/STATE%20CHARTS/tdse_tf_system.md)
@@ -302,10 +302,12 @@ En los enlaces siguientes se presentan en detalle las tablas de estados definida
 
 Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los mensajes contenía la impronta de lo que iba a volcarse en el código.
 
-<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/diagrama_en_bloques.png" />
+<img width="1125" height="689" alt="diagrama_en_bloques" src="https://github.com/user-attachments/assets/2047e439-f59e-490c-94b8-38746bdff88a" />
+
 <p align="center"><em>Figura 3.1: Diagrama de bloques</em></p>
 
-<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/Diagrama%20de%20Secuencia%20Final%20-%20Estaci%C3%B3n%20Hidrop%C3%B3nica.png" />
+<img width="8192" height="5269" alt="Diagrama de Secuencia Final - Estación Hidropónica" src="https://github.com/user-attachments/assets/53f64c4f-48bb-4f83-867d-f75ebf896c6e" />
+
 <p align="center"><em>Figura 3.2: Diagrama de Secuencia</em></p>
 
 ## 3.2 Diseño de hardware
@@ -528,11 +530,8 @@ En las siguientes figuras se muestran el reporte de uso de memoria del build; se
 
 ## 4.6 Medición y análisis de WCET por tarea
 
-## Método de Medición Empleado
 
-Para evaluar el comportamiento temporal del sistema bajo la arquitectura de **Sistema Disparado por Eventos (ETS)**, se instrumentó un módulo de perfilado (*profiling*) en el despachador de tareas (*scheduler*).
-
-El método utiliza el temporizador del sistema (`SysTick`) para capturar marcas de tiempo justo antes y después de invocar a cada función `.task_update()`. La estructura registra los siguientes parámetros para cada tarea:
+Para evaluar el comportamiento temporal del sistema bajo la arquitectura de Sistema Disparado por Eventos (ETS), se instrumentó un módulo de perfilado (profiling) en el despachador de tareas (scheduler). El método aprovecha el temporizador SysTick para la cadencia del sistema y utiliza el contador de ciclos del periférico DWT (Data Watchpoint and Trace) de la arquitectura ARM Cortex-M para capturar marcas de tiempo de alta precisión (DWT->CYCCNT) justo antes y después de invocar a cada función .task_update(). La estructura registra los siguientes parámetros para cada tarea:
 
 * **`NOE` (Number of Executions):** Cantidad total de iteraciones completadas por la tarea.
 * **`LET` (Last Execution Time):** Duración de la última ejecución en microsegundos ($\mu\text{s}$).
@@ -585,8 +584,8 @@ $$U_{peor\_caso} = \frac{1.137.452\ \mu\text{s}}{1000\ \mu\text{s}} = 1137{,}45 
 Apartir de lo calculado se puede realizar el siguiente análisis:
 
 1. **Alta eficiencia nominal:** Durante la mayor parte del tiempo, la arquitectura ETS mantiene una baja carga de trabajo sobre el microcontrolador ($30{,}8\%$), lo que confirma el buen diseño general de los módulos de periféricos (Display y Actuadores).
-2. **Bloqueo crítico en `Task System`:** El WCET registrado de **$1{,}058\text{ s}$** quiebra las garantías de tiempo real. Este fallo ocurre por el uso de llamadas bloqueantes del tipo `HAL_Delay()` o esperas síncronas de bus I2C/EEPROM dentro de la tarea.
-3. **Inercia en Comunicaciones UART:** La tarea Bluetooth registra un pico de **$52{,}53\text{ ms}$** al responder mensajes, producto de la transmisión por polling en `HAL_UART_Transmit`.
+2. **Bloqueo crítico en `Task System`:** El WCET registrado de **$1{,}058\text{ s}$** quiebra las garantías de tiempo real.
+3. **Inercia en Comunicaciones UART:** La tarea Bluetooth registra un pico de **$52{,}53\text{ ms}$** al responder mensajes.
 
 
 ## 4.8 Gestión de bajo consumo y justificación
@@ -649,6 +648,7 @@ El desarrollo técnico se encuentra plenamente documentado en el repositorio, in
   * eeprom.c / .h: Driver I2C para escritura/lectura no volátil.
   * bluetooth.c / .h: Interrupciones UART y procesamiento de tramas.
 * Documentación de hardware: Esquemáticos de conexión entre placa STM32 NUCLEO F103RB y los periféricos necesarios de potencia.
+* Video mostrando el funcionamiento del sistema.
 
 * [Link a la carpeta de códigos](https://github.com/franavin/tdse-tf_2026-1erC_3-1/tree/main/Memoria%20T%C3%A9cnica/CODIGO_tdse_tf_estacion-hidroponica_V3.0)
 ---
