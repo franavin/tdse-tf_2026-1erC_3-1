@@ -479,7 +479,7 @@ Metodología aplicada:
 | NORMAL - REGANDO  | 13.90 | 0.069 | El sistema envía las señales para activar los relés. |
 | ERROR | 14.1 | 0.070 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
 
-<p align="center"><em>Tabla 4.3 — Consumo total medido a 5 V (valores pico).</em></p><br><br>
+<p align="center"><em>Tabla 4.3: Consumo total medido a 5 V (valores pico).</em></p><br><br>
 
 | Modo | $I_{pico}$ @ 3.3 V [mA] | $P_{pico}$ @ 3.3 V [W] | Observaciones |
 | --- | ---: | ---: | --- |
@@ -489,7 +489,7 @@ Metodología aplicada:
 | NORMAL - REGANDO  | 5.20 | 0.0172 | El sistema envía las señales para activar los relés. |
 | ERROR | 4.24 | 0.0140 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
 
-<p align="center"><em>Tabla 4.4 — Consumo total medido a 3.3 V (valores pico).</em></p><br><br>
+<p align="center"><em>Tabla 4.4: Consumo total medido a 3.3 V (valores pico).</em></p><br><br>
 
 **Consumo de relés durante los distintos modos de operación** 
 
@@ -503,7 +503,7 @@ El sistema siempre se carga con los valores que pueda encontrar en la memoria, e
 | NORMAL - REGANDO  | 112 | 0.560 | El sistema envía las señales para activar los relés. |
 | ERROR | 57 | 0.285 | ERROR de TANQUE VACÍO, el relé del ventilador seguirá prendido, por lo tanto sigue consumiendo. |
 
-<p align="center"><em>Tabla 4.5 — Consumo total medido a 5 V de fuente externa (valores pico).</em></p><br><br>
+<p align="center"><em>Tabla 4.5: Consumo total medido a 5 V de fuente externa (valores pico).</em></p><br><br>
 
 Análisis:
 - La potencia se calculó como `P = V * I`, usando `V = 5 V` y corriente pico medida en cada modo.
@@ -539,9 +539,7 @@ El método utiliza el temporizador del sistema (`SysTick`) para capturar marcas 
 * **`BCET` (Best-Case Execution Time):** Menor tiempo de ejecución registrado ($\mu\text{s}$).
 * **`WCET` (Worst-Case Execution Time):** Mayor tiempo de ejecución registrado ($\mu\text{s}$).
 
----
 
-## Tabla de Métricas Obtenidas
 
 <div align="center">
   
@@ -555,7 +553,7 @@ El método utiliza el temporizador del sistema (`SysTick`) para capturar marcas 
 
 </div>
 
-<p align="center"><em>Tabla 4.2: Ensayos y Resultados de Software.</em></p>
+<p align="center"><em>Tabla 4.6: Métricas de desempeño y tiempos de ejecución del scheduler.</em></p>
 
 
 ## 4.7 Cálculo del factor de uso de CPU (U)
@@ -614,6 +612,7 @@ En la siguiente sección demostramos todas las implementaciones que habíamos pr
 | 1.1 | **Nivel de agua (Simulado):** Lectura analógica por ADC (polling/DMA) de un potenciómetro de 1k ohm <br> Se logra implementar mediante el uso de las funciones ADC del microcontrolador la lectura de un potenciometro que en nuestro caso imitaría el nivel del agua que contiene la Estación Hidropónica. | 🟢  |
 | 1.2 | **Clima (Real):** Lectura de temperatura y humedad ambiente utilizando el sensor digital AHT20 a través del bus I2C. | 🟢 |
 | 1.3 | **Interfaz de entrada local:** Lectura no bloqueante (con rutinas de anti-rebote por software) de botones para la navegación del menú y botones para alternar los modos del sistema (`NORMAL` / `SET_UP`). <br> Logramos concretar una interfaz en la cual podemos navegar mediante el uso de 4 botones de una matriz de botones, de esta manera tenemos, un boton para cambiar el modo de setup a configuración, luego dos de navegación que serán también los que incrementen y decrementen los valores, y por último uno de enter/guardado. | 🟢 | 
+<p align="center"><em>Tabla 4.7: Tabla de implementaciones: Sensores.</em></p>
 
 #### **Actuadores**  
 
@@ -621,6 +620,7 @@ En la siguiente sección demostramos todas las implementaciones que habíamos pr
 | :---- | :-------- | :------ |
 | 2.1 | **Actuadores de simulación (Bombas/Ventilación):** Encendido y apagado de LEDs/Relés gestionados por retardos no bloqueantes basados en el tick del Systick (1ms). | 🟢 |
 | 2.2 | **Alarmas sonoras:** Emisión de alertas mediante un Buzzer (accionado por PWM o GPIO) ante fallas críticas del sistema o confirmaciones de guardado. | 🟢 |
+<p align="center"><em>Tabla 4.8: Tabla de implementaciones: Actuadores.</em></p>
 
 #### **Interfaz y comunicaciones**  
 
@@ -628,12 +628,14 @@ En la siguiente sección demostramos todas las implementaciones que habíamos pr
 | :---- | :-------- | :------ |
 | 3.1 | **Interfaz Visual Local (Display):** Actualización periódica de un menú interactivo en una pantalla LCD 16x2 para la visualización y configuración de parámetros sin depender de la red. <br> Se desarrolló una interfaz visual que contiene toda la información necesaria para poder utilizar el sistema completo, y además nos comunica las fallas que se produzcan  | 🟢 |
 | 3.2 | **Telemetría remota:** Envío de tramas de estado y alertas por UART utilizando un módulo Bluetooth HM-10 para monitoreo desde una aplicación móvil. | 🟢 |
+<p align="center"><em>Tabla 4.9: Tabla de implementaciones: Interfaz y comunicaciones.</em></p>
 
 #### **Almacenamiento**  
 
 | ID | Descripción | Estado |
 | :---- | :-------- | :------ |
 | 4.1 | **Gestión de Recetas (EEPROM):** Lectura y escritura de parámetros de configuración (tiempos de riego, umbrales térmicos) en una memoria EEPROM externa vía I2C para garantizar la persistencia ante cortes de energía. | 🟢  |
+<p align="center"><em>Tabla 4.10: Tabla de implementaciones: Almacenamiento.</em></p>
 
 ## 4.10 Comparación con sistemas similares
 
