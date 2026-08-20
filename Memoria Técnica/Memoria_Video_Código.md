@@ -15,7 +15,7 @@ Curso 3 – Grupo 1
 Avincetto, Franco Joaquín — Legajo 106747  
 Nishihara, Leonardo — Legajo 88627 
 
-**Fecha:** 10/07/2026  
+**Fecha:** 20/08/2026  
 **Cuatrimestre de cursada:** 1er cuatrimestre 2026  
 
 *Trabajo realizado entre julio de 2026 y agosto de 2026*
@@ -40,7 +40,7 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
 | 1.0 | Entrega de la estructura básica de la memoria | 10/07/2026 |
 | 2.0 | Update código: Versión 2.0 con correcciones | 10/08/2026 |
 | 3.0 | Update código:Versión 3.0 con correcciones de errores y nuevas optimizaciones para el control de las aplicaciones del proyecto. | 13/08/2026 |
-| 4.0 | Entrega No 1 de la versión completa de la memoria | xx/08/2026 |
+| 4.0 | Primera entrega de la versión completa de la memoria | 20/08/2026 |
 
 
 
@@ -87,8 +87,7 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
   - [4.7 Cálculo del factor de uso de CPU (U)](#47-cálculo-del-factor-de-uso-de-cpu-u)
   - [4.8 Gestión de bajo consumo y justificación](#48-gestión-de-bajo-consumo-y-justificación)
   - [4.9 Cumplimiento de requisitos](#49-cumplimiento-de-requisitos)
-  - [4.10 Comparación con sistemas similares](#410-comparación-con-sistemas-similares)
-  - [4.11 Documentación del desarrollo realizado](#411-documentación-del-desarrollo-realizado)
+  - [4.10 Documentación del desarrollo realizado](#410-documentación-del-desarrollo-realizado)
 - [Capítulo 5: Conclusiones](#capítulo-5-conclusiones)
   - [5.1 Resultados obtenidos](#51-resultados-obtenidos)
   - [5.2 Lecciones aprendidas](#52-lecciones-aprendidas)
@@ -637,9 +636,7 @@ En la siguiente sección demostramos todas las implementaciones que habíamos pr
 | 4.1 | **Gestión de Recetas (EEPROM):** Lectura y escritura de parámetros de configuración (tiempos de riego, umbrales térmicos) en una memoria EEPROM externa vía I2C para garantizar la persistencia ante cortes de energía. | 🟢  |
 <p align="center"><em>Tabla 4.10: Tabla de implementaciones: Almacenamiento.</em></p>
 
-## 4.10 Comparación con sistemas similares
-
-## 4.11 Documentación del desarrollo realizado
+## 4.10 Documentación del desarrollo realizado
 El desarrollo técnico se encuentra plenamente documentado en el repositorio, incluyendo:
 * Código fuente en C
   * task_sensor.c / .h: Filtros anti-rebote y lectura mixta (ADC/GPIO).
