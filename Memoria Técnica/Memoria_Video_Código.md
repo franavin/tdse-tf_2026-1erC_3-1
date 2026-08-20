@@ -40,6 +40,7 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
 | 1.0 | Entrega de la estructura básica de la memoria | 10/07/2026 |
 | 2.0 | Update código: Versión 2.0 con correcciones | 10/08/2026 |
 | 3.0 | Update código:Versión 3.0 con correcciones de errores y nuevas optimizaciones para el control de las aplicaciones del proyecto. | 13/08/2026 |
+| 4.0 | Entrega No 1 de la versión completa de la memoria | xx/08/2026 |
 
 
 
@@ -724,4 +725,4 @@ Referencias internas del repositorio:
 
 **Fin de la Memoria Técnica**  
 Autores: Avincetto, Franco Joaquín, Nishihara, Leonardo
-Fecha de edición: 
+Fecha de edición: 20/8/2026
