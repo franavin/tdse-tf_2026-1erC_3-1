@@ -206,7 +206,7 @@ En las tablas 2.2 a 2.4 se presentan 3 casos de uso para el sistema.
 | **Flujo principal** | 1. La máquina de estados del firmware evalúa que el tiempo transcurrido es igual o mayor al intervalo de la receta de la EEPROM. <br> 2. El sistema transita al sub-estado `RIEGO_ACTIVO`. <br> 3. Se acciona el LED/Relé que simula la bomba de agua mediante una salida digital no bloqueante. <br> 4. El Display OLED se actualiza reflejando el estado "Riego en proceso...". <br> 5. Se envía una trama de telemetría por el módulo HM-10 (Bluetooth) informando el evento. <br> 6. Al completarse el tiempo de riego estipulado, la máquina de estados apaga el actuador y regresa al sub-estado de espera. |
 | **Flujos alternativos** | 1.a. Si la temperatura medida por el sensor SHT3x supera el umbral de la receta mientras se espera el riego, el microcontrolador activa de manera independiente la salida PWM del ventilador (LED/Relé) sin bloquear la ejecución del Super-Loop. |
 
-<p align="center"><em>Tabla 2.2: Caso de uso 2: Ejecución del Ciclo Automático de Riego (NORMAL)</em></p>
+<p align="center"><em>Tabla 2.3: Caso de uso 2: Ejecución del Ciclo Automático de Riego (NORMAL)</em></p>
 
 | Elemento | Definición |
 | :---- | :---- |
@@ -228,7 +228,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <div align="center">
 <img width="500" alt="image PF259875 en feature-description-include-personalized-no-cpn-large" src="https://github.com/user-attachments/assets/22dc6ffa-1342-477c-853c-d37268ec9ac3" />
 <br>
-<em>Figura 2.1 — Placa NUCLEO-F103RB.</em>
+<em>Figura 2.1: Placa NUCLEO-F103RB.</em>
   </div>
 <br>
 
@@ -243,7 +243,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <div align="center">
 <img width="350" alt="AHT20" src="https://github.com/user-attachments/assets/cc2b5e63-a28b-4fe5-93e3-87fdc730b1f0" />
 <br>
-<em>Figura 2.2 — Módulo sensor de temperatura y humedad AHT20.</em>
+<em>Figura 2.2: Módulo sensor de temperatura y humedad AHT20.</em>
   </div>
 <br>
 
@@ -259,7 +259,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <div align="center">
 <img width="517" alt="EEPROM" src="https://github.com/user-attachments/assets/5d942240-1d98-47d0-aa1e-80d448e1851c" />
 <br>
-<em>Figura 2.3 — Módulo EEPROM AT24C32.</em>
+<em>Figura 2.3: Módulo EEPROM AT24C32.</em>
   </div>
 <br>
 
@@ -270,7 +270,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <div align="center">
 <img width="350" alt="HM-10" src="https://github.com/user-attachments/assets/cca3fa04-a837-4e46-8d8e-a35838bd8e81" />
 <br>
-<em>Figura 2.4 — Módulo Bluetooth bajo consumo HM-10.</em>
+<em>Figura 2.4: Módulo Bluetooth bajo consumo HM-10.</em>
   </div>
 <br>
 
@@ -316,7 +316,7 @@ El hardware constará de una placa base para los siguientes periféricos:
 <div align="center">
 <img width="1594" height="877" alt="Esquematico" src="https://github.com/user-attachments/assets/29a8cf53-914c-400d-8a19-9a03485117c1" />
 <br>
-<em>Figura 3.3 — Esquemático del sistema.</em>
+<em>Figura 3.3: Esquemático del sistema.</em>
   </div>
 <br>
 
@@ -425,15 +425,17 @@ Una vez que pudimos comprobar que las comunicaciones físicas entre los módulos
 En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas modificaciones, por ejemplo, cuando encendíamos el sistema, y no nos conectábamos al módulo bluetooth, este comenzaba a enviarse comandos "perdidos" entre la placa NUCLEO y el módulo haciendo que se genere un bucle infinito de preguntas y respuestas sin sentido. La solución para ese caso fue implementar un filtro para aquellos mensajes que se generen entre placa y módulo cuando no hay nadie conectado, y lo mismo para cuando si hay alguien conectado.
 
 <div align="center">
+  
 | Ensayo | Resultado | Estado |
 | --- | --- | :---: |
 | Debounce botones ON/OFF | Eventos limpios sobre FSM | ✅ |
 | FSM de sistema (`NORMAL/SETUP/ERROR`) | Transiciones válidas en logs | ✅ |
 | Persistencia flash | Lectura/escritura de estado y calibración | ✅ |
 | Telemetría BT | Tramas de envío y recepción correctas | ✅ |
+
 </div>
 
-<p align="center"><em>Tabla 4.1: Ensayos y Resultados de Software.</em></p>
+<p align="center"><em>Tabla 4.2: Ensayos y Resultados de Software.</em></p>
 
 ## 4.3 Pruebas de integración
 La integración del proyecto es algo que desarrollamos en cada paso a medida que íbamos incluyendo más módulos para probar, como primer instancia teníamos la parte física, el medir las señales que les llegaban, si el consumo de las mismas era el correcto por ejemplo, y como segunda instancia teníamos la ejecución del código, y ver como reaccionaba a los distintos módulos. Pero todo eso lo realizábamos prácticamente en el mismo momento, ya que podía pasar que la conexión entre placa y módulo era correcta, pero luego cuando queríamos ejecutar una acción sobre estos, no ocurría nada por algún desliz en el código o configuración de los pines. 
@@ -441,18 +443,18 @@ La integración del proyecto es algo que desarrollamos en cada paso a medida que
 Por esto, es que decidimos ir probando módulo por módulo, incluyéndolos de a poco y una vez que teníamos el sistema completo funcional, pasamos a la parte de desarrollar el sistema en un PCB del tipo perforado.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba4.jpg" />
-<p align="center"><em>Figura 4.5: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
+<p align="center"><em>Figura 4.4: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
 
 Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de módulos y sensores del sistema, ya que es dónde íbamos a colocar la placa NUCLEO, que es la que comanda todas las operaciones para que el sistema funcione. En este fuimos integrando poco a poco las conexiones con cables del tipo multipar, asegurando primero, las conexiones de GND, de 5V y 3.3V y luego pasar a las conexiones de los pines de funcionalidad que necesitaba cada módulo en particular. Por otro lado, se decidió utilizar un segundo PCB perforado para no saturar tanto las conexiones dentro del PCB principal, y además, en este segundo PCB podríamos aislar las conexiones al relé, el cual tiene la conexión a la fuente externa, y otros módulos como el de memoria EEPROM, y el módulo AHT20, sensor de temperatura y humedad.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_principal.jpg" />
-<p align="center"><em>Figura 4.6: Esquemático del PCB principal del sistema completo</em></p>
+<p align="center"><em>Figura 4.5: Esquemático del PCB principal del sistema completo</em></p>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_secundario.jpg" />
-<p align="center"><em>Figura 4.7: Esquemático del PCB secundario del sistema completo</em></p>
+<p align="center"><em>Figura 4.6: Esquemático del PCB secundario del sistema completo</em></p>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_completa.jpg" />
-<p align="center"><em>Figura 4.8: Vista en general del sistema completo</em></p>
+<p align="center"><em>Figura 4.7: Vista en general del sistema completo</em></p>
 
 **Video de integración en funcionamiento**  
 
@@ -517,12 +519,12 @@ En las siguientes figuras se muestran el reporte de uso de memoria del build; se
 <div align="center">
   <img width="1125" height="689" alt="Rainbird" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/console.jpg" />
 <br>
-<em>Figura 4.9: Salida del comando arm-none-eabi-size tras la compilación.</em>
+<em>Figura 4.8: Salida del comando arm-none-eabi-size tras la compilación.</em>
   </div>
 <br>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/build%20analizer.jpg" />
-<p align="center"><em>Figura 4.10: Desglose de uso de memoria RAM y FLASH (Build Analyzer).</em></p>
+<p align="center"><em>Figura 4.9: Desglose de uso de memoria RAM y FLASH (Build Analyzer).</em></p>
 
 ## 4.6 Medición y análisis de WCET por tarea
 
@@ -541,6 +543,8 @@ El método utiliza el temporizador del sistema (`SysTick`) para capturar marcas 
 
 ## Tabla de Métricas Obtenidas
 
+<div align="center">
+  
 | Índice | Módulo / Tarea | NOE | BCET ($\mu\text{s}$) | LET ($\mu\text{s}$) | **WCET ($\mu\text{s}$)** | Estado |
 | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
 | `[0]` | **Task Sensor** | 1.932.164 | 190 | 190 | 26.192 | Regular |
@@ -548,6 +552,11 @@ El método utiliza el temporizador del sistema (`SysTick`) para capturar marcas 
 | `[2]` | **Task Actuator** | 1.932.164 | 62 | 62 | 142 | Excelente |
 | `[3]` | **Task Display** | 1.932.164 | 13 | 13 | 287 | Excelente |
 | `[4]` | **Task Bluetooth** | 1.932.164 | 9 | 9 | **52.530** | Bloqueante |
+
+</div>
+
+<p align="center"><em>Tabla 4.2: Ensayos y Resultados de Software.</em></p>
+
 
 ## 4.7 Cálculo del factor de uso de CPU (U)
 
