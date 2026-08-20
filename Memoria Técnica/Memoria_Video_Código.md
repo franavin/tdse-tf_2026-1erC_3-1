@@ -520,9 +520,60 @@ En las siguientes figuras se muestran el reporte de uso de memoria del build; se
 
 ## 4.6 Medición y análisis de WCET por tarea
 
+## Método de Medición Empleado
 
+Para evaluar el comportamiento temporal del sistema bajo la arquitectura de **Sistema Disparado por Eventos (ETS)**, se instrumentó un módulo de perfilado (*profiling*) en el despachador de tareas (*scheduler*).
+
+El método utiliza el temporizador del sistema (`SysTick`) para capturar marcas de tiempo justo antes y después de invocar a cada función `.task_update()`. La estructura registra los siguientes parámetros para cada tarea:
+
+* **`NOE` (Number of Executions):** Cantidad total de iteraciones completadas por la tarea.
+* **`LET` (Last Execution Time):** Duración de la última ejecución en microsegundos ($\mu\text{s}$).
+* **`BCET` (Best-Case Execution Time):** Menor tiempo de ejecución registrado ($\mu\text{s}$).
+* **`WCET` (Worst-Case Execution Time):** Mayor tiempo de ejecución registrado ($\mu\text{s}$).
+
+---
+
+## Tabla de Métricas Obtenidas
+
+| Índice | Módulo / Tarea | NOE | BCET ($\mu\text{s}$) | LET ($\mu\text{s}$) | **WCET ($\mu\text{s}$)** | Estado |
+| :---: | :--- | :---: | :---: | :---: | :---: | :--- |
+| `[0]` | **Task Sensor** | 1.932.164 | 190 | 190 | 26.192 | Regular |
+| `[1]` | **Task System** | 1.932.164 | 21 | 34 | **1.058.301** | **Crítico** |
+| `[2]` | **Task Actuator** | 1.932.164 | 62 | 62 | 142 | Excelente |
+| `[3]` | **Task Display** | 1.932.164 | 13 | 13 | 287 | Excelente |
+| `[4]` | **Task Bluetooth** | 1.932.164 | 9 | 9 | **52.530** | Bloqueante |
 
 ## 4.7 Cálculo del factor de uso de CPU (U)
+
+El **Factor de Uso ($U$)** representa la fracción de capacidad de la CPU consumida por las tareas dentro del período del ciclo de ejecución ($T = 1000\ \mu\text{s} = 1\text{ ms}$). La ecuación general es:
+
+$$U = \sum_{i=0}^{N-1} \frac{C_i}{T_i} = \frac{\sum_{i=0}^{4} C_i}{1000\ \mu\text{s}}$$
+
+### 1. Factor de Uso Nominal (Régimen Permanente / LET)
+
+Tomando los tiempos típicos de ejecución ($LET$):
+
+$$\sum C_{nominal} = 190 + 34 + 62 + 13 + 9 = 308\ \mu\text{s}$$
+
+$$U_{nominal} = \frac{308\ \mu\text{s}}{1000\ \mu\text{s}} = 0{,}308 \implies \mathbf{30{,}8\%}$$
+
+> **Interpretación:** En operación normal, el microcontrolador opera holgadamente con un **$69{,}2\%$ de tiempo ocioso (Idle)**.
+
+### 2. Factor de Uso en el Peor Caso Registrado (Pico / WCET)
+
+Tomando la suma de los máximos absolutos ($WCET$):
+
+$$\sum WCET = 26.192 + 1.058.301 + 142 + 287 + 52.530 = 1.137.452\ \mu\text{s}$$
+
+$$U_{peor\_caso} = \frac{1.137.452\ \mu\text{s}}{1000\ \mu\text{s}} = 1137{,}45 \implies \mathbf{1137{,}45\%}$$
+
+> **Interpretación:** Un $U > 100\%$ demuestra que el sistema sufrió una pérdida total del determinismo temporal durante ese instante.
+
+Apartir de lo calculado se puede realizar el siguiente análisis:
+
+1. **Alta eficiencia nominal:** Durante la mayor parte del tiempo, la arquitectura ETS mantiene una baja carga de trabajo sobre el microcontrolador ($30{,}8\%$), lo que confirma el buen diseño general de los módulos de periféricos (Display y Actuadores).
+2. **Bloqueo crítico en `Task System`:** El WCET registrado de **$1{,}058\text{ s}$** quiebra las garantías de tiempo real. Este fallo ocurre por el uso de llamadas bloqueantes del tipo `HAL_Delay()` o esperas síncronas de bus I2C/EEPROM dentro de la tarea.
+3. **Inercia en Comunicaciones UART:** La tarea Bluetooth registra un pico de **$52{,}53\text{ ms}$** al responder mensajes, producto de la transmisión por polling en `HAL_UART_Transmit`.
 
 
 ## 4.8 Gestión de bajo consumo y justificación
@@ -634,6 +685,8 @@ Se documenta el uso de IA según requerimiento docente y archivo [`listado de co
 6. [Datasheet Display LCD 1602A](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5773/CN0295D%20other%20related%20document.pdf)
 7. [Datasheet Módulo de Relés de 4 Canales](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5773/TS0011%20DATASHEET.pdf)}
 8. [Datasheet Memoria EEPROM](https://ww1.microchip.com/downloads/en/devicedoc/atmel-8787-seeprom-at24c04c-08c-datasheet.pdf)
+9. [Trabajo usado como referencia Sistema de gestión de órganos de tubos con microcontroladores](https://github.com/mpdcfiuba/tdse-tf_3-4/blob/main/Readme.md)
+10.  [Trabajo usado como referencia Dimmer + Switch (Ventilador & Luces)](https://github.com/Embebidos-Fran-Marcos-Nacho/tdse-tf_1-2/blob/Memoria-final-y-video/Memoria%20t%C3%A9cnica/Memoria%20t%C3%A9cnica.md)
 
 
 Referencias internas del repositorio:
