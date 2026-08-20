@@ -669,6 +669,7 @@ El desarrollo técnico se encuentra plenamente documentado en el repositorio, in
 * **Impacto severo del código bloqueante:** Se comprobó empíricamente cómo el uso de retardos pasivos (como `HAL_Delay`) o las esperas síncronas en los buses de comunicación (I2C/UART) colapsan un sistema reactivo. Esta vulnerabilidad, detectada en el manejo de la memoria y la transmisión Bluetooth por *polling*, evidenció que en sistemas de tiempo real estricto es mandatorio delegar estos procesos al hardware (Interrupciones o DMA).
 * **Aislación y dominios de potencia:** Se comprendió la necesidad estricta de separar las fuentes de alimentación. Se constató que la placa NUCLEO no puede suministrar los picos de corriente necesarios para conmutar las bobinas de los relés (~110 mA) sin requerir una fuente externa dedicada de 5V.
 * **Filtrado y acondicionamiento de señales:** Se evidenció la importancia de aplicar máquinas de estado con retardos integrados para el anti-rebote (*debounce*) de botones y el filtrado temporal del ADC, evitando falsos positivos causados por ruido eléctrico o fluctuaciones mecánicas.
+* **Es altamente recomendable trabajar con espacio suficiente al soldar. Esto evita el amontonamiento de cables, facilita el acceso con el soldador, previene fallas por acumulación de estaño y hace que cualquier error sea mucho más fácil de detectar y reparar.
 
 ## 5.3 Próximos pasos
 
