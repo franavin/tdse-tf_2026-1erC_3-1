@@ -250,7 +250,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 ### 2.3.4 Módulo de actuación e I/O
 * Unificamos el disparo de elementos dispares mediante arrays de configuración.
 * Se accionan los relés optoacoplados con lógica de control inversa.
-* Gestionamos la atenuación del display LCD 16x2 mediante el uso de una etapa transistorizada (NPN) en paralelo, lo que permite alternar entre el 100% y el 20% de retroiluminación sin requerir módulos PWM complejos.
+* Se incorporó un potenciómetro en la etapa de alimentación del backlight del LCD, posibilitando la regulación manual y continua de la intensidad lumínica del display de forma puramente analógica.
 
 ### 2.3.5 Módulo de memoria
 * Utiliza la memoria externa EEPROM AT24C32 en el bus I2C compartiendo líneas con el sensor AHT20.
