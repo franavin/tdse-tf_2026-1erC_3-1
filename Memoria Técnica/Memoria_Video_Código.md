@@ -657,11 +657,23 @@ El desarrollo técnico se encuentra plenamente documentado en el repositorio, in
 
 ## 5.1 Resultados obtenidos
 
+* **Prototipo funcional (MVP) validado:** Se logró diseñar e implementar exitosamente una estación hidropónica automatizada utilizando un microcontrolador STM32 bajo una arquitectura *bare-metal*.
+* **Arquitectura de software robusta:** La implementación del patrón Super-Loop disparado por eventos (ETS) junto con máquinas de estado no bloqueantes permitió orquestar múltiples periféricos asincrónicos (I2C, UART, ADC) sin comprometer la reactividad de la interfaz de usuario.
+* **Eficiencia computacional:** El análisis de *profiling* demostró que el sistema es altamente eficiente en régimen nominal, otorgando al procesador un tiempo ocioso (Idle) cercano al 69%, lo que garantiza margen térmico y de procesamiento para futuras expansiones.
+* **Identificación de fallas de determinismo temporal:** Si bien el prototipo cumple con la funcionalidad requerida, el análisis de *profiling* permitió detectar una situación crítica en la máquina de estados principal. Se registró un WCET (*Worst-Case Execution Time*) superior a 1 segundo en la tarea del sistema (`task_system`), lo que provoca una pérdida temporal del determinismo del *scheduler* y quiebra las garantías de tiempo real del sistema durante ese instante.
+* **Persistencia y telemetría:** Se logró integrar satisfactoriamente el almacenamiento seguro de "recetas" en la memoria EEPROM y la comunicación bidireccional mediante el módulo Bluetooth HM-10.
 
 ## 5.2 Lecciones aprendidas
 
+* **Impacto severo del código bloqueante:** Se comprobó empíricamente cómo el uso de retardos pasivos (como `HAL_Delay`) o las esperas síncronas en los buses de comunicación (I2C/UART) colapsan un sistema reactivo. Esta vulnerabilidad, detectada en el manejo de la memoria y la transmisión Bluetooth por *polling*, evidenció que en sistemas de tiempo real estricto es mandatorio delegar estos procesos al hardware (Interrupciones o DMA).
+* **Aislación y dominios de potencia:** Se comprendió la necesidad estricta de separar las fuentes de alimentación. Se constató que la placa NUCLEO no puede suministrar los picos de corriente necesarios para conmutar las bobinas de los relés (~110 mA) sin requerir una fuente externa dedicada de 5V.
+* **Filtrado y acondicionamiento de señales:** Se evidenció la importancia de aplicar máquinas de estado con retardos integrados para el anti-rebote (*debounce*) de botones y el filtrado temporal del ADC, evitando falsos positivos causados por ruido eléctrico o fluctuaciones mecánicas.
 
 ## 5.3 Próximos pasos
+
+* **Transición a hardware físico industrial:** Reemplazar los componentes de simulación (potenciómetro y LEDs) por sensores de nivel de agua de flotador magnético y bombas sumergibles de 220V gestionadas por contactores o relés de estado sólido (SSR).
+* **Optimización de comunicaciones:** Migrar las transmisiones UART del módulo Bluetooth y las rutinas I2C de la EEPROM hacia una arquitectura basada netamente en Interrupciones (IT) o Acceso Directo a Memoria (DMA), eliminando así los bloqueos residuales en la tarea del sistema.
+* **Expansión del control agronómico:** Integrar circuitos de acondicionamiento para sondas analógicas de pH y conductividad eléctrica (EC), junto con micro-bombas peristálticas para automatizar la dosificación de nutrientes en lazo cerrado.
 
 
 
