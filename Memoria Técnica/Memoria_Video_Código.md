@@ -314,7 +314,7 @@ El hardware constará de una placa base para los siguientes periféricos:
 
 
 <div align="center">
-<img width="1004" height="571" alt="Esquematico" src="https://github.com/user-attachments/assets/5f7d139b-3688-4e3a-a2a2-9475ca414d92" />
+<img width="1594" height="877" alt="Esquematico" src="https://github.com/user-attachments/assets/29a8cf53-914c-400d-8a19-9a03485117c1" />
 <br>
 <em>Figura 3.3 — Esquemático del sistema.</em>
   </div>
@@ -397,13 +397,13 @@ Para el potenciómetro se decidió utilizar uno de valor 1kΩ, ya que estos con
 Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos como principal sujeto de prueba el módulo de las memorias EEPROM y el display, acá verificamos que lo que se guardaba en pantalla, luego quedaba en la memoria y viceversa. Para el módulo de memorias no hizo falta conectarles resistencias de pull-up, ya que estas venían incluidas dentro del modulo en el que se conserva la memoria.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba1.jpg" />
-<p align="center"><em>Figura: Primeras pruebas en protoboard - Funcionamiento del Modo NORMAL</em></p>
+<p align="center"><em>Figura 4.1: Primeras pruebas en protoboard - Funcionamiento del Modo NORMAL</em></p>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba2.jpg" />
-<p align="center"><em>Figura: Primeras pruebas en protoboard - Funcionamiento del Modo SETUP</em></p>
+<p align="center"><em>Figura 4.2: Primeras pruebas en protoboard - Funcionamiento del Modo SETUP</em></p>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba3.jpg" />
-<p align="center"><em>Figura: Primeras pruebas en protoboard - Funcionamiento del Modo ERROR</em></p>
+<p align="center"><em>Figura 4.3: Primeras pruebas en protoboard - Funcionamiento del Modo ERROR</em></p>
 
 | Ensayo | Resultado | Estado |
 | --- | --- | :---: |
@@ -412,6 +412,8 @@ Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos co
 | Enviar señales al módulo de relés y esperar la respuesta física | Se escuchó el ruido mecánico característico de relés y encendido de LEDs | ✅ |
 | Variar potenciómetro del nivel de agua para observar el conversor ADC | Verificación mediante multímetro | ✅ |
 | Verificación de tensión en comunicaciones físicas para las líneas I2C y UART | Valores dentro de lo previsto |✅|
+
+<p align="center"><em>Tabla 4.1: Ensayos y Resultados de Hardware.</em></p>
 
 ## 4.2 Pruebas funcionales de firmware
 Para las primeras pruebas del firmware, ya con actuadores y sensores funcionando, incluimos ahora al modulo de sistema, y en conjunto a este conectamos el display, para comenzar a ver una primera impresión de cómo sería el sistema completo. En este punto, dejamos de lado los "códigos de prueba", y ya utilizábamos el código de cómo debería funcionar realmente en el sistema final solo que incluíamos algún `LOGGER_INFO` para hacer troubleshooting con alguno de los módulo. Ejemplo: `[info] >>> SENSOR: ID 3 confirmado como PRESIONADO!` así verificabamos que el DEBOUNCE fue implementado de manera correcta.
@@ -422,12 +424,16 @@ Una vez que pudimos comprobar que las comunicaciones físicas entre los módulos
 
 En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas modificaciones, por ejemplo, cuando encendíamos el sistema, y no nos conectábamos al módulo bluetooth, este comenzaba a enviarse comandos "perdidos" entre la placa NUCLEO y el módulo haciendo que se genere un bucle infinito de preguntas y respuestas sin sentido. La solución para ese caso fue implementar un filtro para aquellos mensajes que se generen entre placa y módulo cuando no hay nadie conectado, y lo mismo para cuando si hay alguien conectado.
 
+<div align="center">
 | Ensayo | Resultado | Estado |
 | --- | --- | :---: |
 | Debounce botones ON/OFF | Eventos limpios sobre FSM | ✅ |
 | FSM de sistema (`NORMAL/SETUP/ERROR`) | Transiciones válidas en logs | ✅ |
 | Persistencia flash | Lectura/escritura de estado y calibración | ✅ |
 | Telemetría BT | Tramas de envío y recepción correctas | ✅ |
+</div>
+
+<p align="center"><em>Tabla 4.1: Ensayos y Resultados de Software.</em></p>
 
 ## 4.3 Pruebas de integración
 La integración del proyecto es algo que desarrollamos en cada paso a medida que íbamos incluyendo más módulos para probar, como primer instancia teníamos la parte física, el medir las señales que les llegaban, si el consumo de las mismas era el correcto por ejemplo, y como segunda instancia teníamos la ejecución del código, y ver como reaccionaba a los distintos módulos. Pero todo eso lo realizábamos prácticamente en el mismo momento, ya que podía pasar que la conexión entre placa y módulo era correcta, pero luego cuando queríamos ejecutar una acción sobre estos, no ocurría nada por algún desliz en el código o configuración de los pines. 
@@ -435,18 +441,18 @@ La integración del proyecto es algo que desarrollamos en cada paso a medida que
 Por esto, es que decidimos ir probando módulo por módulo, incluyéndolos de a poco y una vez que teníamos el sistema completo funcional, pasamos a la parte de desarrollar el sistema en un PCB del tipo perforado.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba4.jpg" />
-<p align="center"><em>Figura: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
+<p align="center"><em>Figura 4.5: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
 
 Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de módulos y sensores del sistema, ya que es dónde íbamos a colocar la placa NUCLEO, que es la que comanda todas las operaciones para que el sistema funcione. En este fuimos integrando poco a poco las conexiones con cables del tipo multipar, asegurando primero, las conexiones de GND, de 5V y 3.3V y luego pasar a las conexiones de los pines de funcionalidad que necesitaba cada módulo en particular. Por otro lado, se decidió utilizar un segundo PCB perforado para no saturar tanto las conexiones dentro del PCB principal, y además, en este segundo PCB podríamos aislar las conexiones al relé, el cual tiene la conexión a la fuente externa, y otros módulos como el de memoria EEPROM, y el módulo AHT20, sensor de temperatura y humedad.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_principal.jpg" />
-<p align="center"><em>Figura: Esquemático del PCB principal del sistema completo</em></p>
+<p align="center"><em>Figura 4.6: Esquemático del PCB principal del sistema completo</em></p>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_secundario.jpg" />
-<p align="center"><em>Figura: Esquemático del PCB secundario del sistema completo</em></p>
+<p align="center"><em>Figura 4.7: Esquemático del PCB secundario del sistema completo</em></p>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_completa.jpg" />
-<p align="center"><em>Figura: Vista en general del sistema completo</em></p>
+<p align="center"><em>Figura 4.8: Vista en general del sistema completo</em></p>
 
 **Video de integración en funcionamiento**  
 
@@ -471,7 +477,7 @@ Metodología aplicada:
 | NORMAL - REGANDO  | 13.90 | 0.069 | El sistema envía las señales para activar los relés. |
 | ERROR | 14.1 | 0.070 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
 
-<em>Tabla — Consumo total medido a 5 V (valores pico).</em><br><br>
+<p align="center"><em>Tabla 4.3 — Consumo total medido a 5 V (valores pico).</em></p><br><br>
 
 | Modo | $I_{pico}$ @ 3.3 V [mA] | $P_{pico}$ @ 3.3 V [W] | Observaciones |
 | --- | ---: | ---: | --- |
@@ -481,7 +487,7 @@ Metodología aplicada:
 | NORMAL - REGANDO  | 5.20 | 0.0172 | El sistema envía las señales para activar los relés. |
 | ERROR | 4.24 | 0.0140 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
 
-<em>Tabla — Consumo total medido a 3.3 V (valores pico).</em><br><br>
+<p align="center"><em>Tabla 4.4 — Consumo total medido a 3.3 V (valores pico).</em></p><br><br>
 
 **Consumo de relés durante los distintos modos de operación** 
 
@@ -495,7 +501,7 @@ El sistema siempre se carga con los valores que pueda encontrar en la memoria, e
 | NORMAL - REGANDO  | 112 | 0.560 | El sistema envía las señales para activar los relés. |
 | ERROR | 57 | 0.285 | ERROR de TANQUE VACÍO, el relé del ventilador seguirá prendido, por lo tanto sigue consumiendo. |
 
-<em>Tabla — Consumo total medido a 5 V de fuente externa (valores pico).</em><br><br>
+<p align="center"><em>Tabla 4.5 — Consumo total medido a 5 V de fuente externa (valores pico).</em></p><br><br>
 
 Análisis:
 - La potencia se calculó como `P = V * I`, usando `V = 5 V` y corriente pico medida en cada modo.
@@ -511,12 +517,12 @@ En las siguientes figuras se muestran el reporte de uso de memoria del build; se
 <div align="center">
   <img width="1125" height="689" alt="Rainbird" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/console.jpg" />
 <br>
-<em>Figura: Console</em>
+<em>Figura 4.9: Salida del comando arm-none-eabi-size tras la compilación.</em>
   </div>
 <br>
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/build%20analizer.jpg" />
-<p align="center"><em>Figura: Build Analizer</em></p>
+<p align="center"><em>Figura 4.10: Desglose de uso de memoria RAM y FLASH (Build Analyzer).</em></p>
 
 ## 4.6 Medición y análisis de WCET por tarea
 
