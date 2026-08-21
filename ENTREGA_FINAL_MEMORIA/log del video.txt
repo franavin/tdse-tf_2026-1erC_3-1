@@ -1,0 +1,124 @@
+/************************** log de consola en debugg ********************/
+
+Open On-Chip Debugger 0.12.0+dev-00623-g0ba753ca7 (2025-04-30-14:17) [https://github.com/STMicroelectronics/OpenOCD]
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : Listening on port 6666 for tcl connections
+Info : Listening on port 4444 for telnet connections
+Info : STLINK V2J46M33 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.242436
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+Info : clock speed 4000 kHz
+Info : stlink_dap_op_connect(connect)
+Info : SWD DPIDR 0x1ba01477
+Info : [STM32F103RBTx.cpu] Cortex-M3 r1p1 processor detected
+Info : [STM32F103RBTx.cpu] target has 6 breakpoints, 4 watchpoints
+Info : [STM32F103RBTx.cpu] Examination succeed
+Info : starting gdb server for STM32F103RBTx.cpu on 3333
+Info : Listening on port 3333 for gdb connections
+Info : accepting 'gdb' connection on tcp/3333
+Info : device id = 0x20036410
+Info : flash size = 128 KiB
+Warn : GDB connection 1 on target STM32F103RBTx.cpu not halted
+undefined debug reason 8 (UNDEFINED) - target needs reset
+Info : accepting 'gdb' connection on tcp/3333
+Warn : GDB connection 2 on target STM32F103RBTx.cpu not halted
+undefined debug reason 8 (UNDEFINED) - target needs reset
+[STM32F103RBTx.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080017e4 msp: 0x20005000, semihosting
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+Info : Padding image section 0 at 0x0800010c with 4 bytes
+[STM32F103RBTx.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080017e4 msp: 0x20005000, semihosting
+[info]  
+[info] app_init is running - Tick [mS] = 1
+[info]  app is a Estacion Hidroponica V1
+[info]  app is a Bare Metal - Event-Triggered Systems (ETS)
+[info]  app is a (Update by Time Code, period = 1mS)
+[info]  g_app_cnt = 0
+[info]  
+[info]   task_sensor_init is running - Tick [mS] = 5
+[info]    task_sensor is a Task Sensor (Sensor Statechart)
+[info]    task_sensor is a Non-Blocking Code
+[info]    task_sensor is a (Update by Time Code, period = 1mS)
+[info]  
+[info]    index = 0   state = 0   event = 0
+[info]  
+[info]    index = 1   state = 0   event = 0
+[info]  
+[info]    index = 2   state = 0   event = 0
+[info]  
+[info]    index = 3   state = 0   event = 0
+[info]  
+[info]    index = 4   state = 0   event = 0
+[info]  
+[info]    index = 5   state = 0   event = 0
+[info]  
+[info]    index = 6   state = 0   event = 0
+[info]   task_system_init is running
+[info]   eeprom_init is running
+[info]    EEPROM Found on I2C bus
+[info]   EEPROM LEIDA: Riego=18, Espera=18
+[info]  
+[info]   task_actuator_init is running - Tick [mS] = 24
+[info]    task_actuator is a Task Actuator (Actuator Statechart)
+[info]    task_actuator is a Non-Blocking Code
+[info]    task_actuator is a (Update by Time Code, period = 1mS)
+[info]  
+[info]    index = 0   state = 0   event = 0   b_event = false
+[info]  
+[info]    index = 1   state = 0   event = 0   b_event = false
+[info]  
+[info]    index = 2   state = 0   event = 0   b_event = false
+[info]  
+[info]    index = 3   state = 0   event = 0   b_event = false
+[info]  
+[info]    index = 4   state = 0   event = 0   b_event = false
+[info]  
+[info]    index = 5   state = 0   event = 0   b_event = false
+[info]  
+[info]   task_display_init is running - Tick [mS] = 36
+[info]    task_display is a Task Display (Display Statechart)
+[info]    task_display is a Non-Blocking Code
+[info]    task_display is a (Update by Time Code, period = 1mS)
+[info]  
+[info]    state = 0   event = 0   b_event = false
+[info]   bluetooth_init is running
+[info] >>> BT Mensaje Completo: C
+[info] >>> SENSOR: ID 3 confirmado como PRESIONADO!
+[info] >>> BT Mensaje Completo: C
+[info] >>> BT Mensaje Completo: R=10000
+[info] >>> BT Mensaje Completo: E=7000
+[info] >>> BT Mensaje Completo: S
+[info] >>> BT Mensaje Completo: Ss
+
+/************************** log de la terminal en el dispositivo conectado ********************/
+18:40:51.474 Connecting to -unnamed- ...
+18:40:52.485 Connected
+18:46:15.518 C
+18:46:15.900 Clima -> Temp: 21.9 C, Hum: 72 %
+18:58:51.571 C
+18:58:51.973 Clima -> Temp: 21.8 C, Hum: 73 %
+19:01:07.304 
+19:01:07.304 !!! ALERTA CRITICA: TANQUE VACIO !!!
+19:01:37.579 
+19:01:37.579 INFO: Agua restablecida. Volviendo a ESPERA.
+19:01:45.039 
+19:01:45.039 !!! ALERTA: BOMBA TRABADA !!!
+19:01:58.980 
+19:01:58.980 INFO: Falla reseteada por operador. Volviendo a ESPERA.
+19:02:15.900 
+19:02:15.900 !!! ALERTA: VENTILADOR TRABADO !!!
+19:02:19.851 
+19:02:19.851 INFO: Falla reseteada por operador. Volviendo a ESPERA.
+19:03:37.786 R=10000
+19:03:38.092 OK! Riego set: 10000 ms
+19:03:54.946 E=7000
+19:03:55.350 OK! Espera set: 7000 ms
+19:04:03.282 S
+19:04:03.637 Error: Comando invalido
+19:04:06.512 Ss
+19:04:06.905 Error: Comando invalido
