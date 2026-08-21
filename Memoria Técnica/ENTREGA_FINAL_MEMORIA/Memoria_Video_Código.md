@@ -101,7 +101,7 @@ La Tabla 0.1 resume el historial de revisiones y entregas de esta memoria.
 # Capítulo 1: Introducción general
 
 ## 1.1 Análisis de necesidad y objetivo
-El cultivo hidropónico es una técnica en la cual se prescinde por completo de un suelo en el que poner aquello que se quiere cultivar, utilizando en su lugar minerales disueltos en agua para formar el sustrato. Para que este método sea exitoso se requiere de ciertos cuidados estrictos en el entorno en que se desarrolla, tanto por los ciclos de oxigenación y el riego de las raíces como por la temperatura y humedad del ambiente. 
+El cultivo hidropónico es una técnica en la cual se prescinde por completo de un suelo en el que poner aquello que se quiere cultivar, utilizando en su lugar minerales disueltos en agua para formar el sustrato. En la Figura 1.1 se muesta un cultivo de lechugas utilizando este método. Para que este método sea exitoso se requiere de ciertos cuidados estrictos en el entorno en que se desarrolla, tanto por los ciclos de oxigenación y el riego de las raíces como por la temperatura y humedad del ambiente. 
 
 Un fallo técnico en un cultivo de este tipo puede ser definitivo para la vida del cultivo. Ya sea porque el tanque que contiene los nutrientes se vacía o hasta si hubo algún error en la medición y envía datos falsos sobre la situación del cultivo (falsos positivos). 
 
@@ -126,16 +126,16 @@ Para la selección de la implementación, se evaluaron tres enfoques principales
 
 En el mercado actual podremos observar que hay distintos tipos de controladores de cultivos, empezando desde lo más básico como un controlador de riego el cual lo que hace es controlar el cierre de una salida de agua según el intervalo de tiempo que se ajuste, y por otro lado tenemos aquellos los cuáles se le suman características tales como controlador mediante Wi-Fi, detector de lluvia, etc. De estos podemos decir dos cosas comparandolos con nuestro caso.
 
-1. **Temporizadores básicos:** Son soluciones económicas y ampliamente utilizadas. Sin embargo, operan a lazo abierto y carecen de entradas para medir el nivel de agua o el estado del entorno. Al no tener retroalimentación, encenderán la bomba independientemente de si hay agua en el tanque, anulando cualquier tipo de seguridad para el hardware.
+1. **Temporizadores básicos:** Son soluciones económicas y ampliamente utilizadas. Sin embargo, operan a lazo abierto y carecen de entradas para medir el nivel de agua o el estado del entorno. Al no tener retroalimentación, encenderán la bomba independientemente de si hay agua en el tanque, anulando cualquier tipo de seguridad para el hardware. En la Figura 1.2 se muestra el Rain Bird 1ZEHTMR que es un temporizador digital de riego monoflujo que funciona en lazo abierto, diseñado para automatizar el paso de agua directamente desde una canilla exterior.
 
 <div align="center">
   <img width="337" height="289" alt="Rainbird" src="https://github.com/user-attachments/assets/c30de87e-6b10-4aa4-9348-cfda652558d7" />
 <br>
-<em>Figura 1.2 — Programador Riego Por Goteo Grifo Automatico Rain Bird.</em>
+<em>Figura 1.2 — Programador Riego Por Goteo Grifo Automatico Rain Rain Bird 1ZEHTMR.</em>
   </div>
 <br>
 
-2. **Enchufes y relés inteligentes:** Proveen conectividad Wi-Fi y control de horarios mediante aplicaciones móviles, donde su principal desventaja es la dependencia crítica de la red Wi-Fi doméstica y servidores. En este caso, un microcorte de internet o una falla en el router local puede dejar al dispositivo inoperante o desconectado de sus rutinas. Además, los de este tipo no suelen contar con interfaces físicas locales (pantallas informativas) para un diagnóstico rápido en el lugar de la instalación.
+2. **Enchufes y relés inteligentes:** Proveen conectividad Wi-Fi y control de horarios mediante aplicaciones móviles, donde su principal desventaja es la dependencia crítica de la red Wi-Fi doméstica y servidores. En este caso, un microcorte de internet o una falla en el router local puede dejar al dispositivo inoperante o desconectado de sus rutinas. Además, los de este tipo no suelen contar con interfaces físicas locales (pantallas informativas) para un diagnóstico rápido en el lugar de la instalación. En la Figura 1.3 se muestra el Shelly Plus 1, un relé inteligente Wi-Fi y Bluetooth compacto de un solo canal (hasta 16A), diseñado para automatizar circuitos eléctricos integrándose dentro de cajas de pared o tableros.
 
 <div align="center">
   <img width="341" height="333" alt="releINT" src="https://github.com/user-attachments/assets/4944cc5c-b6fb-482a-a538-b443d2c3c64f" />
@@ -172,6 +172,9 @@ Módulo de Actuador: Ejecuta las acciones físicas (Display, LEDs, Relés, Buzze
 Esta sección contiene los requisitos originales y los modificados en el informe de avances, además de los casos de uso. 
 
 ## 2.1 Requisitos
+
+En la Tabla 2.1 se presentan los requisitos del proyecto. 
+
 | Grupo | ID | Descripción |
 | :---- | :---- | :---- |
 | **Sensores** | 1.1 | **Nivel de agua (Simulado):** Lectura analógica por ADC (polling/DMA) de un potenciómetro, previo paso por un filtro activo Sallen-Key por hardware. |
@@ -222,7 +225,7 @@ En las tablas 2.2 a 2.4 se presentan 3 casos de uso para el sistema.
 En los siguientes puntos desarrollaremos los modulos principales aplicados al proyecto. 
 
 ### 2.3.1 Módulo de control y orquestación de la plaqueta NUCLEO
-* Implementado sobre una placa de desarrollo STM32 NUCLEO F103RB.
+* Implementado sobre una placa de desarrollo STM32 NUCLEO F103RB (Figura 2.1).
 * Ejecuta un scheduler (Ejecutor Cíclico) basado en arreglos de punteros a funciones, disparando cada 1 ms por el SysTick.
 * Centraliza la Máquina de Estados Finita (FSM) gobernando el comportamiento macro de la estación.
 <div align="center">
@@ -237,7 +240,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 * Implementa filtros temporales (debounce para falsos positivos/negativos) de longitud variable: retardos cortos para pulsadores mecánicos (40 ms) y retardos prolongados para lecturas analógicas de ADC que son propensas a ruido y "oleajes" (100 ms).
 
 ### 2.3.3 Módulo de medición ambiental
-* Compuesto por el sensor digital AHT20 operando bajo el bus I2C.
+* Compuesto por el sensor digital AHT20 (Figura 2.2), operando bajo el bus I2C.
 * Utiliza un driver propio basado en estados internos que permite enviar el comando de medición y ceder el uso del procesador durante los 80 ms físicos requeridos para el cálculo termodinámico, evitando el uso de funciones bloqueantes.
 
 <div align="center">
@@ -253,7 +256,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 * Se incorporó un potenciómetro en la etapa de alimentación del backlight del LCD, posibilitando la regulación manual y continua de la intensidad lumínica del display de forma puramente analógica.
 
 ### 2.3.5 Módulo de memoria
-* Utiliza la memoria externa EEPROM AT24C32 en el bus I2C compartiendo líneas con el sensor AHT20.
+* Utiliza la memoria externa EEPROM AT24C32 (Figura 2.3), en el bus I2C compartiendo líneas con el sensor AHT20.
 * Minimiza la tasa de desgaste de escritura al funcionar como sistema de solo respaldo: se lee una sola vez durante el inicio del sistema (Init) y se escribe de manera exclusiva cuando los valores han sido explícitamente confirmados por el usuario.
 
 <div align="center">
@@ -264,7 +267,7 @@ En los siguientes puntos desarrollaremos los modulos principales aplicados al pr
 <br>
 
 ### 2.3.6 Módulo de telemetría
-* Integrado mediante el modulo bluetooth HM-10.
+* Integrado mediante el modulo bluetooth HM-10 (Figura 2.4).
 * Opera de forma totalmente asincrónica a través del periférico USART de la STM32, donde veremos que su impacto en el rendimiento computacional de la placa es nulo en estado de reposo, procesando tramas únicamente mediante interrupciones.
 
 <div align="center">
@@ -291,7 +294,7 @@ Para poder generar el software necesario para el proyecto nos basamos en la estr
 * **Capa del Sistema (Procesar)**: Una máquina de estados central que toma los eventos lógicos, evalúa los temporizadores de las recetas, y decide el próximo estado del sistema.
 * **Capa de Actuadores (Actuar)**: Ejecuta los comandos físicos ordenados por el sistema (conmutar relés, sonar alarmas, dibujar caracteres en el LCD).
 
-Primero realizamos la estructuración a partir de los componentes que podría llegar a tener el sistema, haciendo un Diagrama en Bloques. Seguido a eso, completamos un primer Diagrama de Secuencia que reflejaba prácticamente lo mismo que el de bloques, y pasamos a definir los eventos y estados que deberían tener en un principio.
+Primero realizamos la estructuración a partir de los componentes que podría llegar a tener el sistema, haciendo un Diagrama en Bloques (Figura 3.1). Seguido a eso, completamos un primer Diagrama de Secuencia, que reflejaba prácticamente lo mismo que el de bloques, y pasamos a definir los eventos y estados que deberían tener en un principio.
 En los enlaces siguientes se presentan en detalle las tablas de estados definidas para cada módulo.
 
 [Módulo del Sistema](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/STATE%20CHARTS/tdse_tf_system.md)
@@ -300,7 +303,7 @@ En los enlaces siguientes se presentan en detalle las tablas de estados definida
 
 [Módulo de Sensores](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/STATE%20CHARTS/tdse_tf_sensor.md)
 
-Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los mensajes contenía la impronta de lo que iba a volcarse en el código.
+Una vez logrado eso, completamos un último Diagrama de Secuencia presentado en la Figura 3.2, donde en los mensajes contenía la impronta de lo que iba a volcarse en el código.
 
 <img width="1125" height="689" alt="diagrama_en_bloques" src="https://github.com/user-attachments/assets/2047e439-f59e-490c-94b8-38746bdff88a" />
 
@@ -313,8 +316,11 @@ Una vez logrado eso, completamos un último Diagrama de Secuencia donde en los m
 ## 3.2 Diseño de hardware
 El hardware constará de una placa base para los siguientes periféricos:
 
+* Entradas: Sensor de temperatura (AHT20 por I2C), simulación de nivel de agua (potenciómetro con filtro activo Sallen-Key vía ADC con DMA), teclado matricial y feedback de tensión de relés.
 
+* Salidas: Relés para bomba de agua y ventilador, Buzzer de alarma, LEDs indicadores, módulo Bluetooth HM-10 (UART), memoria EEPROM (I2C) y Display OLED (SPI/I2C).
 
+En la Figura 3.3 se muestra el esquemático del sistema indicando los periféricos conectados a placa de desarrolo, detallando los pines utilizados, y sus fuentes de alimentación.
 <div align="center">
 <img width="1594" height="877" alt="Esquematico" src="https://github.com/user-attachments/assets/29a8cf53-914c-400d-8a19-9a03485117c1" />
 <br>
@@ -322,9 +328,6 @@ El hardware constará de una placa base para los siguientes periféricos:
   </div>
 <br>
 
-* Entradas: Sensor de temperatura (AHT20 por I2C), simulación de nivel de agua (potenciómetro con filtro activo Sallen-Key vía ADC con DMA), teclado matricial y feedback de tensión de relés.
-
-* Salidas: Relés para bomba de agua y ventilador, Buzzer de alarma, LEDs indicadores, módulo Bluetooth HM-10 (UART), memoria EEPROM (I2C) y Display OLED (SPI/I2C).
 
 ## 3.3 Diseño de firmware
 El sistema no utiliza un RTOS, sino una arquitectura bare-metal soportada por un Ejecutor Cíclico (Super-Loop). La interrupción a partir de SysTick levanta un flag cada 1ms exacto, lo que permite que la función principal main() vaya despachando cíclicamente el array de las tareas en task_cfg_list:
@@ -398,14 +401,7 @@ Para el potenciómetro se decidió utilizar uno de valor 1kΩ, ya que estos con
 
 Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos como principal sujeto de prueba el módulo de las memorias EEPROM y el display, acá verificamos que lo que se guardaba en pantalla, luego quedaba en la memoria y viceversa. Para el módulo de memorias no hizo falta conectarles resistencias de pull-up, ya que estas venían incluidas dentro del modulo en el que se conserva la memoria.
 
-<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba1.jpg" />
-<p align="center"><em>Figura 4.1: Primeras pruebas en protoboard - Funcionamiento del Modo NORMAL</em></p>
-
-<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba2.jpg" />
-<p align="center"><em>Figura 4.2: Primeras pruebas en protoboard - Funcionamiento del Modo SETUP</em></p>
-
-<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba3.jpg" />
-<p align="center"><em>Figura 4.3: Primeras pruebas en protoboard - Funcionamiento del Modo ERROR</em></p>
+En la Tabla 4.1 se presentan en detalle los ensayos realizados en esta sección de hardware. 
 
 | Ensayo | Resultado | Estado |
 | --- | --- | :---: |
@@ -421,11 +417,22 @@ Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos co
 Para las primeras pruebas del firmware, ya con actuadores y sensores funcionando, incluimos ahora al modulo de sistema, y en conjunto a este conectamos el display, para comenzar a ver una primera impresión de cómo sería el sistema completo. En este punto, dejamos de lado los "códigos de prueba", y ya utilizábamos el código de cómo debería funcionar realmente en el sistema final solo que incluíamos algún `LOGGER_INFO` para hacer troubleshooting con alguno de los módulo. Ejemplo: `[info] >>> SENSOR: ID 3 confirmado como PRESIONADO!` así verificabamos que el DEBOUNCE fue implementado de manera correcta.
 
 En esta prueba comprobamos, que el display respondía a los botones para la navegación del sistema, y los tres modos de operación que iba a incluir nuestro sistema, NORMAL, SETUP y ERROR. Este paso fue fundamental, ya que se corrigieron bastantes cosas para pasar de una máquina de estados a la otra, y así poder hacer que la transición entre un sistema y el otro sea algo completamente cíclico y sin ninguna traba de por medio. 
+En las Figuras 4.1, 4.2 y 4.3 se muestran las pruebas realizadas para los distintos modos del sistema.
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba1.jpg" />
+<p align="center"><em>Figura 4.1: Primeras pruebas en protoboard - Funcionamiento del Modo NORMAL</em></p>
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba2.jpg" />
+<p align="center"><em>Figura 4.2: Primeras pruebas en protoboard - Funcionamiento del Modo SETUP</em></p>
+
+<img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba3.jpg" />
+<p align="center"><em>Figura 4.3: Primeras pruebas en protoboard - Funcionamiento del Modo ERROR</em></p>
 
 Una vez que pudimos comprobar que las comunicaciones físicas entre los módulos estaban funcionando, pasamos a incluir al módulo bluetooth a las pruebas y ver que la conexión inalámbrica del sistema funcione bien. Para establecer la comunicación entre los dispositivos se utilizó una aplicación descargada de Google Play Store llamada Serial Bluetooth Terminal, esta aplicación contiene una terminal donde podremos enviar y recibir los mensajes. 
 
 En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas modificaciones, por ejemplo, cuando encendíamos el sistema, y no nos conectábamos al módulo bluetooth, este comenzaba a enviarse comandos "perdidos" entre la placa NUCLEO y el módulo haciendo que se genere un bucle infinito de preguntas y respuestas sin sentido. La solución para ese caso fue implementar un filtro para aquellos mensajes que se generen entre placa y módulo cuando no hay nadie conectado, y lo mismo para cuando si hay alguien conectado.
 
+En la Tabla 4.2 se presentan en detalle los ensayos realizados para el firmware. 
 <div align="center">
   
 | Ensayo | Resultado | Estado |
@@ -437,17 +444,18 @@ En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas mod
 
 </div>
 
-<p align="center"><em>Tabla 4.2: Ensayos y Resultados de Software.</em></p>
+<p align="center"><em>Tabla 4.2: Ensayos y Resultados del Software.</em></p>
 
 ## 4.3 Pruebas de integración
 La integración del proyecto es algo que desarrollamos en cada paso a medida que íbamos incluyendo más módulos para probar, como primer instancia teníamos la parte física, el medir las señales que les llegaban, si el consumo de las mismas era el correcto por ejemplo, y como segunda instancia teníamos la ejecución del código, y ver como reaccionaba a los distintos módulos. Pero todo eso lo realizábamos prácticamente en el mismo momento, ya que podía pasar que la conexión entre placa y módulo era correcta, pero luego cuando queríamos ejecutar una acción sobre estos, no ocurría nada por algún desliz en el código o configuración de los pines. 
 
-Por esto, es que decidimos ir probando módulo por módulo, incluyéndolos de a poco y una vez que teníamos el sistema completo funcional, pasamos a la parte de desarrollar el sistema en un PCB del tipo perforado.
+Por esto, es que decidimos ir probando módulo por módulo, incluyéndolos de a poco y una vez que teníamos el sistema completo funcional (Figura 4.4), pasamos a la parte de desarrollar el sistema en un PCB del tipo perforado.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba4.jpg" />
 <p align="center"><em>Figura 4.4: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
 
 Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de módulos y sensores del sistema, ya que es dónde íbamos a colocar la placa NUCLEO, que es la que comanda todas las operaciones para que el sistema funcione. En este fuimos integrando poco a poco las conexiones con cables del tipo multipar, asegurando primero, las conexiones de GND, de 5V y 3.3V y luego pasar a las conexiones de los pines de funcionalidad que necesitaba cada módulo en particular. Por otro lado, se decidió utilizar un segundo PCB perforado para no saturar tanto las conexiones dentro del PCB principal, y además, en este segundo PCB podríamos aislar las conexiones al relé, el cual tiene la conexión a la fuente externa, y otros módulos como el de memoria EEPROM, y el módulo AHT20, sensor de temperatura y humedad.
+En las Figuras 4.5,4.6 y 4.7 se muestran el cableado hecho para cada placa y una vista general del sistema.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_principal.jpg" />
 <p align="center"><em>Figura 4.5: Esquemático del PCB principal del sistema completo</em></p>
@@ -465,7 +473,7 @@ Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de
 [Log generado durante el vídeo](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/log%20del%20video.txt)
 
 ## 4.4 Medición y análisis de consumo
-Para la medición y análisis de consumo separamos en dos partes, debido a que se hicieron uso de los dos tipos de voltajes que nos podía entregar la placa del sistema, una alimentación de 5V y la otra de 3.3V. Por otro lado, teníamos el consumo de la fuente externa para el módulo de relés que se había medido previamente sin tener el sistema completa, la cuál de igual manera una vez insertada al resto de módulos no varió su consumo, ya que esta fuente simplemente actúa para encender los relés, este módulo por otro lado también tiene una alimentación de 3.3V del sistema que es para la activación lógica de los pines IN1 y IN2 que están en la placa del módulo de relés.  
+Para la medición y análisis de consumo separamos en dos partes, debido a que se hicieron uso de los dos tipos de voltajes que nos podía entregar la placa del sistema, una alimentación de 5V y la otra de 3.3V. Por otro lado, teníamos el consumo de la fuente externa para el módulo de relés que se había medido previamente sin tener el sistema completa, la cuál de igual manera una vez insertada al resto de módulos no varió su consumo, ya que esta fuente simplemente actúa para encender los relés, este módulo por otro lado también tiene una alimentación de 3.3V del sistema que es para la activación lógica de los pines IN1 y IN2 que están en la placa del módulo de relés. Estos resultados se volcaron en la Tablas 4.3 y 4.4. 
 
 Metodología aplicada:
 - Medición de consumo total en la entrada de `5 V` del sistema.
@@ -495,7 +503,7 @@ Metodología aplicada:
 
 **Consumo de relés durante los distintos modos de operación** 
 
-El sistema siempre se carga con los valores que pueda encontrar en la memoria, en este caso traemos una situación en la cuál es la primera vez que se comienza a utilizar la estación por lo que carga unos valores por default, tanto para el tiempo de espera como para el riego son 10s, y para la temperatura máxima son 28°C y la mínima son 24°C. Esto se aclara ya que el sistema se pondría en funcionamiento con estos valores por si no se quisiera pasar por el menú de SETUP. En el caso siguiente, se propone activar el relé del ventilador para saber cuánto consume este solo mientras que el de la bomba se apagará y prenderá a medida que se pase del modo ESPERA a REGANDO, y de esta manera podremos observar el consumo completo de los relés en funcionamiento.
+El sistema siempre se carga con los valores que pueda encontrar en la memoria, en este caso traemos una situación en la cuál es la primera vez que se comienza a utilizar la estación por lo que carga unos valores por default, tanto para el tiempo de espera como para el riego son 10s, y para la temperatura máxima son 28°C y la mínima son 24°C. Esto se aclara ya que el sistema se pondría en funcionamiento con estos valores por si no se quisiera pasar por el menú de SETUP. En el caso siguiente, se propone activar el relé del ventilador para saber cuánto consume este solo mientras que el de la bomba se apagará y prenderá a medida que se pase del modo ESPERA a REGANDO, y de esta manera podremos observar el consumo completo de los relés en funcionamiento. Las mediciones correspondientes se presentan en la Tabla 4.5.
 
 | Modo | $I_{pico}$ @ 5 V [mA] | $P_{pico}$ @ 5 V [W] | Observaciones |
 | --- | ---: | ---: | --- |
@@ -516,7 +524,7 @@ Análisis:
 
 ## 4.5 Console and Build Analyzer
 
-En las siguientes figuras se muestran el reporte de uso de memoria del build; se observa un uso bajo de RAM y FLASH (≈16,88% y ≈40,81%), dejando margen para futuras extensiones para el sistema.
+En las Figuras 4.8 y 4.9 se muestran el reporte de uso de memoria del build; se observa un uso bajo de RAM y FLASH (≈16,88% y ≈40,81%), dejando margen para futuras extensiones para el sistema.
 
 <div align="center">
   <img width="1125" height="689" alt="Rainbird" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/console.jpg" />
@@ -538,7 +546,7 @@ Para evaluar el comportamiento temporal del sistema bajo la arquitectura de Sist
 * **`BCET` (Best-Case Execution Time):** Menor tiempo de ejecución registrado ($\mu\text{s}$).
 * **`WCET` (Worst-Case Execution Time):** Mayor tiempo de ejecución registrado ($\mu\text{s}$).
 
-
+En la Tabla 4.6 se presentan las mediciones obtenidas luego que de varias pruebas para saturar el sistema.
 
 <div align="center">
   
@@ -577,7 +585,7 @@ Tomando la suma de los máximos absolutos ($WCET$):
 
 $$\sum WCET = 26.192 + 1.058.301 + 142 + 287 + 52.530 = 1.137.452\ \mu\text{s}$$
 
-$$U_{peor\_caso} = \frac{1.137.452\ \mu\text{s}}{1000\ \mu\text{s}} = 1137{,}45 \implies \mathbf{1137{,}45\%}$$
+$$U_{peor_caso} = \frac{1.137.452\ \mu\text{s}}{1000\ \mu\text{s}} = 1137{,}45 \implies \mathbf{1137{,}45\%}$$
 
 > **Interpretación:** Un $U > 100\%$ demuestra que el sistema sufrió una pérdida total del determinismo temporal durante ese instante.
 
@@ -597,7 +605,7 @@ En la presente iteración del prototipo, la estrategia de ahorro energético se 
 No se implementó una entrada explícita a modos Sleep/Stop en el microcontrolador, ya que la arquitectura bare-metal mantiene un polling constante de variables críticas (por ejemplo, la seguridad electromecánica de los relés y el nivel de agua). En una futura revisión alimentada exclusivamente por baterías o algún panel solar, se podría integrar el modo Sleep durante los intervalos del ciclo de 1 ms.
 
 ## 4.9 Cumplimiento de requisitos
-En la siguiente sección demostramos todas las implementaciones que habíamos previsto en un informe anterior, los cuáles en partes generales pudimos concretar todos tal como se describieron o sino con modificaciones mínimas para hacer un sistema más llevadero. 
+En la siguiente sección, en las Tablas 4.7, 4.8, 4.9 y 4.10, mostramos todas las implementaciones que habíamos previsto en un informe anterior, los cuáles en partes generales pudimos concretar todos tal como se describieron o sino con modificaciones mínimas para hacer un sistema más llevadero.
 
 | Estado | Descripción      |
 |-----|---------------------|
