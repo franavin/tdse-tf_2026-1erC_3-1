@@ -1,4 +1,0 @@
-../app/src/aht20.c:31:6:aht20_init	24	static,ignoring_inline_asm
-../app/src/aht20.c:43:6:aht20_update	40	static
-../app/src/aht20.c:103:7:aht20_get_temperature	4	static
-../app/src/aht20.c:108:7:aht20_get_humidity	4	static
