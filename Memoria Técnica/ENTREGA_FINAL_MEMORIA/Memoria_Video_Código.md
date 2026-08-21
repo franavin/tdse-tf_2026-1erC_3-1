@@ -322,7 +322,7 @@ El hardware constará de una placa base para los siguientes periféricos:
 
 En la Figura 3.3 se muestra el esquemático del sistema indicando los periféricos conectados a placa de desarrolo, detallando los pines utilizados, y sus fuentes de alimentación.
 <div align="center">
-<img width="1594" height="877" alt="Esquematico" src="https://github.com/user-attachments/assets/29a8cf53-914c-400d-8a19-9a03485117c1" />
+<img width="1611" height="871" alt="Esquematico" src="https://github.com/user-attachments/assets/418a4896-8809-4aec-bb49-c84d7588e01e" />
 <br>
 <em>Figura 3.3: Esquemático del sistema.</em>
   </div>
@@ -353,26 +353,94 @@ El "cerebro" del sistema se origina a partir de distintos modos de operaciones q
 * **MODO ERROR**: Un "trap state" del cual solo se puede salir mediante la restauración de las variables físicas críticas (por ej. recarga del agua del tanque). 
   * `ST_SYS_ERROR`: Bloqueo del sistema con activación de alarmas (por tanque vacío o falla de relé).
 
-Para saltar de un modo de operación a otro, se creo la función `task_system_set_mode()` la cual tiene como función ser la mensajera entre los modos, copiando las variables temporales (por ej. para las recetas) hacia la estructura del nuevo estado antes de que se realice la transición. Haciendolo de esta manera, se garantiza que el estado entrante siempre disponga de la información más reciente sin utilizar la EEPROM como puente. 
+Para saltar de un modo de operación a otro, se creo la función `task_system_set_mode()` la cual tiene como función ser la mensajera entre los modos, copiando las variables temporales (por ej. para las recetas) hacia la estructura del nuevo estado antes de que se realice la transición. Haciendolo de esta manera, se garantiza que el estado entrante siempre disponga de la información más reciente sin utilizar la EEPROM como puente. En la Figura 3.4 se muestra el diagrama de estados del sistema.
+
+<div align="center">
+<img width="1533" height="683" alt="STCSystem" src="https://github.com/user-attachments/assets/db80f8d6-f971-49e1-b148-8a011b641898" />
+
+<br>
+<em>Figura 3.4: Statechart sistema.</em>
+  </div>
 
 ### 3.3.2 Máquinas de estado de los Sensores
 El módulo de los sensores evalúa las entradas mediante un bucle de indexación, sin importar que la entrada sea un botón (GPIO digital) o el nivel de agua (ADC), la lectura se traduce a una variable booleana unificada is_active.
 Se utilizan para filtrar entradas físicas inestables:
 
-* Teclado y Relé: Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
+* Teclado(Figura 3.5) y Relé(Figura 3.7): Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
 
-* Nivel de agua y Temperatura: Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
+* Nivel de agua(Figura 3.8) y Temperatura(Figura 3.6): Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="https://github.com/user-attachments/assets/947dfd83-40dd-4a7c-9529-6157858f691e" width="100%" alt="STCSensor_BTN" /><br/>
+      <em><b>Figura 3.5</b> Statechart del Teclado Matricial para control de menú.</em>
+    </td>
+    <td width="50%" align="center">
+      <img src="https://github.com/user-attachments/assets/9b7bb2ac-d1f6-46ca-82f7-2d476383e44c" width="100%" alt="STCSensor_AHT" /><br/>
+      <em><b>Figura 3.6</b> Statechart del Sensor de Temperatura I2C (AHT20).</em>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="https://github.com/user-attachments/assets/6c5782d5-6021-48e8-b4cc-7d00c7b769ae" width="100%" alt="STCSensor_RLY_FB" /><br/>
+      <em><b>Figura 3.7</b> Statechart de la Retroalimentación de Relés.</em>
+    </td>
+    <td width="50%" align="center">
+      <img src="https://github.com/user-attachments/assets/efc706d3-8f20-4bc7-93ba-15ee59a6b14f" width="100%" alt="STCSensor_LVL" /><br/>
+      <em><b>Figura 3.8</b> Statechart del Sensor Analógico de Nivel de Agua.</em>
+    </td>
+  </tr>
+</table>
 
 ### 3.3.3 Máquinas de estado de los Actuadores
 Controlan periféricos sin usar retardos:
 
-* Buzzer: Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
+* Buzzer(Figura 3.13): Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
 
-* LEDs: Estados fijos (Verde, Amarillo, Rojo) o parpadeantes para actualizaciones de pantalla.
+* LEDs(Figura 3.11): Estados fijos (Verde, Amarillo, Rojo) o parpadeantes para actualizaciones de pantalla.
 
-* Display: Basado en pantallas (TELEMETRY, MENU, FAULT).
+* Display(Figura 3.2): Basado en pantallas (TELEMETRY, MENU, FAULT).
 
-* Buses (BT/EEPROM): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
+* Buses (BT/EEPROM)(Figura 3.9): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
+
+* Relés(Figura 3.10):encendido y apagado del relé, donde al recibir un evento (EV_ACT_PUMP_ON o OFF) el sistema conmuta la salida del relé (RLY_PUMP) y notifica el nuevo estado a través del módulo Bluetooth(UART_HM10_TX).
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="https://github.com/user-attachments/assets/d49a6f37-5b63-4742-9a35-4e8800bf3cd3" width="100%" alt="STCACT_COM" /><br/>
+      <em><b>Figura 3.9</b> Statechart de Control de Periféricos de Almacenamiento (Memoria EEPROM).</em>
+    </td>
+    <td width="50%" align="center">
+      <img src="https://github.com/user-attachments/assets/3c815dcb-30d8-4a61-bf38-7e91a9796f61" width="100%" alt="STCACT_RLY" /><br/>
+      <em><b>Figura 3.10</b> Statechart de los Relés.</em>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="https://github.com/user-attachments/assets/f8dcd268-2fc8-4b7d-ac81-2d0b96686232" width="100%" alt="STCACT_LED" /><br/>
+      <em><b>Figura 3.11</b> Statecharts de los LEDs de Estado.</em>
+    </td>
+    <td width="50%" align="center">
+      <img src="https://github.com/user-attachments/assets/bd4cabb5-c3a8-4ff6-975b-b5e458d6af7b" width="100%" alt="STCACT_DISP_TELE" /><br/>
+      <em><b>Figura 3.12</b> Statechart de la Interfaz Visual (Display OLED).</em>
+    </td>
+  </tr>
+</table>
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/b69215a8-9927-4587-83d5-100b88e1fa79" width="100%" alt="STCACT_BUZZ" /><br/>
+<br>
+<em>Figura 3.13: Statechart del Buzzer.</em>
+  </div>
+
 
 ### 3.3.4 Driver I2C Asincrónico y Memoria
 * Sensor AHT20: Se implementó una máquina de estados interna en aht20.c. En el estado inicial envía el comando de medición I2C (0xAC) e inicia un contador local de 80 ticks (80 ms). Un vez cumplido el tiempo, el estado transita para conseguir los 6 bytes del bus I2C, ensamblando los 20 bits de temperatura y humedad mediante desplazamientos lógicos sin que se bloquee el procesador. 
@@ -575,9 +643,9 @@ Tomando los tiempos típicos de ejecución ($LET$):
 
 $$\sum C_{nominal} = 190 + 34 + 62 + 13 + 9 = 308\ \mu\text{s}$$
 
-$$U_{nominal} = \frac{308\ \mu\text{s}}{1000\ \mu\text{s}} = 0{,}308 \implies \mathbf{30{,}8\%}$$
+$$U_{nominal} = \frac{308\ \mu\text{s}}{1000\ \mu\text{s}} = 0{,}308$$=30,8%
 
-> **Interpretación:** En operación normal, el microcontrolador opera holgadamente con un **$69{,}2\%$ de tiempo ocioso (Idle)**.
+> **Interpretación:** En operación normal, el microcontrolador opera holgadamente con un **$69,2% de tiempo ocioso (Idle)**.
 
 ### 2. Factor de Uso en el Peor Caso Registrado (Pico / WCET)
 
@@ -585,13 +653,13 @@ Tomando la suma de los máximos absolutos ($WCET$):
 
 $$\sum WCET = 26.192 + 1.058.301 + 142 + 287 + 52.530 = 1.137.452\ \mu\text{s}$$
 
-$$U_{peor_caso} = \frac{1.137.452\ \mu\text{s}}{1000\ \mu\text{s}} = 1137{,}45 \implies \mathbf{1137{,}45\%}$$
+$$U_{peor_caso} = \frac{1.137.452\ \mu\text{s}}{1000\ \mu\text{s}} = 1137{,}45$$=113745%
 
-> **Interpretación:** Un $U > 100\%$ demuestra que el sistema sufrió una pérdida total del determinismo temporal durante ese instante.
+> **Interpretación:** Un U > 100% demuestra que el sistema sufrió una pérdida total del determinismo temporal durante ese instante.
 
 Apartir de lo calculado se puede realizar el siguiente análisis:
 
-1. **Alta eficiencia nominal:** Durante la mayor parte del tiempo, la arquitectura ETS mantiene una baja carga de trabajo sobre el microcontrolador ($30{,}8\%$), lo que confirma el buen diseño general de los módulos de periféricos (Display y Actuadores).
+1. **Alta eficiencia nominal:** Durante la mayor parte del tiempo, la arquitectura ETS mantiene una baja carga de trabajo sobre el microcontrolador 30,8\%, lo que confirma el buen diseño general de los módulos de periféricos (Display y Actuadores).
 2. **Bloqueo crítico en `Task System`:** El WCET registrado de **$1{,}058\text{ s}$** quiebra las garantías de tiempo real.
 3. **Inercia en Comunicaciones UART:** La tarea Bluetooth registra un pico de **$52{,}53\text{ ms}$** al responder mensajes.
 
