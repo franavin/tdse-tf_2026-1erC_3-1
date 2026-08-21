@@ -1,3 +1,0 @@
-../app/src/bluetooth.c:22:6:HAL_UART_RxCpltCallback	6
-../app/src/bluetooth.c:46:6:bluetooth_init	1
-../app/src/bluetooth.c:58:6:bluetooth_update	8

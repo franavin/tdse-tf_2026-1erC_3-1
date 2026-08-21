@@ -1,1 +1,0 @@
-**En la siguiente carpeta se encontraran los archivos necesarios para completar la memoria técnica del proyecto final, donde se incluirán imagenes, código y referencias que se fueron utilizando en el mismo.**

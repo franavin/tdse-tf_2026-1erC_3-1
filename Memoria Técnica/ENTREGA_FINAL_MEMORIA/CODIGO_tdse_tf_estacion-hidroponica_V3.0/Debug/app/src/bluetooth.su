@@ -1,4 +1,0 @@
-../app/src/bluetooth.c:23:6:HAL_UART_RxCpltCallback	16	static
-../app/src/bluetooth.c:47:6:bluetooth_init	8	static,ignoring_inline_asm
-../app/src/bluetooth.c:59:6:bluetooth_update	112	static,ignoring_inline_asm
-../app/src/bluetooth.c:130:6:bluetooth_send_alert	16	static
