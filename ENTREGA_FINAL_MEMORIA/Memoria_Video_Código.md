@@ -767,7 +767,7 @@ Se documenta el uso de IA según requerimiento docente y archivo [`listado de co
 
 - Leonardo:
   - Consulta de GFM (GitHub Flavored Markdown).
-  - Le pasamos 2 memorias técnicas de las de ejemplo y le pedimos que extraiga el esqueleto de secciones y subsecciones para poder empezar a completar nuestro documento.
+  - Le pasamos 2 memorias técnicas de referencia y le pedimos que extraiga el esqueleto de secciones y subsecciones para poder empezar a completar nuestro documento.
   - Consulta sobre componentes y conexiones.
   - Checkeo de redacción de la memoria técnica.
   - Consuta sobre funciones del LT Spice para dibujar el esqumático.
