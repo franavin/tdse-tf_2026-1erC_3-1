@@ -155,7 +155,7 @@ Como se mencionó anteriormente, la integración de periféricos con altas laten
 ## 1.4 Alcance y limitaciones
 El alcance del sistema contempla el monitoreo de nivel de agua, temperatura y humedad, la actuación de bombas de agua y ventiladores mediante relés de potencia, alarmas acústicas/visuales y la transmisión de información remota. Todo evento externo e interno se somete a validación mediante filtrado de estado temporal para evadir falsos positivos y rebotes.
 
-Las limitaciones actuales radican, en primer lugar, en la validación de la etapa de potencia y el entorno, ya que para comprobar que la etapa de potencia funcionaría utilizamos la observación a partir de la conmutación de los relés a nivel lógico, y no unas bombas de agua conectadas a 220V con válvulas de agua conectada, esto es lo que quedaría para un estudio posterior. 
+Las limitaciones actuales radican, en primer lugar, en la validación de la etapa de potencia y el entorno, ya que para comprobar que la etapa de potencia funcionaría utilizamos la observación a partir de la conmutación de los relés a nivel lógico, y no unas bombas de agua conectadas a 220 V con válvulas de agua conectada, esto es lo que quedaría para un estudio posterior. 
 
 Esto mismo ocurrió con el nivel del agua del tanque, en vez de utilizar un flotador digital, lo reemplazamos por un potenciometro el cuál representaría el nivel del agua modificando su tensión mediante un conversor ADC. 
 
@@ -314,7 +314,7 @@ Una vez logrado eso, completamos un último Diagrama de Secuencia presentado en 
 <p align="center"><em>Figura 3.2: Diagrama de Secuencia</em></p>
 
 ## 3.2 Diseño de hardware
-El hardware constará de una placa base para los siguientes periféricos:
+El hardware consta de una placa base para los siguientes periféricos:
 
 * Entradas: Sensor de temperatura (AHT20 por I2C), simulación de nivel de agua (potenciómetro con filtro activo Sallen-Key vía ADC con DMA), teclado matricial y feedback de tensión de relés.
 
@@ -330,7 +330,7 @@ En la Figura 3.3 se muestra el esquemático del sistema indicando los periféric
 
 
 ## 3.3 Diseño de firmware
-El sistema no utiliza un RTOS, sino una arquitectura bare-metal soportada por un Ejecutor Cíclico (Super-Loop). La interrupción a partir de SysTick levanta un flag cada 1ms exacto, lo que permite que la función principal main() vaya despachando cíclicamente el array de las tareas en task_cfg_list:
+El sistema utiliza una arquitectura bare-metal soportada por un Ejecutor Cíclico (Super-Loop). La interrupción a partir de SysTick levanta un flag cada 1 ms exacto, lo que permite que la función principal main() vaya despachando cíclicamente el array de las tareas en task_cfg_list:
 1. `task_sensor_update()`
 2. `task_system_update()`
 3. `task_actuator_update()`
@@ -366,9 +366,9 @@ Para saltar de un modo de operación a otro, se creo la función `task_system_se
 El módulo de los sensores evalúa las entradas mediante un bucle de indexación, sin importar que la entrada sea un botón (GPIO digital) o el nivel de agua (ADC), la lectura se traduce a una variable booleana unificada is_active.
 Se utilizan para filtrar entradas físicas inestables:
 
-* Teclado(Figura 3.5) y Relé(Figura 3.7): Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
+* Teclado (Figura 3.5) y Relé (Figura 3.7): Transitan por UP/OPEN -> FALLING/CLOSING -> DOWN/CLOSED -> RISING/OPENING.
 
-* Nivel de agua(Figura 3.8) y Temperatura(Figura 3.6): Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
+* Nivel de agua (Figura 3.8) y Temperatura (Figura 3.6): Transitan desde estado OK hacia CRITICAL/HIGH mediante estados transitorios FALLING/RISING para asegurar la permanencia en el umbral crítico antes de lanzar la alarma.
 
 <table>
   <tr>
@@ -399,15 +399,15 @@ Se utilizan para filtrar entradas físicas inestables:
 ### 3.3.3 Máquinas de estado de los Actuadores
 Controlan periféricos sin usar retardos:
 
-* Buzzer(Figura 3.13): Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
+* Buzzer (Figura 3.13): Alterna entre ON, OFF cíclicamente para alarmas o emite tonos de confirmación.
 
-* LEDs(Figura 3.11): Estados fijos (Verde, Amarillo, Rojo) o parpadeantes para actualizaciones de pantalla.
+* LEDs (Figura 3.11): Estados fijos (Verde, Amarillo, Rojo) o parpadeantes para actualizaciones de pantalla.
 
-* Display(Figura 3.2): Basado en pantallas (TELEMETRY, MENU, FAULT).
+* Display (Figura 3.2): Basado en pantallas (TELEMETRY, MENU, FAULT).
 
-* Buses (BT/EEPROM)(Figura 3.9): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
+* Buses (BT/EEPROM) (Figura 3.9): Estados que manejan la transmisión y recepción (IDLE, TX_BUSY, RX_READY, ERROR).
 
-* Relés(Figura 3.10):encendido y apagado del relé, donde al recibir un evento (EV_ACT_PUMP_ON o OFF) el sistema conmuta la salida del relé (RLY_PUMP) y notifica el nuevo estado a través del módulo Bluetooth(UART_HM10_TX).
+* Relés (Figura 3.10):encendido y apagado del relé, donde al recibir un evento (EV_ACT_PUMP_ON o OFF) el sistema conmuta la salida del relé (RLY_PUMP) y notifica el nuevo estado a través del módulo Bluetooth(UART_HM10_TX).
 
 <table>
   <tr>
@@ -435,11 +435,11 @@ Controlan periféricos sin usar retardos:
   </tr>
 </table>
 
+
 <div align="center">
-<img src="https://github.com/user-attachments/assets/b69215a8-9927-4587-83d5-100b88e1fa79" width="100%" alt="STCACT_BUZZ" /><br/>
-<br>
-<em>Figura 3.13: Statechart del Buzzer.</em>
-  </div>
+  <img src="https://github.com/user-attachments/assets/b69215a8-9927-4587-83d5-100b88e1fa79" width="60%" alt="STCACT_BUZZ" />
+  <p><em>Figura 3.13: Statechart del Buzzer.</em></p>
+</div>
 
 
 ### 3.3.4 Driver I2C Asincrónico y Memoria
@@ -459,13 +459,13 @@ Al detectarse el carácter del CR (\r o \n), la bandera msg_ready cambia de esta
 ## 4.1 Pruebas funcionales de hardware
 Para comenzar con las pruebas del hardware, se decidió ir incluyendo los distintos procesos/módulos de a poco, empezando con los módulos de actuadores, seguido del módulo de los sensores, y por último el modulo del sistema. 
 
-Lo primero que probamos en el módulo de actuadores, fueron los módulos de relés y el de leds, esta primer prueba era fundamental, ya que la estación hidropónica no sería nada si no se pudieran mover los relés con los que se mueven la bomba del tanque de agua y el ventilador. Algo a destacar para con el módulo de relés es que no lo alimentamos directamente con la plaqueta NUCLEO sino que optamos por utilizar una fuente externa (5V 400mA), sabiendo que es capaz de entregar hasta 100mA como máxima, y el módulo de relés puede llegar a consumir entre unos 50mA por canal. Por lo tanto, antes de comenzar a hacer algo con el resto de módulos, decidimos medir la corriente que consumían los relés conectado con la fuente externa, y es acá donde pudimos observar que el consumo de cada módulo rondaba entre 54mA y 57mA, lo que nos daba un consumo total entre ambos de unos 108mA hasta 114mA, superando ampliamente la cantidad que nos podía dar la placa NUCLEO.
+Lo primero que probamos en el módulo de actuadores, fueron los módulos de relés y el de leds, esta primer prueba era fundamental, ya que la estación hidropónica no sería nada si no se pudieran mover los relés con los que se mueven la bomba del tanque de agua y el ventilador. Algo a destacar para con el módulo de relés es que no lo alimentamos directamente con la plaqueta NUCLEO sino que optamos por utilizar una fuente externa (5 V 400 mA), sabiendo que es capaz de entregar hasta 100 mA como máxima, y el módulo de relés puede llegar a consumir entre unos 50 mA por canal. Por lo tanto, antes de comenzar a hacer algo con el resto de módulos, decidimos medir la corriente que consumían los relés conectado con la fuente externa, y es acá donde pudimos observar que el consumo de cada módulo rondaba entre 54 mA y 57 mA, lo que nos daba un consumo total entre ambos de unos 108 mA hasta 114 mA, superando ampliamente la cantidad que nos podía dar la placa NUCLEO.
 
 La prueba que deberían pasar estos módulos es que se prendan los LEDs que se incluyen en la plaqueta del módulo y que además se escuche el click mecánico que contienen los relés, y luego, por otro lado para el módulo de semáforo que se prendan los LEDs de colores en una cierta secuencia. Para todo esto utilizamos códigos de pruebas dentro de los códigos ya generados para lo que se convertiría en el sistema final.
 
 Una vez confirmamos que los actuadores respondían de manera efectiva, pasamos a probar los sensores, en este caso los primeros fueron los botones para navegar el menú del display y otro de los más importantes, el potenciómetro con el que íbamos a simular el nivel de agua utilizando el conversor ADC que nos brinda la placa. 
 
-Para el potenciómetro se decidió utilizar uno de valor 1kΩ, ya que estos conversores trabajan cargando un capacitor de retención, donde para que la lectura sea precisa y rápida, la señal externa debe tener una baja impedancia. Por lo tanto, al estar conectado a la fuente de 3.3V de la placa, este nos entregaba un consumo que se aproximaba los 3.3mA que debería tener.
+Para el potenciómetro se decidió utilizar uno de valor 1 kΩ, ya que estos conversores trabajan cargando un capacitor de retención, donde para que la lectura sea precisa y rápida, la señal externa debe tener una baja impedancia. Por lo tanto, al estar conectado a la fuente de 3,3 V de la placa, este nos entregaba un consumo que se aproximaba los 3,3 mA que debería tener.
 
 Para la siguiente prueba ya incluimos al módulo del sistema, donde teníamos como principal sujeto de prueba el módulo de las memorias EEPROM y el display, acá verificamos que lo que se guardaba en pantalla, luego quedaba en la memoria y viceversa. Para el módulo de memorias no hizo falta conectarles resistencias de pull-up, ya que estas venían incluidas dentro del modulo en el que se conserva la memoria.
 
@@ -496,7 +496,7 @@ En las Figuras 4.1, 4.2 y 4.3 se muestran las pruebas realizadas para los distin
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba3.jpg" />
 <p align="center"><em>Figura 4.3: Primeras pruebas en protoboard - Funcionamiento del Modo ERROR</em></p>
 
-Una vez que pudimos comprobar que las comunicaciones físicas entre los módulos estaban funcionando, pasamos a incluir al módulo bluetooth a las pruebas y ver que la conexión inalámbrica del sistema funcione bien. Para establecer la comunicación entre los dispositivos se utilizó una aplicación descargada de Google Play Store llamada Serial Bluetooth Terminal, esta aplicación contiene una terminal donde podremos enviar y recibir los mensajes. 
+Una vez que pudimos comprobar que las comunicaciones físicas entre los módulos estaban funcionando, pasamos a incluir al módulo Bluetooth a las pruebas y ver que la conexión inalámbrica del sistema funcione bien. Para establecer la comunicación entre los dispositivos se utilizó una aplicación descargada de Google Play Store llamada Serial Bluetooth Terminal, esta aplicación contiene una terminal donde podremos enviar y recibir los mensajes. 
 
 En la prueba de la conexión inalámbrica se tuvieron que realizar numerosas modificaciones, por ejemplo, cuando encendíamos el sistema, y no nos conectábamos al módulo bluetooth, este comenzaba a enviarse comandos "perdidos" entre la placa NUCLEO y el módulo haciendo que se genere un bucle infinito de preguntas y respuestas sin sentido. La solución para ese caso fue implementar un filtro para aquellos mensajes que se generen entre placa y módulo cuando no hay nadie conectado, y lo mismo para cuando si hay alguien conectado.
 
@@ -522,8 +522,8 @@ Por esto, es que decidimos ir probando módulo por módulo, incluyéndolos de a 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/prueba4.jpg" />
 <p align="center"><em>Figura 4.4: Últimas pruebas en protoboard - Funcionamiento del Sistema Completo</em></p>
 
-Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de módulos y sensores del sistema, ya que es dónde íbamos a colocar la placa NUCLEO, que es la que comanda todas las operaciones para que el sistema funcione. En este fuimos integrando poco a poco las conexiones con cables del tipo multipar, asegurando primero, las conexiones de GND, de 5V y 3.3V y luego pasar a las conexiones de los pines de funcionalidad que necesitaba cada módulo en particular. Por otro lado, se decidió utilizar un segundo PCB perforado para no saturar tanto las conexiones dentro del PCB principal, y además, en este segundo PCB podríamos aislar las conexiones al relé, el cual tiene la conexión a la fuente externa, y otros módulos como el de memoria EEPROM, y el módulo AHT20, sensor de temperatura y humedad.
-En las Figuras 4.5,4.6 y 4.7 se muestran el cableado hecho para cada placa y una vista general del sistema.
+Comenzamos desarrollando una plaqueta la cual esta iba a contener la mayoría de módulos y sensores del sistema, ya que es dónde íbamos a colocar la placa NUCLEO, que es la que comanda todas las operaciones para que el sistema funcione. En este fuimos integrando poco a poco las conexiones con cables del tipo multipar, asegurando primero, las conexiones de GND, de 5 V y 3,3 V y luego pasar a las conexiones de los pines de funcionalidad que necesitaba cada módulo en particular. Por otro lado, se decidió utilizar un segundo PCB perforado para no saturar tanto las conexiones dentro del PCB principal, y además, en este segundo PCB podríamos aislar las conexiones al relé, el cual tiene la conexión a la fuente externa, y otros módulos como el de memoria EEPROM, y el módulo AHT20, sensor de temperatura y humedad.
+En las Figuras 4.5, 4.6 y 4.7 se muestran el cableado hecho para cada placa y una vista general del sistema.
 
 <img width="1125" height="689" alt="image" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/pcb_principal.jpg" />
 <p align="center"><em>Figura 4.5: Esquemático del PCB principal del sistema completo</em></p>
@@ -541,58 +541,58 @@ En las Figuras 4.5,4.6 y 4.7 se muestran el cableado hecho para cada placa y una
 [Log generado durante el vídeo](https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/log%20del%20video.txt)
 
 ## 4.4 Medición y análisis de consumo
-Para la medición y análisis de consumo separamos en dos partes, debido a que se hicieron uso de los dos tipos de voltajes que nos podía entregar la placa del sistema, una alimentación de 5V y la otra de 3.3V. Por otro lado, teníamos el consumo de la fuente externa para el módulo de relés que se había medido previamente sin tener el sistema completa, la cuál de igual manera una vez insertada al resto de módulos no varió su consumo, ya que esta fuente simplemente actúa para encender los relés, este módulo por otro lado también tiene una alimentación de 3.3V del sistema que es para la activación lógica de los pines IN1 y IN2 que están en la placa del módulo de relés. Estos resultados se volcaron en la Tablas 4.3 y 4.4. 
+Para la medición y análisis de consumo separamos en dos partes, debido a que se hicieron uso de los dos tipos de voltajes que nos podía entregar la placa del sistema, una alimentación de 5 V y la otra de 3,3 V. Por otro lado, teníamos el consumo de la fuente externa para el módulo de relés que se había medido previamente sin tener el sistema completa, la cuál de igual manera una vez insertada al resto de módulos no varió su consumo, ya que esta fuente simplemente actúa para encender los relés, este módulo por otro lado también tiene una alimentación de 3.3V del sistema que es para la activación lógica de los pines IN1 y IN2 que están en la placa del módulo de relés. Estos resultados se volcaron en la Tablas 4.3 y 4.4. 
 
 Metodología aplicada:
 - Medición de consumo total en la entrada de `5 V` del sistema.
-- Medición de consumo total en la entrada de `3.3 V` del sistema.
+- Medición de consumo total en la entrada de `3,3 V` del sistema.
 - Alimentación desde fuente externa conectada a pines `5 V` y `GND` para el módulo de relés.
 - Medición de tensión en bornes de entrada para estimar potencia (`P = V * I`).
 
 | Modo | $I_{pico}$ @ 5 V [mA] | $P_{pico}$ @ 5 V [W] | Observaciones |
 | --- | ---: | ---: | --- |
-| PAUSADO | 12 | 0.060 | Escenario de menor consumo; es apenas se inicia el sistema. |
-| SETUP | 12.5 | 0.062 | El sistema está semi-pausado; se guardan las recetas en la memoria EEPROM. |
-| NORMAL - ESPERA | 13.40 | 0.067 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
-| NORMAL - REGANDO  | 13.90 | 0.069 | El sistema envía las señales para activar los relés. |
-| ERROR | 14.1 | 0.070 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
+| PAUSADO | 12 | 0,060 | Escenario de menor consumo; es apenas se inicia el sistema. |
+| SETUP | 12,5 | 0,062 | El sistema está semi-pausado; se guardan las recetas en la memoria EEPROM. |
+| NORMAL - ESPERA | 13,40 | 0,067 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
+| NORMAL - REGANDO  | 13,90 | 0,069 | El sistema envía las señales para activar los relés. |
+| ERROR | 14,1 | 0,070 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por Bluetooth. |
 
 <p align="center"><em>Tabla 4.3: Consumo total medido a 5 V (valores pico).</em></p><br><br>
 
-| Modo | $I_{pico}$ @ 3.3 V [mA] | $P_{pico}$ @ 3.3 V [W] | Observaciones |
+| Modo | $I_{pico}$ @ 3,3 V [mA] | $P_{pico}$ @ 3,3 V [W] | Observaciones |
 | --- | ---: | ---: | --- |
-| PAUSADO | 3.88 | 0.0128 | Escenario de menor consumo; es apenas se inicia el sistema. |
-| SETUP | 4.40 | 0.0145 | El sistema está semi-pausado; se guardan las recetas en la memoria EEPROM. |
-| NORMAL - ESPERA | 4.80 |  0.0158 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
-| NORMAL - REGANDO  | 5.20 | 0.0172 | El sistema envía las señales para activar los relés. |
-| ERROR | 4.24 | 0.0140 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por bluetooth. |
+| PAUSADO | 3,88 | 0,0128 | Escenario de menor consumo; es apenas se inicia el sistema. |
+| SETUP | 4,40 | 0,0145 | El sistema está semi-pausado; se guardan las recetas en la memoria EEPROM. |
+| NORMAL - ESPERA | 4,80 |  0,0158 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
+| NORMAL - REGANDO  | 5,20 | 0,0172 | El sistema envía las señales para activar los relés. |
+| ERROR | 4,24 | 0,0140 | El sistema se pausa completamente; se produce un pitido constante mediante Buzzer y envía notificación por Bluetooth. |
 
-<p align="center"><em>Tabla 4.4: Consumo total medido a 3.3 V (valores pico).</em></p><br><br>
+<p align="center"><em>Tabla 4.4: Consumo total medido a 3,3 V (valores pico).</em></p><br><br>
 
 **Consumo de relés durante los distintos modos de operación** 
 
-El sistema siempre se carga con los valores que pueda encontrar en la memoria, en este caso traemos una situación en la cuál es la primera vez que se comienza a utilizar la estación por lo que carga unos valores por default, tanto para el tiempo de espera como para el riego son 10s, y para la temperatura máxima son 28°C y la mínima son 24°C. Esto se aclara ya que el sistema se pondría en funcionamiento con estos valores por si no se quisiera pasar por el menú de SETUP. En el caso siguiente, se propone activar el relé del ventilador para saber cuánto consume este solo mientras que el de la bomba se apagará y prenderá a medida que se pase del modo ESPERA a REGANDO, y de esta manera podremos observar el consumo completo de los relés en funcionamiento. Las mediciones correspondientes se presentan en la Tabla 4.5.
+El sistema siempre se carga con los valores que pueda encontrar en la memoria, en este caso traemos una situación en la cuál es la primera vez que se comienza a utilizar la estación por lo que carga unos valores por default, tanto para el tiempo de espera como para el riego son 10s, y para la temperatura máxima son 28 °C y la mínima son 24 °C. Esto se aclara ya que el sistema se pondría en funcionamiento con estos valores por si no se quisiera pasar por el menú de SETUP. En el caso siguiente, se propone activar el relé del ventilador para saber cuánto consume este solo mientras que el de la bomba se apagará y prenderá a medida que se pase del modo ESPERA a REGANDO, y de esta manera podremos observar el consumo completo de los relés en funcionamiento. Las mediciones correspondientes se presentan en la Tabla 4.5.
 
 | Modo | $I_{pico}$ @ 5 V [mA] | $P_{pico}$ @ 5 V [W] | Observaciones |
 | --- | ---: | ---: | --- |
 | PAUSADO | 0 | 0 | Inicio del sistema; relés apagados. |
 | SETUP | 0 | 0 | Pasamos del modo PAUSADO a SETUP, relés apagados. |
-| NORMAL - ESPERA | 57 |  0.285 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
-| NORMAL - REGANDO  | 112 | 0.560 | El sistema envía las señales para activar los relés. |
-| ERROR | 57 | 0.285 | ERROR de TANQUE VACÍO, el relé del ventilador seguirá prendido, por lo tanto sigue consumiendo. |
+| NORMAL - ESPERA | 57 |  0,285 | El sistema ya tiene cargada la receta y con todas las funciones listas.  |
+| NORMAL - REGANDO  | 112 | 0,560 | El sistema envía las señales para activar los relés. |
+| ERROR | 57 | 0,285 | ERROR de TANQUE VACÍO, el relé del ventilador seguirá prendido, por lo tanto sigue consumiendo. |
 
 <p align="center"><em>Tabla 4.5: Consumo total medido a 5 V de fuente externa (valores pico).</em></p><br><br>
 
 Análisis:
 - La potencia se calculó como `P = V * I`, usando `V = 5 V` y corriente pico medida en cada modo.
-- El peor caso medido con la alimentación de la placa fue `14.1 mA` a `5 V`, equivalente a `0.070 W`.
-- El peor caso medido con la alimentación de la fuente externa fue `112 mA` a `5 V`, equivalente a `0.560 W`.
-- El sistema se mantiene por debajo de `1 W`, por lo que puede alimentarse sin inconvenientes con fuentes comerciales 220VAC->5 V de baja potencia.
+- El peor caso medido con la alimentación de la placa fue `14,1 mA` a `5 V`, equivalente a `0,070 W`.
+- El peor caso medido con la alimentación de la fuente externa fue `112 mA` a `5 V`, equivalente a `0,560 W`.
+- El sistema se mantiene por debajo de `1 W`, por lo que puede alimentarse sin inconvenientes con fuentes comerciales 220 VAC->5 V de baja potencia.
 - La diferencia entre los distintos modos de operación es baja para cualquier tipo de alimentación, lo que hace que sea un sistema consistente en su consumo.
 
 ## 4.5 Console and Build Analyzer
 
-En las Figuras 4.8 y 4.9 se muestran el reporte de uso de memoria del build; se observa un uso bajo de RAM y FLASH (≈16,88% y ≈40,81%), dejando margen para futuras extensiones para el sistema.
+En las Figuras 4.8 y 4.9 se muestran el reporte de uso de memoria del build; se observa un uso bajo de RAM y FLASH (≈ 16,88 % y ≈ 40,81 %), dejando margen para futuras extensiones para el sistema.
 
 <div align="center">
   <img width="1125" height="689" alt="Rainbird" src="https://github.com/franavin/tdse-tf_2026-1erC_3-1/blob/main/Memoria%20T%C3%A9cnica/IMAGENES/console.jpg" />
@@ -643,9 +643,9 @@ Tomando los tiempos típicos de ejecución ($LET$):
 
 $$\sum C_{nominal} = 190 + 34 + 62 + 13 + 9 = 308\ \mu\text{s}$$
 
-$$U_{nominal} = \frac{308\ \mu\text{s}}{1000\ \mu\text{s}} = 0{,}308$$=30,8%
+$$U_{nominal} = \frac{308\ \mu\text{s}}{1000\ \mu\text{s}} = 0{,}308$$ = 30,8 %
 
-> **Interpretación:** En operación normal, el microcontrolador opera holgadamente con un **$69,2% de tiempo ocioso (Idle)**.
+> **Interpretación:** En operación normal, el microcontrolador opera holgadamente con un **69,2 % de tiempo ocioso (Idle)**.
 
 ### 2. Factor de Uso en el Peor Caso Registrado (Pico / WCET)
 
@@ -653,13 +653,13 @@ Tomando la suma de los máximos absolutos ($WCET$):
 
 $$\sum WCET = 26.192 + 1.058.301 + 142 + 287 + 52.530 = 1.137.452\ \mu\text{s}$$
 
-$$U_{peor_caso} = \frac{1.137.452\ \mu\text{s}}{1000\ \mu\text{s}} = 1137{,}45$$=113745%
+$$U_{peor_caso} = \frac{1.137.452\ \mu\text{s}}{1000\ \mu\text{s}} = 1137{,}45$$ = 113745 %
 
 > **Interpretación:** Un U > 100% demuestra que el sistema sufrió una pérdida total del determinismo temporal durante ese instante.
 
 Apartir de lo calculado se puede realizar el siguiente análisis:
 
-1. **Alta eficiencia nominal:** Durante la mayor parte del tiempo, la arquitectura ETS mantiene una baja carga de trabajo sobre el microcontrolador 30,8\%, lo que confirma el buen diseño general de los módulos de periféricos (Display y Actuadores).
+1. **Alta eficiencia nominal:** Durante la mayor parte del tiempo, la arquitectura ETS mantiene una baja carga de trabajo sobre el microcontrolador 30,8 %, lo que confirma el buen diseño general de los módulos de periféricos (Display y Actuadores).
 2. **Bloqueo crítico en `Task System`:** El WCET registrado de **$1{,}058\text{ s}$** quiebra las garantías de tiempo real.
 3. **Inercia en Comunicaciones UART:** La tarea Bluetooth registra un pico de **$52{,}53\text{ ms}$** al responder mensajes.
 
@@ -684,7 +684,7 @@ En la siguiente sección, en las Tablas 4.7, 4.8, 4.9 y 4.10, mostramos todas la
 
 | ID | Descripción | Estado |
 | :---- | :---- | :---- |
-| 1.1 | **Nivel de agua (Simulado):** Lectura analógica por ADC (polling/DMA) de un potenciómetro de 1k ohm <br> Se logra implementar mediante el uso de las funciones ADC del microcontrolador la lectura de un potenciometro que en nuestro caso imitaría el nivel del agua que contiene la Estación Hidropónica. | 🟢  |
+| 1.1 | **Nivel de agua (Simulado):** Lectura analógica por ADC (polling/DMA) de un potenciómetro de 1 kΩ <br> Se logra implementar mediante el uso de las funciones ADC del microcontrolador la lectura de un potenciometro que en nuestro caso imitaría el nivel del agua que contiene la Estación Hidropónica. | 🟢  |
 | 1.2 | **Clima (Real):** Lectura de temperatura y humedad ambiente utilizando el sensor digital AHT20 a través del bus I2C. | 🟢 |
 | 1.3 | **Interfaz de entrada local:** Lectura no bloqueante (con rutinas de anti-rebote por software) de botones para la navegación del menú y botones para alternar los modos del sistema (`NORMAL` / `SET_UP`). <br> Logramos concretar una interfaz en la cual podemos navegar mediante el uso de 4 botones de una matriz de botones, de esta manera tenemos, un boton para cambiar el modo de setup a configuración, luego dos de navegación que serán también los que incrementen y decrementen los valores, y por último uno de enter/guardado. | 🟢 | 
 <p align="center"><em>Tabla 4.7: Tabla de implementaciones: Sensores.</em></p>
@@ -733,20 +733,20 @@ El desarrollo técnico se encuentra plenamente documentado en el repositorio, in
 
 * **Prototipo funcional (MVP) validado:** Se logró diseñar e implementar exitosamente una estación hidropónica automatizada utilizando un microcontrolador STM32 bajo una arquitectura *bare-metal*.
 * **Arquitectura de software robusta:** La implementación del patrón Super-Loop disparado por eventos (ETS) junto con máquinas de estado no bloqueantes permitió orquestar múltiples periféricos asincrónicos (I2C, UART, ADC) sin comprometer la reactividad de la interfaz de usuario.
-* **Eficiencia computacional:** El análisis de *profiling* demostró que el sistema es altamente eficiente en régimen nominal, otorgando al procesador un tiempo ocioso (Idle) cercano al 69%, lo que garantiza margen térmico y de procesamiento para futuras expansiones.
+* **Eficiencia computacional:** El análisis de *profiling* demostró que el sistema es altamente eficiente en régimen nominal, otorgando al procesador un tiempo ocioso (Idle) cercano al 69 %, lo que garantiza margen térmico y de procesamiento para futuras expansiones.
 * **Identificación de fallas de determinismo temporal:** Si bien el prototipo cumple con la funcionalidad requerida, el análisis de *profiling* permitió detectar una situación crítica en la máquina de estados principal. Se registró un WCET (*Worst-Case Execution Time*) superior a 1 segundo en la tarea del sistema (`task_system`), lo que provoca una pérdida temporal del determinismo del *scheduler* y quiebra las garantías de tiempo real del sistema durante ese instante.
 * **Persistencia y telemetría:** Se logró integrar satisfactoriamente el almacenamiento seguro de "recetas" en la memoria EEPROM y la comunicación bidireccional mediante el módulo Bluetooth HM-10.
 
 ## 5.2 Lecciones aprendidas
 
 * **Impacto severo del código bloqueante:** Se comprobó empíricamente cómo el uso de retardos pasivos (como `HAL_Delay`) o las esperas síncronas en los buses de comunicación (I2C/UART) colapsan un sistema reactivo. Esta vulnerabilidad, detectada en el manejo de la memoria y la transmisión Bluetooth por *polling*, evidenció que en sistemas de tiempo real estricto es mandatorio delegar estos procesos al hardware (Interrupciones o DMA).
-* **Aislación y dominios de potencia:** Se comprendió la necesidad estricta de separar las fuentes de alimentación. Se constató que la placa NUCLEO no puede suministrar los picos de corriente necesarios para conmutar las bobinas de los relés (~110 mA) sin requerir una fuente externa dedicada de 5V.
+* **Aislación y dominios de potencia:** Se comprendió la necesidad estricta de separar las fuentes de alimentación. Se constató que la placa NUCLEO no puede suministrar los picos de corriente necesarios para conmutar las bobinas de los relés (~ 110 mA) sin requerir una fuente externa dedicada de 5 V.
 * **Filtrado y acondicionamiento de señales:** Se evidenció la importancia de aplicar máquinas de estado con retardos integrados para el anti-rebote (*debounce*) de botones y el filtrado temporal del ADC, evitando falsos positivos causados por ruido eléctrico o fluctuaciones mecánicas.
 * **Armado de la placa:** Es altamente recomendable trabajar con espacio suficiente al soldar. Esto evita el amontonamiento de cables, facilita el acceso con el soldador, previene fallas por acumulación de estaño y hace que cualquier error sea mucho más fácil de detectar y reparar. Priorizar el trabajo cómodo y limpio.
 
 ## 5.3 Próximos pasos
 
-* **Transición a hardware físico industrial:** Reemplazar los componentes de simulación (potenciómetro y LEDs) por sensores de nivel de agua de flotador magnético y bombas sumergibles de 220V gestionadas por contactores o relés de estado sólido (SSR).
+* **Transición a hardware físico industrial:** Reemplazar los componentes de simulación (potenciómetro y LEDs) por sensores de nivel de agua de flotador magnético y bombas sumergibles de 220 V gestionadas por contactores o relés de estado sólido (SSR).
 * **Optimización de comunicaciones:** Migrar las transmisiones UART del módulo Bluetooth y las rutinas I2C de la EEPROM hacia una arquitectura basada netamente en Interrupciones (IT) o Acceso Directo a Memoria (DMA), eliminando así los bloqueos residuales en la tarea del sistema.
 * **Expansión del control agronómico:** Integrar circuitos de acondicionamiento para sondas analógicas de pH y conductividad eléctrica (EC), junto con micro-bombas peristálticas para automatizar la dosificación de nutrientes en lazo cerrado.
 
@@ -760,7 +760,7 @@ Se documenta el uso de IA según requerimiento docente y archivo [`listado de co
 ## 6.1 Uso individual y conjunto
 
 - Franco:
-  - Consultas sobre la estructuración para el código y las funciones específicas necesarias para concretar el código (ej. archivos de memoria eeprom o bluetooth).
+  - Consultas sobre la estructuración para el código y las funciones específicas necesarias para concretar el código (ej. archivos de memoria EEPROM o Bluetooth).
   - Consultas por errores y warnings que aparecieron en el código.
   - Consultas sobre comportamientos no deseados a la hora de tener el sistema ejecutándose, tanto en hardware como firmware.
   - Utilización de aplicación Mermaid para realizar los diagramas de secuencia.
